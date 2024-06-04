@@ -29,7 +29,11 @@ jobs:
       - name: Build executable
         run: |
           . venv/bin/activate
-          pyinstaller --onefile assertis.py
+          pyinstaller --onefile assertis.spec
+
+      - name: Get short commit SHA
+        id: vars
+        run: echo "COMMIT_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -37,8 +41,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }}
-          release_name: Release ${{ github.sha }}
+          tag_name: ${{ env.COMMIT_SHORT }}
+          release_name: Release ${{ env.COMMIT_SHORT }}
           draft: false
           prerelease: false
 
