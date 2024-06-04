@@ -30,18 +30,14 @@ jobs:
         run: |
           /venv/bin/pyinstaller --onefile assertis.py
 
-      - name: Get current Git commit hash
-        id: vars
-        run: echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.commit_hash }}
-          release_name: Release ${{ env.commit_hash }}
+          tag_name: latest
+          release_name: Latest Release
           draft: false
           prerelease: false
 
