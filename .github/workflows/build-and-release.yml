@@ -24,7 +24,7 @@ jobs:
           python3 -m venv /venv
           /venv/bin/pip install --upgrade pip
           /venv/bin/pip install wheel
-          /venv/bin/pip install pyinstaller requests Pillow
+          /venv/bin/pip install pyinstaller
 
       - name: Install Python dependencies
         run: |
@@ -32,7 +32,11 @@ jobs:
 
       - name: Build executable
         run: |
-          /venv/bin/pyinstaller --onefile assertis.py
+          /venv/bin/pyinstaller --onefile assertis.spec
+
+      - name: Get current Git commit hash
+        id: vars
+        run: echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -40,8 +44,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: latest
-          release_name: Latest Release
+          tag_name: ${{ env.commit_hash }}
+          release_name: Release ${{ env.commit_hash }}
           draft: false
           prerelease: false
 
