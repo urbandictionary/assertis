@@ -3,35 +3,38 @@ name: Build and Release
 on:
   push:
     branches:
-      - master
+      - master  # Trigger on push to the master branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    container:
+      image: centos:7
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
+      - name: Set up environment
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install pyinstaller requests Pillow
+          yum update -y
+          yum install -y epel-release
+          yum install -y python3 python3-pip python3-virtualenv gcc make wget
+          python3 -m venv /venv
+          /venv/bin/pip install pyinstaller requests Pillow staticx
 
       - name: Build executable
         run: |
-          source venv/bin/activate
-          pyinstaller --onefile assertis.py
+          /venv/bin/pyinstaller --onefile assertis.py
+
+      - name: Make executable static
+        run: |
+          /venv/bin/staticx dist/assertis dist/assertis_static
 
       - name: Get current Git commit hash
         id: vars
-        run: echo ::set-output name=commit_hash::$(git rev-parse --short HEAD)
+        run: echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -39,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.vars.outputs.commit_hash }}
-          release_name: Release ${{ steps.vars.outputs.commit_hash }}
+          tag_name: ${{ env.commit_hash }}
+          release_name: Release ${{ env.commit_hash }}
           draft: false
           prerelease: false
 
@@ -50,6 +53,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/assertis
+          asset_path: ./dist/assertis_static
           asset_name: assertis
           asset_content_type: application/octet-stream
