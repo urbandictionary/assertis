@@ -1,0 +1,6 @@
+Pillow
+click
+jinja2
+black
+requests
+pyinstaller
