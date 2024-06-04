@@ -32,7 +32,7 @@ jobs:
 
       - name: Build executable
         run: |
-          /venv/bin/pyinstaller --onefile assertis.spec
+          /venv/bin/pyinstaller --onefile assertis.py
 
       - name: Get current Git commit hash
         id: vars
