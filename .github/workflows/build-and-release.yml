@@ -26,6 +26,10 @@ jobs:
           /venv/bin/pip install wheel
           /venv/bin/pip install pyinstaller requests Pillow
 
+      - name: Install Python dependencies
+        run: |
+          /venv/bin/pip install -r requirements.txt
+
       - name: Build executable
         run: |
           /venv/bin/pyinstaller --onefile assertis.py
