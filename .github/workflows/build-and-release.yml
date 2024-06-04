@@ -9,34 +9,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: centos:7
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up environment
-        run: |
-          yum update -y
-          yum install -y epel-release
-          yum install -y python3 python3-pip python3-virtualenv gcc make git
-          python3 -m venv /venv
-          /venv/bin/pip install --upgrade pip
-          /venv/bin/pip install wheel
-          /venv/bin/pip install pyinstaller
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
-          /venv/bin/pip install -r requirements.txt
+          python -m venv venv
+          . venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
 
       - name: Build executable
         run: |
-          /venv/bin/pyinstaller --onefile assertis.py
-
-      - name: Get current Git commit hash
-        id: vars
-        run: echo "commit_hash=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          . venv/bin/activate
+          pyinstaller --onefile assertis.spec
 
       - name: Create Release
         id: create_release
@@ -44,8 +37,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.commit_hash }}
-          release_name: Release ${{ env.commit_hash }}
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
           draft: false
           prerelease: false
 
