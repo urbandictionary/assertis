@@ -100,11 +100,12 @@ def assertis(expected, actual, output, sensitivity):
     output_dir = Path(output)
     template_path = Path(__file__).parent / "report_template.html"
 
-    if output_dir.exists() and any(output_dir.iterdir()):
-        print("Output directory already exists and is not empty. Please remove it first.")
-        sys.exit(1)
-
-    output_dir.mkdir(parents=True)
+    if output_dir.exists():
+        if any(output_dir.iterdir()):
+            print("Output directory already exists and is not empty. Please remove it first.")
+            sys.exit(1)
+    else:
+        output_dir.mkdir(parents=True)
 
     report_data = {"files": [], "has_changes": False, "summary": defaultdict(int)}
 
