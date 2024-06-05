@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from click.testing import CliRunner
 from assertis import assertis  # Replace with the actual name of your script module
+from models import ReportData
 
 
 def generate_report(cases_dir):
@@ -34,7 +35,7 @@ def generate_report(cases_dir):
             raise FileNotFoundError(f"report.json not found in {output_dir}")
 
         with open(report_path, "r") as report_file:
-            report_data = json.load(report_file)
+            report_data = ReportData(**json.load(report_file))
 
     return result.exit_code, report_data
 
