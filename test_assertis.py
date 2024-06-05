@@ -18,6 +18,7 @@ def generate_report(cases_dir):
         result = runner.invoke(
             assertis,
             [
+                "compare",
                 str(expected_dir),
                 str(actual_dir),
                 "--output",

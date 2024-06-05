@@ -94,19 +94,6 @@ def md5_hash_image(image):
     default=0,
     help="Sensitivity level for detecting changes (0-100, default is 0).",
 )
-@click.command()
-@click.argument("expected")
-@click.argument("actual")
-@click.option(
-    "--output",
-    prompt="Output directory",
-    help="Directory to store the output report and images.",
-)
-@click.option(
-    "--sensitivity",
-    default=0,
-    help="Sensitivity level for detecting changes (0-100, default is 0).",
-)
 def compare(expected, actual, output, sensitivity):
     expected_dir = Path(expected)
     actual_dir = Path(actual)
@@ -254,6 +241,7 @@ def compare(expected, actual, output, sensitivity):
 @click.group()
 def assertis():
     pass
+
 
 assertis.add_command(compare)
 
