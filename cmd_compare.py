@@ -4,7 +4,9 @@ from comparison import run_comparison
 from pathlib import Path
 
 
-@click.command(help="Compare images in the expected and actual directories and generate a report.")
+@click.command(
+    help="Compare images in the expected and actual directories and generate a report."
+)
 @click.argument("expected")
 @click.argument("actual")
 @click.option(

@@ -11,7 +11,7 @@
         }
     </style>
 </head>
-<body class="has-background-light">
+<body>
     <section class="section">
         <div class="container">
             <h1 class="title">{{ title }}</h1>
@@ -28,58 +28,36 @@
                     {% for file in files %}
                     <div class="cell">
                         <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">{{ file.name }}</p>
+                            </header>
                             <div class="card-image">
-                                <figure class="image is-4by3">
+                                <figure class="image">
                                     {% if file.output_actual_path %}
-                                    <img src="{{ file.output_actual_path }}" alt="Actual {{ file.name }}" class="checkerboard">
-                                    {% else %}
-                                    <img src="https://bulma.io/assets/images/placeholders/1280x960.png" alt="Placeholder image">
+                                    <a target="_blank" href="{{ file.output_actual_path }}"><img src="{{ file.output_actual_path }}" class="checkerboard"></a>
+                                    {% endif %}
+                                </figure>
+                                <figure class="image">
+                                    {% if file.output_expected_path %}
+                                    <a target="_blank" href="{{ file.output_expected_path }}"><img src="{{ file.output_expected_path }}" class="checkerboard"></a>
+                                    {% endif %}
+                                </figure>
+                                <figure class="image">
+                                    {% if file.diff_path %}
+                                    <a target="_blank" href="{{ file.diff_path }}"><img src="{{ file.diff_path }}"></a>
                                     {% endif %}
                                 </figure>
                             </div>
                             <div class="card-content">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <figure class="image is-48x48">
-                                            {% if file.output_expected_path %}
-                                            <img src="{{ file.output_expected_path }}" alt="Expected {{ file.name }}" class="checkerboard">
-                                            {% else %}
-                                            <img src="https://bulma.io/assets/images/placeholders/96x96.png" alt="Placeholder image">
-                                            {% endif %}
-                                        </figure>
-                                    </div>
-                                    <div class="media-content">
-                                        <p class="title is-4">{{ file.name }}</p>
-                                        <p class="subtitle is-6">{{ file.comparison_result }}</p>
-                                    </div>
-                                </div>
                                 <div class="content">
-                                    <strong>Reason:</strong> {{ file.reason }}<br>
-                                    <strong>Diff:</strong>
-                                    {% if file.diff_path %}
-                                    <img src="{{ file.diff_path }}" alt="Diff {{ file.name }}" class="checkerboard" width="64">
-                                    {% else %}
-                                    None
-                                    {% endif %}
+                                    <p class="subtitle">{{ file.comparison_result }}</p>
+                                    <p class="subtitle">{{ file.reason }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                <style>
-                    .grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                        gap: 10px;
-                    }
-                    .cell {
-                        background: white;
-                        padding: 10px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                    }
-                </style>
             </div>
         </div>
     </section>
