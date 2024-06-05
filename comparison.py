@@ -7,7 +7,6 @@ from models import FileReport, ReportData
 import shutil
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
-from collections import defaultdict
 from io import BytesIO
 
 exts = Image.registered_extensions()
