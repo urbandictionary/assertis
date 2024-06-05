@@ -14,8 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "assertis=assertis:assertis",
-            "fix=cmd_fix:fix",
+            "assertis=assertis:assertis"
         ],
     },
     package_data={
