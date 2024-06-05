@@ -14,8 +14,8 @@ from io import BytesIO
 from PIL import Image, ImageChops
 
 def compare_images(img1_path, img2_path, sensitivity):
-    img1 = Image.open(img1_path).convert("RGBA")
-    img2 = Image.open(img2_path).convert("RGBA")
+    img1 = Image.open(img1_path)
+    img2 = Image.open(img2_path)
     reasons = []
 
     if img1.format != img2.format:
