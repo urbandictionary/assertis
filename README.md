@@ -1,6 +1,6 @@
 # assertis
 
-pip install git+https://github.com/urbandictionary/assertis
+pip install --force-reinstall -U git+https://github.com/urbandictionary/assertis
 
 # Test cases
 
