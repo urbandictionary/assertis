@@ -11,7 +11,6 @@ from jinja2 import Environment, FileSystemLoader
 from collections import defaultdict
 from io import BytesIO
 
-# Determine supported image extensions
 exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
