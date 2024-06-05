@@ -4,6 +4,7 @@ import os
 from comparison import run_comparison
 from pathlib import Path
 
+
 @click.command()
 @click.argument("expected")
 @click.argument("actual")
