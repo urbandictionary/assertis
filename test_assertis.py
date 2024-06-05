@@ -12,7 +12,7 @@ def generate_report(cases_dir):
     actual_dir = cases_path / "actual"
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        output_dir = Path(temp_dir) / "output"
+        output_dir = Path(temp_dir)
 
         runner = CliRunner()
         result = runner.invoke(
