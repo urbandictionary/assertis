@@ -3,5 +3,4 @@ click
 jinja2
 black
 requests
-pyinstaller
 pytest
