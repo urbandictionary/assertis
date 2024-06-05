@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from typing import List, Optional, Dict
-from collections import defaultdict
+from typing import Literal
 
 
 class FileReport(BaseModel):
@@ -8,7 +8,7 @@ class FileReport(BaseModel):
     expected_path: Optional[str]
     actual_path: Optional[str]
     diff: Optional[str]
-    comparison_result: str
+    comparison_result: Literal["added", "deleted", "changed", "unchanged"]
     reason: str
     expected_abs_path: Optional[str] = None
     actual_abs_path: Optional[str] = None
