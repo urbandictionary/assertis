@@ -82,6 +82,7 @@ def apply_changes(report, expected, dry_run):
 @click.command()
 @click.argument("output")
 @click.argument("expected")
+@click.option('--dry-run', is_flag=True, help="Run the command in dry run mode.")
 def fix(output, expected, dry_run):
     output_dir = Path(output)
     report_file = output_dir / "report.json"
