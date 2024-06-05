@@ -56,8 +56,8 @@
                             <td>{{ file.comparison_result }}</td>
                             <td>{{ file.reason }}</td>
                             <td>
-                                {% if file.diff %}
-                                <img src="{{ file.diff }}" alt="Diff {{ file.name }}" class="checkerboard" width="64">
+                                {% if file.diff_path %}
+                                <img src="{{ file.diff_path }}" alt="Diff {{ file.name }}" class="checkerboard" width="64">
                                 {% else %}
                                 None
                                 {% endif %}

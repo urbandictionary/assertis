@@ -8,7 +8,7 @@ class FileReport(BaseModel):
     name: str
     output_expected_path: Optional[str]
     output_actual_path: Optional[str]
-    diff: Optional[str]
+    diff_path: Optional[str]
     comparison_result: Literal["added", "deleted", "changed", "unchanged"]
     reason: str
     orginal_expected_path: Optional[str] = None

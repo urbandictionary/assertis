@@ -101,7 +101,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     name=str(img_path),
                     output_expected_path=str(expected_dir / img_path),
                     output_actual_path=None,
-                    diff=None,
+                    diff_path=None,
                     comparison_result="deleted",
                     reason="Image deleted",
                 )
@@ -114,7 +114,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     name=str(img_path),
                     output_expected_path=None,
                     output_actual_path=str(actual_dir / img_path),
-                    diff=None,
+                    diff_path=None,
                     comparison_result="added",
                     reason="Image added",
                 )
@@ -129,7 +129,7 @@ def run_comparison(expected, actual, output, sensitivity):
                         name=str(img_path),
                         output_expected_path=str(expected_img_path),
                         output_actual_path=str(actual_img_path),
-                        diff=None,
+                        diff_path=None,
                         comparison_result="unchanged",
                         reason="Image unchanged",
                     )
@@ -144,7 +144,7 @@ def run_comparison(expected, actual, output, sensitivity):
                             name=str(img_path),
                             output_expected_path=str(expected_img_path),
                             output_actual_path=str(actual_img_path),
-                            diff=None,
+                            diff_path=None,
                             comparison_result="unchanged",
                             reason="Image unchanged",
                         )
@@ -160,7 +160,7 @@ def run_comparison(expected, actual, output, sensitivity):
                             name=str(img_path),
                             output_expected_path=str(expected_img_path),
                             output_actual_path=str(actual_img_path),
-                            diff=(
+                            diff_path=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path
                                 else None
