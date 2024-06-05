@@ -120,15 +120,15 @@ def run_comparison(expected, actual, output, sensitivity):
                 )
             )
         else:
-            expected_img_path = expected_dir / img_path
-            actual_img_path = actual_dir / img_path
+            output_expected_path = expected_dir / img_path
+            output_actual_path = actual_dir / img_path
 
-            if filecmp.cmp(expected_img_path, actual_img_path, shallow=False):
+            if filecmp.cmp(output_expected_path, output_actual_path, shallow=False):
                 report_data.files.append(
                     FileReport(
                         name=str(img_path),
-                        output_expected_path=str(expected_img_path),
-                        output_actual_path=str(actual_img_path),
+                        output_expected_path=str(output_expected_path),
+                        output_actual_path=str(output_actual_path),
                         diff_path=None,
                         comparison_result="unchanged",
                         reason="Image unchanged",
@@ -136,14 +136,14 @@ def run_comparison(expected, actual, output, sensitivity):
                 )
             else:
                 identical, diff_image, reasons = compare_images(
-                    expected_img_path, actual_img_path, sensitivity
+                    output_expected_path, output_actual_path, sensitivity
                 )
                 if identical:
                     report_data.files.append(
                         FileReport(
                             name=str(img_path),
-                            output_expected_path=str(expected_img_path),
-                            output_actual_path=str(actual_img_path),
+                            output_expected_path=str(output_expected_path),
+                            output_actual_path=str(output_actual_path),
                             diff_path=None,
                             comparison_result="unchanged",
                             reason="Image unchanged",
@@ -158,8 +158,8 @@ def run_comparison(expected, actual, output, sensitivity):
                     report_data.files.append(
                         FileReport(
                             name=str(img_path),
-                            output_expected_path=str(expected_img_path),
-                            output_actual_path=str(actual_img_path),
+                            output_expected_path=str(output_expected_path),
+                            output_actual_path=str(output_actual_path),
                             diff_path=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path
