@@ -5,7 +5,11 @@ exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
 
+import os
+
 def glob(directory):
+    if not os.path.exists(directory):
+        raise FileNotFoundError(f"The directory {directory} does not exist.")
     return {
         f.relative_to(directory)
         for f in Path(directory).rglob("*")
