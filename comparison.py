@@ -53,33 +53,20 @@ def generate_html_report(report_dir, report_data):
 
 
 def finish(report_data, diff_images, output_dir):
-    # Copy files to output directory based on MD5 hash
     for file_data in report_data.files:
-        if file_data.output_expected_path:
-            abs_output_expected_path = Path(file_data.output_expected_path)
-            md5_hash_value = md5_hash(abs_output_expected_path)
-            suffix = abs_output_expected_path.suffix
-            img_output_path = output_dir / f"{md5_hash_value}{suffix}"
-            shutil.copy(abs_output_expected_path, img_output_path)
-            file_data.output_expected_path = str(
-                img_output_path.relative_to(output_dir)
-            )
-            file_data.orginal_expected_path = str(abs_output_expected_path)
+        if file_data.original_expected_path:
+            path = Path(file_data.original_expected_path)
+            file_data.output_expected_path = f"{md5_hash(path)}{path.suffix}"
+            shutil.copy(path, output_dir / file_data.output_expected_path)
 
-        if file_data.output_actual_path:
-            abs_output_actual_path = Path(file_data.output_actual_path)
-            md5_hash_value = md5_hash(abs_output_actual_path)
-            suffix = abs_output_actual_path.suffix
-            img_output_path = output_dir / f"{md5_hash_value}{suffix}"
-            shutil.copy(abs_output_actual_path, img_output_path)
-            file_data.output_actual_path = str(img_output_path.relative_to(output_dir))
-            file_data.orginal_actual_path = str(abs_output_actual_path)
+        if file_data.original_actual_path:
+            path = Path(file_data.original_actual_path)
+            file_data.output_actual_path = f"{md5_hash(path)}{path.suffix}"
+            shutil.copy(path, output_dir / file_data.output_actual_path)
 
-    # Write diff images to output directory
     for diff_path, diff_image in diff_images.items():
         diff_image.save(diff_path, format="PNG")
 
-    # Update summary
     for file in report_data.files:
         report_data.summary[file.comparison_result] += 1
 
@@ -115,7 +102,9 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 FileReport(
                     name=str(img_path),
-                    output_expected_path=str(expected_dir / img_path),
+                    original_expected_path=str(expected_dir / img_path),
+                    original_actual_path=None,
+                    output_expected_path=None,
                     output_actual_path=None,
                     diff_path=None,
                     comparison_result="deleted",
@@ -128,23 +117,27 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 FileReport(
                     name=str(img_path),
+                    original_expected_path=None,
+                    original_actual_path=str(actual_dir / img_path),
                     output_expected_path=None,
-                    output_actual_path=str(actual_dir / img_path),
+                    output_actual_path=None,
                     diff_path=None,
                     comparison_result="added",
                     reason="Image added",
                 )
             )
         else:
-            output_expected_path = expected_dir / img_path
-            output_actual_path = actual_dir / img_path
+            original_expected_path = expected_dir / img_path
+            original_actual_path = actual_dir / img_path
 
-            if filecmp.cmp(output_expected_path, output_actual_path, shallow=False):
+            if filecmp.cmp(original_expected_path, original_actual_path, shallow=False):
                 report_data.files.append(
                     FileReport(
                         name=str(img_path),
-                        output_expected_path=str(output_expected_path),
-                        output_actual_path=str(output_actual_path),
+                        original_expected_path=str(original_expected_path),
+                        original_actual_path=str(original_actual_path),
+                        output_expected_path=None,
+                        output_actual_path=None,
                         diff_path=None,
                         comparison_result="unchanged",
                         reason="Image unchanged",
@@ -152,14 +145,16 @@ def run_comparison(expected, actual, output, sensitivity):
                 )
             else:
                 identical, diff_image, reasons = compare_images(
-                    output_expected_path, output_actual_path, sensitivity
+                    original_expected_path, original_actual_path, sensitivity
                 )
                 if identical:
                     report_data.files.append(
                         FileReport(
                             name=str(img_path),
-                            output_expected_path=str(output_expected_path),
-                            output_actual_path=str(output_actual_path),
+                            original_expected_path=str(original_expected_path),
+                            original_actual_path=str(original_actual_path),
+                            output_expected_path=None,
+                            output_actual_path=None,
                             diff_path=None,
                             comparison_result="unchanged",
                             reason="Image unchanged",
@@ -174,8 +169,10 @@ def run_comparison(expected, actual, output, sensitivity):
                     report_data.files.append(
                         FileReport(
                             name=str(img_path),
-                            output_expected_path=str(output_expected_path),
-                            output_actual_path=str(output_actual_path),
+                            original_expected_path=str(original_expected_path),
+                            original_actual_path=str(original_actual_path),
+                            output_expected_path=None,
+                            output_actual_path=None,
                             diff_path=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path

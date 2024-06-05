@@ -11,8 +11,8 @@ class FileReport(BaseModel):
     diff_path: Optional[str]
     comparison_result: Literal["added", "deleted", "changed", "unchanged"]
     reason: str
-    orginal_expected_path: Optional[str] = None
-    orginal_actual_path: Optional[str] = None
+    original_expected_path: Optional[str] = None
+    original_actual_path: Optional[str] = None
 
 
 class ReportData(BaseModel):
