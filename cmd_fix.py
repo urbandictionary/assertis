@@ -6,8 +6,8 @@ from models import ReportData
 
 @click.command()
 @click.argument("output")
-@click.argument("actual")
-def fix(output, actual):
+@click.argument("expected")
+def fix(output, expected):
     output_dir = Path(output)
     report_file = output_dir / "report.json"
 
