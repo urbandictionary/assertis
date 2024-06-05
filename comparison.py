@@ -18,6 +18,8 @@ def compare_images(img1_path, img2_path, sensitivity):
     img2 = Image.open(img2_path).convert("RGBA")
     reasons = []
 
+    if img1.format != img2.format:
+        reasons.append(f"Format changed from {img1.format} to {img2.format}")
     if img1.mode != img2.mode:
         reasons.append(f"Mode changed from {img1.mode} to {img2.mode}")
     if img1.size != img2.size:
