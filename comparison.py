@@ -62,8 +62,6 @@ def generate_html_report(report_dir, report_data):
         report_file.write(html_content)
 
 
-
-
 def run_comparison(expected, actual, output, sensitivity):
     expected_dir = Path(expected)
     actual_dir = Path(actual)
