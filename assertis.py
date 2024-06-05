@@ -219,10 +219,7 @@ def run_comparison(expected, actual, output, sensitivity):
     with open(output_dir / "report.json", "w") as json_file:
         json.dump(report_data, json_file, indent=4)
 
-    if report_data["has_changes"]:
-        sys.exit(1)
-    else:
-        sys.exit(0)
+    return report_data["has_changes"]
 
 
 @click.command()
@@ -239,7 +236,11 @@ def run_comparison(expected, actual, output, sensitivity):
     help="Sensitivity level for detecting changes (0-100, default is 0).",
 )
 def compare(expected, actual, output, sensitivity):
-    run_comparison(expected, actual, output, sensitivity)
+    has_changes = run_comparison(expected, actual, output, sensitivity)
+    if has_changes:
+        sys.exit(1)
+    else:
+        sys.exit(0)
 
 
 @click.command()
