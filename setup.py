@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="assertis",
     version="0.1.0",
-    packages=find_packages(exclude=["test_assertis.py"]),
+    packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     install_requires=[
         "click",
@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "assertis=assertis:assertis"
+            "assertis=assertis.cli:assertis"
         ],
     },
     package_data={
