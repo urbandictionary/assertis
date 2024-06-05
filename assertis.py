@@ -114,7 +114,7 @@ def assertis(expected, actual, output, sensitivity):
     diff_images = {}
 
     for img_path in expected_images:
-        if (expected_dir / img_path) not in actual_images:
+        if img_path not in actual_images:
             report_data["files"].append(
                 {
                     "name": str(img_path),
@@ -127,7 +127,7 @@ def assertis(expected, actual, output, sensitivity):
             )
 
     for img_path in actual_images:
-        if (actual_dir / img_path) not in expected_images:
+        if img_path not in expected_images:
             report_data["files"].append(
                 {
                     "name": str(img_path),

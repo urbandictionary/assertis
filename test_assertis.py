@@ -56,28 +56,28 @@ def test_changed():
     exit_code, report_data = generate_report(Path("cases/files_changed"))
     assert exit_code == 1
     assert report_data["has_changes"] is True
-    assert report_data["summary"] == {"added": 1, "deleted": 1}
+    assert report_data["summary"] == {"changed": 1}
 
 
 def test_changed_lot():
     exit_code, report_data = generate_report(Path("cases/files_changed_lot"))
     assert exit_code == 1
     assert report_data["has_changes"] is True
-    assert report_data["summary"] == {"added": 1, "deleted": 1}
+    assert report_data["summary"] == {"changed": 1}
 
 
 def test_changed_mode():
     exit_code, report_data = generate_report(Path("cases/files_changed_mode"))
     assert exit_code == 1
     assert report_data["has_changes"] is True
-    assert report_data["summary"] == {"added": 1, "deleted": 1}
+    assert report_data["summary"] == {"changed": 1}
 
 
 def test_changed_size():
     exit_code, report_data = generate_report(Path("cases/files_changed_size"))
     assert exit_code == 1
     assert report_data["has_changes"] is True
-    assert report_data["summary"] == {"added": 1, "deleted": 1}
+    assert report_data["summary"] == {"changed": 1}
 
 
 def test_removed():
@@ -89,6 +89,6 @@ def test_removed():
 
 def test_unchanged():
     exit_code, report_data = generate_report(Path("cases/files_unchanged"))
-    assert exit_code == 1
-    assert report_data["has_changes"] is True
-    assert report_data["summary"] == {"added": 1, "deleted": 1}
+    assert exit_code == 0
+    assert report_data["has_changes"] is False
+    assert report_data["summary"] == {"unchanged": 1}
