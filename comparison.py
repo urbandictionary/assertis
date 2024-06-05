@@ -52,6 +52,52 @@ def generate_html_report(report_dir, report_data):
         report_file.write(html_content)
 
 
+def finish(report_data, diff_images, output_dir):
+    # Copy files to output directory based on MD5 hash
+    for file_data in report_data.files:
+        if file_data.output_expected_path:
+            abs_output_expected_path = Path(file_data.output_expected_path)
+            md5_hash_value = md5_hash(abs_output_expected_path)
+            suffix = abs_output_expected_path.suffix
+            img_output_path = output_dir / f"{md5_hash_value}{suffix}"
+            shutil.copy(abs_output_expected_path, img_output_path)
+            file_data.output_expected_path = str(
+                img_output_path.relative_to(output_dir)
+            )
+            file_data.orginal_expected_path = str(abs_output_expected_path)
+
+        if file_data.output_actual_path:
+            abs_output_actual_path = Path(file_data.output_actual_path)
+            md5_hash_value = md5_hash(abs_output_actual_path)
+            suffix = abs_output_actual_path.suffix
+            img_output_path = output_dir / f"{md5_hash_value}{suffix}"
+            shutil.copy(abs_output_actual_path, img_output_path)
+            file_data.output_actual_path = str(img_output_path.relative_to(output_dir))
+            file_data.orginal_actual_path = str(abs_output_actual_path)
+
+    # Write diff images to output directory
+    for diff_path, diff_image in diff_images.items():
+        diff_image.save(diff_path, format="PNG")
+
+    # Update summary
+    for file in report_data.files:
+        report_data.summary[file.comparison_result] += 1
+
+    report_data.summary = dict(report_data.summary)
+
+    report_data.has_changes = any(
+        file_data.comparison_result in ["changed", "added", "deleted"]
+        for file_data in report_data.files
+    )
+
+    generate_html_report(output_dir, report_data)
+
+    with open(output_dir / "report.json", "w") as json_file:
+        json.dump(report_data.model_dump(), json_file, indent=4)
+
+    return report_data.has_changes
+
+
 def run_comparison(expected, actual, output, sensitivity):
     expected_dir = Path(expected)
     actual_dir = Path(actual)
@@ -144,46 +190,4 @@ def run_comparison(expected, actual, output, sensitivity):
                         )
                     )
 
-    # Copy files to output directory based on MD5 hash
-    for file_data in report_data.files:
-        if file_data.output_expected_path:
-            abs_output_expected_path = Path(file_data.output_expected_path)
-            md5_hash_value = md5_hash(abs_output_expected_path)
-            suffix = abs_output_expected_path.suffix
-            img_output_path = output_dir / f"{md5_hash_value}{suffix}"
-            shutil.copy(abs_output_expected_path, img_output_path)
-            file_data.output_expected_path = str(
-                img_output_path.relative_to(output_dir)
-            )
-            file_data.orginal_expected_path = str(abs_output_expected_path)
-
-        if file_data.output_actual_path:
-            abs_output_actual_path = Path(file_data.output_actual_path)
-            md5_hash_value = md5_hash(abs_output_actual_path)
-            suffix = abs_output_actual_path.suffix
-            img_output_path = output_dir / f"{md5_hash_value}{suffix}"
-            shutil.copy(abs_output_actual_path, img_output_path)
-            file_data.output_actual_path = str(img_output_path.relative_to(output_dir))
-            file_data.orginal_actual_path = str(abs_output_actual_path)
-
-    # Write diff images to output directory
-    for diff_path, diff_image in diff_images.items():
-        diff_image.save(diff_path, format="PNG")
-
-    # Update summary
-    for file in report_data.files:
-        report_data.summary[file.comparison_result] += 1
-
-    report_data.summary = dict(report_data.summary)
-
-    report_data.has_changes = any(
-        file_data.comparison_result in ["changed", "added", "deleted"]
-        for file_data in report_data.files
-    )
-
-    generate_html_report(output_dir, report_data)
-
-    with open(output_dir / "report.json", "w") as json_file:
-        json.dump(report_data.model_dump(), json_file, indent=4)
-
-    return report_data.has_changes
+    return finish(report_data, diff_images, output_dir)
