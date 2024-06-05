@@ -1,7 +1,7 @@
 import sys
 import click
 import os
-from comparison import run_comparison
+from assertis.comparison import run_comparison
 from pathlib import Path
 
 

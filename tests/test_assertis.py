@@ -3,8 +3,8 @@ import tempfile
 import json
 from pathlib import Path
 from click.testing import CliRunner
-from assertis import assertis  # Replace with the actual name of your script module
-from models import ReportData
+from assertis.cli import assertis  # Replace with the actual name of your script module
+from assertis.models import ReportData
 
 
 def generate_report(cases_dir):

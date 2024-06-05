@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import sys
 import shutil
-from models import ReportData
+from assertis.models import ReportData
 
 
 def verify_report(report, expected):

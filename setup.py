@@ -13,13 +13,9 @@ setup(
         "watchdog",
     ],
     entry_points={
-        "console_scripts": [
-            "assertis=assertis.cli:assertis"
-        ],
+        "console_scripts": ["assertis=assertis.cli:assertis"],
     },
-    package_data={
-        "": ["report_template.html"],
-    },
+    include_package_data=True,
     author="Your Name",
     author_email="your.email@example.com",
     description="A tool for comparing and serving image comparison reports.",

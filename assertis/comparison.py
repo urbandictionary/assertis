@@ -1,17 +1,18 @@
 import os
 import filecmp
 import json
-from md5_utils import md5_hash, md5_hash_image
-from file_utils import glob
+from assertis.md5_utils import md5_hash, md5_hash_image
+from assertis.file_utils import glob
 from PIL import Image, ImageChops, ImageDraw
-from models import FileReport, ReportData
+from assertis.models import FileReport, ReportData
 import shutil
 from pathlib import Path
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, PackageLoader
 from io import BytesIO
 
 
 from PIL import Image, ImageChops
+
 
 def compare_images(img1_path, img2_path, sensitivity):
     img1 = Image.open(img1_path)
@@ -54,7 +55,7 @@ def compare_images(img1_path, img2_path, sensitivity):
 
 
 def generate_html_report(report_dir, report_data):
-    env = Environment(loader=FileSystemLoader(os.path.dirname(__file__)))
+    env = Environment(loader=PackageLoader("assertis", "templates"))
     template = env.get_template("report_template.html")
 
     html_content = template.render(report_data)
