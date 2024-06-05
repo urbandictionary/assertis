@@ -21,6 +21,15 @@ def fix(output, expected):
     try:
         report = ReportData(**report_data)
         print("Report data is valid.")
+        for file in report.files:
+            if file.expected_path and not Path(file.expected_abs_path).exists():
+                print(f"Expected file {file.expected_abs_path} does not exist.")
+            if file.actual_path and not Path(file.actual_abs_path).exists():
+                print(f"Actual file {file.actual_abs_path} does not exist.")
+            if file.comparison_result == "deleted" and Path(file.expected_abs_path).exists():
+                print(f"Expected file {file.expected_abs_path} should be deleted but exists.")
+            if file.comparison_result == "added" and not Path(file.actual_abs_path).exists():
+                print(f"Actual file {file.actual_abs_path} should be added but does not exist.")
     except Exception as e:
         print(f"Report data is invalid: {e}")
 
