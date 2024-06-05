@@ -56,7 +56,7 @@ def compare_images(img1_path, img2_path, sensitivity):
 
 
 def generate_html_report(report_dir, report_data):
-    env = Environment(loader=FileSystemLoader(report_dir.parent))
+    env = Environment(loader=FileSystemLoader(os.path.dirname(__file__)))
     template = env.get_template("report_template.html")
 
     html_content = template.render(report_data)
