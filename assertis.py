@@ -284,7 +284,7 @@ def serve(expected, actual, sensitivity):
         observer.start()
 
         os.chdir(output_dir)
-        PORT = 8000
+        PORT = 8001
         Handler = http.server.SimpleHTTPRequestHandler
         httpd = socketserver.TCPServer(("", PORT), Handler)
 
