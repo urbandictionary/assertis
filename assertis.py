@@ -256,4 +256,6 @@ def assertis():
     pass
 
 assertis.add_command(compare)
+
+if __name__ == "__main__":
     assertis()
