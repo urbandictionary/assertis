@@ -49,6 +49,7 @@ def apply_changes(report, expected):
                 shutil.copy(file.actual_abs_path, target_path)
                 print(f"Changed file {target_path}")
 
+
 @click.command()
 @click.argument("output")
 @click.argument("expected")
@@ -72,7 +73,3 @@ def fix(output, expected):
         sys.exit(1)
 
     apply_changes(report, expected)
-
-
-if __name__ == "__main__":
-    fix()
