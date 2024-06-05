@@ -102,10 +102,6 @@ def run_comparison(expected, actual, output, sensitivity):
     expected_dir = Path(expected)
     actual_dir = Path(actual)
     output_dir = Path(output)
-    template_path = Path(__file__).parent / "report_template.html"
-
-    if not output_dir.exists():
-        output_dir.mkdir(parents=True)
 
     report_data = ReportData()
 

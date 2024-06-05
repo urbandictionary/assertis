@@ -19,11 +19,14 @@ from pathlib import Path
 )
 def compare(expected, actual, output, sensitivity):
     output_dir = Path(output)
-    if output_dir.exists() and any(output_dir.iterdir()):
-        print(
-            "Output directory already exists and is not empty. Please remove it first."
-        )
-        sys.exit(1)
+    if output_dir.exists():
+        if any(output_dir.iterdir()):
+            print(
+                "Output directory already exists and is not empty. Please remove it first."
+            )
+            sys.exit(1)
+    else:
+        output_dir.mkdir(parents=True)
 
     has_changes = run_comparison(expected, actual, output_dir, sensitivity)
     if has_changes:
