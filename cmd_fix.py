@@ -27,6 +27,11 @@ def verify_report(report, expected):
             errors.append(
                 f"Actual file {file.actual_abs_path} should be added but does not exist."
             )
+        # Check if files at expected_path and actual_path relative to output directory exist
+        if file.expected_path and not Path(expected) / file.expected_path.exists():
+            errors.append(f"Expected file {Path(expected) / file.expected_path} does not exist.")
+        if file.actual_path and not Path(expected) / file.actual_path.exists():
+            errors.append(f"Actual file {Path(expected) / file.actual_path} does not exist.")
     return errors
 
 
