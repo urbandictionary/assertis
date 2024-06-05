@@ -4,3 +4,4 @@ jinja2
 black
 requests
 pytest
+pydantic
