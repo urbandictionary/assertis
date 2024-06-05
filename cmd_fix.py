@@ -9,39 +9,49 @@ from models import ReportData
 def verify_report(report, expected):
     errors = []
     for file in report.files:
-        if file.expected_path and not Path(file.expected_abs_path).exists():
-            errors.append(f"Expected file {file.expected_abs_path} does not exist.")
-        if file.actual_path and not Path(file.actual_abs_path).exists():
-            errors.append(f"Actual file {file.actual_abs_path} does not exist.")
+        if file.output_expected_path and not Path(file.orginal_expected_path).exists():
+            errors.append(f"Expected file {file.orginal_expected_path} does not exist.")
+        if file.output_actual_path and not Path(file.orginal_actual_path).exists():
+            errors.append(f"Actual file {file.orginal_actual_path} does not exist.")
         if (
             file.comparison_result == "deleted"
-            and Path(file.expected_abs_path).exists()
+            and Path(file.orginal_expected_path).exists()
         ):
             errors.append(
-                f"Expected file {file.expected_abs_path} should be deleted but exists."
+                f"Expected file {file.orginal_expected_path} should be deleted but exists."
             )
         if (
             file.comparison_result == "added"
-            and not Path(file.actual_abs_path).exists()
+            and not Path(file.orginal_actual_path).exists()
         ):
             errors.append(
-                f"Actual file {file.actual_abs_path} should be added but does not exist."
+                f"Actual file {file.orginal_actual_path} should be added but does not exist."
             )
-        # Check if files at expected_path and actual_path relative to output directory exist
-        if file.expected_path and not Path(expected) / file.expected_path.exists():
-            errors.append(f"Expected file {Path(expected) / file.expected_path} does not exist.")
-        if file.actual_path and not Path(expected) / file.actual_path.exists():
-            errors.append(f"Actual file {Path(expected) / file.actual_path} does not exist.")
+        # Check if files at output_expected_path and output_actual_path relative to output directory exist
+        if (
+            file.output_expected_path
+            and not Path(expected) / file.output_expected_path.exists()
+        ):
+            errors.append(
+                f"Expected file {Path(expected) / file.output_expected_path} does not exist."
+            )
+        if (
+            file.output_actual_path
+            and not Path(expected) / file.output_actual_path.exists()
+        ):
+            errors.append(
+                f"Actual file {Path(expected) / file.output_actual_path} does not exist."
+            )
     return errors
 
 
 def apply_changes(report, expected):
     for file in report.files:
         if file.comparison_result == "added":
-            if file.actual_abs_path:
+            if file.orginal_actual_path:
                 target_path = Path(expected) / file.name
                 target_path.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy(file.actual_abs_path, target_path)
+                shutil.copy(file.orginal_actual_path, target_path)
                 print(f"Added file {target_path}")
         elif file.comparison_result == "deleted":
             target_path = Path(expected) / file.name
@@ -49,9 +59,9 @@ def apply_changes(report, expected):
                 target_path.unlink()
                 print(f"Deleted file {target_path}")
         elif file.comparison_result == "changed":
-            if file.actual_abs_path:
+            if file.orginal_actual_path:
                 target_path = Path(expected) / file.name
-                shutil.copy(file.actual_abs_path, target_path)
+                shutil.copy(file.orginal_actual_path, target_path)
                 print(f"Changed file {target_path}")
 
 

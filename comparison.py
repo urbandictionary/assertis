@@ -99,8 +99,8 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 FileReport(
                     name=str(img_path),
-                    expected_path=str(expected_dir / img_path),
-                    actual_path=None,
+                    output_expected_path=str(expected_dir / img_path),
+                    output_actual_path=None,
                     diff=None,
                     comparison_result="deleted",
                     reason="Image deleted",
@@ -112,8 +112,8 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 FileReport(
                     name=str(img_path),
-                    expected_path=None,
-                    actual_path=str(actual_dir / img_path),
+                    output_expected_path=None,
+                    output_actual_path=str(actual_dir / img_path),
                     diff=None,
                     comparison_result="added",
                     reason="Image added",
@@ -127,8 +127,8 @@ def run_comparison(expected, actual, output, sensitivity):
                 report_data.files.append(
                     FileReport(
                         name=str(img_path),
-                        expected_path=str(expected_img_path),
-                        actual_path=str(actual_img_path),
+                        output_expected_path=str(expected_img_path),
+                        output_actual_path=str(actual_img_path),
                         diff=None,
                         comparison_result="unchanged",
                         reason="Image unchanged",
@@ -142,8 +142,8 @@ def run_comparison(expected, actual, output, sensitivity):
                     report_data.files.append(
                         FileReport(
                             name=str(img_path),
-                            expected_path=str(expected_img_path),
-                            actual_path=str(actual_img_path),
+                            output_expected_path=str(expected_img_path),
+                            output_actual_path=str(actual_img_path),
                             diff=None,
                             comparison_result="unchanged",
                             reason="Image unchanged",
@@ -158,8 +158,8 @@ def run_comparison(expected, actual, output, sensitivity):
                     report_data.files.append(
                         FileReport(
                             name=str(img_path),
-                            expected_path=str(expected_img_path),
-                            actual_path=str(actual_img_path),
+                            output_expected_path=str(expected_img_path),
+                            output_actual_path=str(actual_img_path),
                             diff=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path
@@ -172,23 +172,25 @@ def run_comparison(expected, actual, output, sensitivity):
 
     # Copy files to output directory based on MD5 hash
     for file_data in report_data.files:
-        if file_data.expected_path:
-            abs_expected_path = Path(file_data.expected_path)
-            md5_hash_value = md5_hash(abs_expected_path)
-            suffix = abs_expected_path.suffix
+        if file_data.output_expected_path:
+            abs_output_expected_path = Path(file_data.output_expected_path)
+            md5_hash_value = md5_hash(abs_output_expected_path)
+            suffix = abs_output_expected_path.suffix
             img_output_path = output_dir / f"{md5_hash_value}{suffix}"
-            shutil.copy(abs_expected_path, img_output_path)
-            file_data.expected_path = str(img_output_path.relative_to(output_dir))
-            file_data.expected_abs_path = str(abs_expected_path)
+            shutil.copy(abs_output_expected_path, img_output_path)
+            file_data.output_expected_path = str(
+                img_output_path.relative_to(output_dir)
+            )
+            file_data.orginal_expected_path = str(abs_output_expected_path)
 
-        if file_data.actual_path:
-            abs_actual_path = Path(file_data.actual_path)
-            md5_hash_value = md5_hash(abs_actual_path)
-            suffix = abs_actual_path.suffix
+        if file_data.output_actual_path:
+            abs_output_actual_path = Path(file_data.output_actual_path)
+            md5_hash_value = md5_hash(abs_output_actual_path)
+            suffix = abs_output_actual_path.suffix
             img_output_path = output_dir / f"{md5_hash_value}{suffix}"
-            shutil.copy(abs_actual_path, img_output_path)
-            file_data.actual_path = str(img_output_path.relative_to(output_dir))
-            file_data.actual_abs_path = str(abs_actual_path)
+            shutil.copy(abs_output_actual_path, img_output_path)
+            file_data.output_actual_path = str(img_output_path.relative_to(output_dir))
+            file_data.orginal_actual_path = str(abs_output_actual_path)
 
     # Write diff images to output directory
     for diff_path, diff_image in diff_images.items():

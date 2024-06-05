@@ -6,13 +6,13 @@ from typing import Literal
 
 class FileReport(BaseModel):
     name: str
-    expected_path: Optional[str]
-    actual_path: Optional[str]
+    output_expected_path: Optional[str]
+    output_actual_path: Optional[str]
     diff: Optional[str]
     comparison_result: Literal["added", "deleted", "changed", "unchanged"]
     reason: str
-    expected_abs_path: Optional[str] = None
-    actual_abs_path: Optional[str] = None
+    orginal_expected_path: Optional[str] = None
+    orginal_actual_path: Optional[str] = None
 
 
 class ReportData(BaseModel):

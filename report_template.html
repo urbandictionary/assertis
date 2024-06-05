@@ -40,15 +40,15 @@
                         <tr>
                             <td>{{ file.name }}</td>
                             <td>
-                                {% if file.expected_path %}
-                                <img src="{{ file.expected_path }}" alt="Expected {{ file.name }}" class="checkerboard" width="64">
+                                {% if file.output_expected_path %}
+                                <img src="{{ file.output_expected_path }}" alt="Expected {{ file.name }}" class="checkerboard" width="64">
                                 {% else %}
                                 None
                                 {% endif %}
                             </td>
                             <td>
-                                {% if file.actual_path %}
-                                <img src="{{ file.actual_path }}" alt="Actual {{ file.name }}" class="checkerboard" width="64">
+                                {% if file.output_actual_path %}
+                                <img src="{{ file.output_actual_path }}" alt="Actual {{ file.name }}" class="checkerboard" width="64">
                                 {% else %}
                                 None
                                 {% endif %}
