@@ -20,14 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          . venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
         run: |
-          . venv/bin/activate
           pytest
 
       - name: Tag latest
