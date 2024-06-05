@@ -1,4 +1,4 @@
-name: Build and Release
+name: CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master  # Trigger on push to the master branch
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,34 +24,16 @@ jobs:
           . venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pyinstaller
 
-      - name: Build executable
+      - name: Run tests
         run: |
           . venv/bin/activate
-          pyinstaller --onefile assertis.py
+          pytest
 
-      - name: Get short commit SHA
-        id: vars
-        run: echo "COMMIT_SHORT=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.COMMIT_SHORT }}
-          release_name: Release ${{ env.COMMIT_SHORT }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/assertis
-          asset_name: assertis
-          asset_content_type: application/octet-stream
+      - name: Tag latest
+        if: success()
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag latest
+          git push origin latest
