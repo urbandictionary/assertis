@@ -11,9 +11,11 @@ from jinja2 import Environment, FileSystemLoader
 from io import BytesIO
 
 
+from PIL import Image, ImageChops
+
 def compare_images(img1_path, img2_path, sensitivity):
-    img1 = Image.open(img1_path)
-    img2 = Image.open(img2_path)
+    img1 = Image.open(img1_path).convert("RGBA")
+    img2 = Image.open(img2_path).convert("RGBA")
     reasons = []
 
     if img1.mode != img2.mode:
@@ -24,24 +26,29 @@ def compare_images(img1_path, img2_path, sensitivity):
     if img1.mode != img2.mode or img1.size != img2.size:
         return False, None, reasons
 
+    # Calculate the difference between the images
     diff = ImageChops.difference(img1, img2)
-    bbox = diff.getbbox()
-    if bbox is None:
-        return True, None, []
-    else:
-        diff_image = Image.new("RGBA", img1.size)
-        draw = ImageDraw.Draw(diff_image)
-        # Highlight the changed areas by drawing rectangles around the bounding boxes
-        if bbox:
-            draw.rectangle(bbox, outline="red")
 
-        # Calculate the extent of the change as a percentage of total pixels
-        total_pixels = img1.size[0] * img1.size[1]
-        changed_pixels = sum(diff.histogram())
-        change_extent = (changed_pixels / total_pixels) * 100
-        reasons.append(f"Pixels changed with extent {change_extent:.2f}%")
+    # Convert the difference image to grayscale
+    diff_mask = diff.convert("L")
 
-        return change_extent <= sensitivity, diff_image, reasons
+    # Create an RGBA image to highlight the differences
+    diff_highlight = Image.new("RGBA", img1.size, (0, 0, 0, 0))
+    threshold = 0  # You can adjust the threshold to control sensitivity
+
+    # Highlight the changed pixels in red
+    for x in range(diff.width):
+        for y in range(diff.height):
+            if diff_mask.getpixel((x, y)) > threshold:
+                diff_highlight.putpixel((x, y), (255, 0, 0, 255))  # Highlight in red
+
+    # Calculate the extent of the change as a percentage of total pixels
+    total_pixels = img1.size[0] * img1.size[1]
+    changed_pixels = sum(1 for pixel in diff_mask.getdata() if pixel > threshold)
+    change_extent = (changed_pixels / total_pixels) * 100
+    reasons.append(f"Pixels changed with extent {change_extent:.2f}%")
+
+    return change_extent <= sensitivity, diff_highlight, reasons
 
 
 def generate_html_report(report_dir, report_data):
