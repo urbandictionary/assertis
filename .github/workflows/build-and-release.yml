@@ -28,7 +28,7 @@ jobs:
           pytest
 
       - name: Tag latest
-        if: success()
+        if: success() && github.event_name != 'push'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
