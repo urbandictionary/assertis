@@ -14,7 +14,6 @@ exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
 
-
 def compare_images(img1_path, img2_path, sensitivity):
     img1 = Image.open(img1_path)
     img2 = Image.open(img2_path)

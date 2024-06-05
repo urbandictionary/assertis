@@ -4,6 +4,7 @@ from PIL import Image
 exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
+
 def glob(directory):
     return {
         f.relative_to(directory)
