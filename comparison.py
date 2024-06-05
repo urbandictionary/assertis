@@ -190,23 +190,23 @@ def run_comparison(expected, actual, output, sensitivity):
 
     # Copy files to output directory based on MD5 hash
     for file_data in report_data.files:
-        if file_data["expected_path"]:
-            abs_expected_path = Path(file_data["expected_path"])
+        if file_data.expected_path:
+            abs_expected_path = Path(file_data.expected_path)
             md5_hash_value = md5_hash(abs_expected_path)
             suffix = abs_expected_path.suffix
             img_output_path = output_dir / f"{md5_hash_value}{suffix}"
             shutil.copy(abs_expected_path, img_output_path)
-            file_data["expected_path"] = str(img_output_path.relative_to(output_dir))
-            file_data["expected_abs_path"] = str(abs_expected_path)
+            file_data.expected_path = str(img_output_path.relative_to(output_dir))
+            file_data.expected_abs_path = str(abs_expected_path)
 
-        if file_data["actual_path"]:
-            abs_actual_path = Path(file_data["actual_path"])
+        if file_data.actual_path:
+            abs_actual_path = Path(file_data.actual_path)
             md5_hash_value = md5_hash(abs_actual_path)
             suffix = abs_actual_path.suffix
             img_output_path = output_dir / f"{md5_hash_value}{suffix}"
             shutil.copy(abs_actual_path, img_output_path)
-            file_data["actual_path"] = str(img_output_path.relative_to(output_dir))
-            file_data["actual_abs_path"] = str(abs_actual_path)
+            file_data.actual_path = str(img_output_path.relative_to(output_dir))
+            file_data.actual_abs_path = str(abs_actual_path)
 
     # Write diff images to output directory
     for diff_path, diff_image in diff_images.items():
@@ -228,4 +228,4 @@ def run_comparison(expected, actual, output, sensitivity):
     with open(output_dir / "report.json", "w") as json_file:
         json.dump(report_data.dict(), json_file, indent=4)
 
-    return report_data["has_changes"]
+    return report_data.has_changes
