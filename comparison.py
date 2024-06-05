@@ -2,6 +2,7 @@ import os
 import filecmp
 import json
 from md5_utils import md5_hash, md5_hash_image
+from file_utils import glob
 from PIL import Image, ImageChops, ImageDraw
 from models import FileReport, ReportData
 import shutil
@@ -12,13 +13,6 @@ from io import BytesIO
 exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
-
-def get_all_files(directory):
-    return {
-        f.relative_to(directory)
-        for f in directory.rglob("*")
-        if f.is_file() and f.suffix.lower() in supported_extensions
-    }
 
 
 def compare_images(img1_path, img2_path, sensitivity):
@@ -73,8 +67,8 @@ def run_comparison(expected, actual, output, sensitivity):
 
     report_data = ReportData()
 
-    expected_images = get_all_files(expected_dir)
-    actual_images = get_all_files(actual_dir)
+    expected_images = glob(expected_dir)
+    actual_images = glob(actual_dir)
 
     diff_images = {}
 
