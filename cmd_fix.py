@@ -6,6 +6,11 @@ import shutil
 from models import ReportData
 
 
+def verify_expected_dir(report, expected):
+    errors = verify_expected_dir(report, expected)
+    return errors
+
+
 @click.command()
 @click.argument("output")
 @click.argument("expected")
