@@ -51,7 +51,9 @@
                             <div class="card-content">
                                 <div class="content">
                                     <p class="subtitle">{{ file.comparison_result }}</p>
-                                    <p class="subtitle">{{ file.reason }}</p>
+                                    {% for reason in file.reasons %}
+                                    <p class="subtitle">{{ reason }}</p>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
