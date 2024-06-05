@@ -277,14 +277,17 @@ def serve(expected, actual, output, sensitivity):
     if not output_dir.exists():
         output_dir.mkdir(parents=True)
 
+    # Run initial comparison
+    run_comparison(expected, actual, output, sensitivity)
+
     handler = ChangeHandler(expected, actual, output, sensitivity)
     observer = Observer()
     observer.schedule(handler, path=expected, recursive=True)
     observer.schedule(handler, path=actual, recursive=True)
     observer.start()
 
-    os.chdir(output)
-    PORT = 8001
+    os.chdir(output_dir)
+    PORT = 8000
     Handler = http.server.SimpleHTTPRequestHandler
     httpd = socketserver.TCPServer(("", PORT), Handler)
 
