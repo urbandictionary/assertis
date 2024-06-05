@@ -87,13 +87,7 @@ def run_comparison(expected, actual, output, sensitivity):
     output_dir = Path(output)
     template_path = Path(__file__).parent / "report_template.html"
 
-    if output_dir.exists():
-        if any(output_dir.iterdir()):
-            print(
-                "Output directory already exists and is not empty. Please remove it first."
-            )
-            sys.exit(1)
-    else:
+    if not output_dir.exists():
         output_dir.mkdir(parents=True)
 
     report_data = {"files": [], "has_changes": False, "summary": defaultdict(int)}
@@ -236,7 +230,14 @@ def run_comparison(expected, actual, output, sensitivity):
     help="Sensitivity level for detecting changes (0-100, default is 0).",
 )
 def compare(expected, actual, output, sensitivity):
-    has_changes = run_comparison(expected, actual, output, sensitivity)
+    output_dir = Path(output)
+    if output_dir.exists() and any(output_dir.iterdir()):
+        print(
+            "Output directory already exists and is not empty. Please remove it first."
+        )
+        sys.exit(1)
+
+    has_changes = run_comparison(expected, actual, output_dir, sensitivity)
     if has_changes:
         sys.exit(1)
     else:
