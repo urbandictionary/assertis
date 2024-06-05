@@ -226,6 +226,6 @@ def run_comparison(expected, actual, output, sensitivity):
     generate_html_report(output_dir, report_data)
 
     with open(output_dir / "report.json", "w") as json_file:
-        json.dump(report_data.dict(), json_file, indent=4)
+        json.dump(report_data.model_dump(), json_file, indent=4)
 
     return report_data.has_changes
