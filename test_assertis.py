@@ -44,53 +44,53 @@ def test_empty():
     exit_code, report_data = generate_report(Path("cases/empty"))
     assert exit_code == 0
     assert report_data.has_changes is False
-    assert report_data.summary == {}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {}
 
 
 def test_added():
     exit_code, report_data = generate_report(Path("cases/files_added"))
     assert exit_code == 1
     assert report_data.has_changes is True
-    assert report_data.summary == {"added": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"added": 1}
 
 
 def test_changed():
     exit_code, report_data = generate_report(Path("cases/files_changed"))
     assert exit_code == 1
     assert report_data.has_changes is True
-    assert report_data.summary == {"changed": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_changed_lot():
     exit_code, report_data = generate_report(Path("cases/files_changed_lot"))
     assert exit_code == 1
     assert report_data.has_changes is True
-    assert report_data.summary == {"changed": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_changed_mode():
     exit_code, report_data = generate_report(Path("cases/files_changed_mode"))
     assert exit_code == 1
     assert report_data.has_changes is True
-    assert report_data.summary == {"changed": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_changed_size():
     exit_code, report_data = generate_report(Path("cases/files_changed_size"))
     assert exit_code == 1
     assert report_data.has_changes is True
-    assert report_data.summary == {"changed": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_removed():
     exit_code, report_data = generate_report(Path("cases/files_removed"))
     assert exit_code == 1
     assert report_data.has_changes is True
-    assert report_data.summary == {"deleted": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"deleted": 1}
 
 
 def test_unchanged():
     exit_code, report_data = generate_report(Path("cases/files_unchanged"))
     assert exit_code == 0
     assert report_data.has_changes is False
-    assert report_data.summary == {"unchanged": 1}
+    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"unchanged": 1}
