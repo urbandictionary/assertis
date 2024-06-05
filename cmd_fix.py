@@ -6,7 +6,7 @@ import shutil
 from models import ReportData
 
 
-def verify_expected_dir(report, expected):
+def verify_report(report, expected):
     errors = []
     for file in report.files:
         if file.expected_path and not Path(file.expected_abs_path).exists():
@@ -66,7 +66,7 @@ def fix(output, expected):
 
     report = ReportData(**report_data)
 
-    errors = verify_expected_dir(report, expected)
+    errors = verify_report(report, expected)
     if errors:
         for error in errors:
             print(error)
