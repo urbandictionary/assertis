@@ -102,7 +102,9 @@ def assertis(expected, actual, output, sensitivity):
 
     if output_dir.exists():
         if any(output_dir.iterdir()):
-            print("Output directory already exists and is not empty. Please remove it first.")
+            print(
+                "Output directory already exists and is not empty. Please remove it first."
+            )
             sys.exit(1)
     else:
         output_dir.mkdir(parents=True)
