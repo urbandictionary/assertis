@@ -1,5 +1,7 @@
 # assertis
 
+pip install git+https://github.com/urbandictionary/assertis
+
 # Test cases
 
 | Test Case Directory            | Description                                                                                   |
