@@ -3,8 +3,7 @@ import filecmp
 import json
 import hashlib
 from PIL import Image, ImageChops, ImageDraw
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
+from models import FileReport, ReportData
 import shutil
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
@@ -15,20 +14,6 @@ exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
 
-class FileReport(BaseModel):
-    name: str
-    expected_path: Optional[str]
-    actual_path: Optional[str]
-    diff: Optional[str]
-    comparison_result: str
-    reason: str
-    expected_abs_path: Optional[str] = None
-    actual_abs_path: Optional[str] = None
-
-class ReportData(BaseModel):
-    files: List[FileReport] = Field(default_factory=list)
-    has_changes: bool = False
-    summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
 
 def get_all_files(directory):
     return {
