@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from models import ReportData
 
+
 @click.command()
 @click.argument("output")
 @click.argument("actual")
@@ -22,6 +23,7 @@ def fix(output, actual):
         print("Report data is valid.")
     except Exception as e:
         print(f"Report data is invalid: {e}")
+
 
 if __name__ == "__main__":
     fix()
