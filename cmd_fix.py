@@ -30,6 +30,25 @@ def verify_expected_dir(report, expected):
     return errors
 
 
+def apply_changes(report, expected):
+    for file in report.files:
+        if file.comparison_result == "added":
+            if file.actual_abs_path:
+                target_path = Path(expected) / file.name
+                target_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy(file.actual_abs_path, target_path)
+                print(f"Added file {target_path}")
+        elif file.comparison_result == "deleted":
+            target_path = Path(expected) / file.name
+            if target_path.exists():
+                target_path.unlink()
+                print(f"Deleted file {target_path}")
+        elif file.comparison_result == "changed":
+            if file.actual_abs_path:
+                target_path = Path(expected) / file.name
+                shutil.copy(file.actual_abs_path, target_path)
+                print(f"Changed file {target_path}")
+
 @click.command()
 @click.argument("output")
 @click.argument("expected")
@@ -52,24 +71,7 @@ def fix(output, expected):
             print(error)
         sys.exit(1)
 
-    # Apply changes based on report_data
-    for file in report.files:
-        if file.comparison_result == "added":
-            if file.actual_abs_path:
-                target_path = Path(expected) / file.name
-                target_path.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy(file.actual_abs_path, target_path)
-                print(f"Added file {target_path}")
-        elif file.comparison_result == "deleted":
-            target_path = Path(expected) / file.name
-            if target_path.exists():
-                target_path.unlink()
-                print(f"Deleted file {target_path}")
-        elif file.comparison_result == "changed":
-            if file.actual_abs_path:
-                target_path = Path(expected) / file.name
-                shutil.copy(file.actual_abs_path, target_path)
-                print(f"Changed file {target_path}")
+    apply_changes(report, expected)
 
 
 if __name__ == "__main__":
