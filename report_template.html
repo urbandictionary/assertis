@@ -27,27 +27,43 @@
                 <div class="grid">
                     {% for file in files %}
                     <div class="cell">
-                        <strong>Name:</strong> {{ file.name }}<br>
-                        <strong>Expected Image:</strong>
-                        {% if file.output_expected_path %}
-                        <img src="{{ file.output_expected_path }}" alt="Expected {{ file.name }}" class="checkerboard" width="64">
-                        {% else %}
-                        None
-                        {% endif %}<br>
-                        <strong>Actual Image:</strong>
-                        {% if file.output_actual_path %}
-                        <img src="{{ file.output_actual_path }}" alt="Actual {{ file.name }}" class="checkerboard" width="64">
-                        {% else %}
-                        None
-                        {% endif %}<br>
-                        <strong>Comparison Result:</strong> {{ file.comparison_result }}<br>
-                        <strong>Reason:</strong> {{ file.reason }}<br>
-                        <strong>Diff:</strong>
-                        {% if file.diff_path %}
-                        <img src="{{ file.diff_path }}" alt="Diff {{ file.name }}" class="checkerboard" width="64">
-                        {% else %}
-                        None
-                        {% endif %}
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    {% if file.output_actual_path %}
+                                    <img src="{{ file.output_actual_path }}" alt="Actual {{ file.name }}" class="checkerboard">
+                                    {% else %}
+                                    <img src="https://bulma.io/assets/images/placeholders/1280x960.png" alt="Placeholder image">
+                                    {% endif %}
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            {% if file.output_expected_path %}
+                                            <img src="{{ file.output_expected_path }}" alt="Expected {{ file.name }}" class="checkerboard">
+                                            {% else %}
+                                            <img src="https://bulma.io/assets/images/placeholders/96x96.png" alt="Placeholder image">
+                                            {% endif %}
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4">{{ file.name }}</p>
+                                        <p class="subtitle is-6">{{ file.comparison_result }}</p>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <strong>Reason:</strong> {{ file.reason }}<br>
+                                    <strong>Diff:</strong>
+                                    {% if file.diff_path %}
+                                    <img src="{{ file.diff_path }}" alt="Diff {{ file.name }}" class="checkerboard" width="64">
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
