@@ -14,7 +14,6 @@ exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
 
-
 def get_all_files(directory):
     return {
         f.relative_to(directory)

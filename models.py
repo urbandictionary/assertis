@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict
 from collections import defaultdict
 
+
 class FileReport(BaseModel):
     name: str
     expected_path: Optional[str]
@@ -11,6 +12,7 @@ class FileReport(BaseModel):
     reason: str
     expected_abs_path: Optional[str] = None
     actual_abs_path: Optional[str] = None
+
 
 class ReportData(BaseModel):
     files: List[FileReport] = Field(default_factory=list)
