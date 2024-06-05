@@ -69,10 +69,7 @@ def fix(output, expected):
             if file.actual_abs_path:
                 target_path = Path(expected) / file.name
                 shutil.copy(file.actual_abs_path, target_path)
-                print(f"Overwritten file {target_path}")
-        for error in errors:
-            print(error)
-        sys.exit(1)
+                print(f"Changed file {target_path}")
 
 
 if __name__ == "__main__":
