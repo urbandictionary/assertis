@@ -43,3 +43,10 @@ def test_assertis_files_unchanged():
     assert exit_code == 1
     assert report_data["has_changes"] is True
     assert report_data["summary"] == {"added": 1, "deleted": 1}
+
+
+def test_assertis_empty():
+    exit_code, report_data = generate_report(Path("cases/empty"))
+    assert exit_code == 0
+    assert report_data["has_changes"] is False
+    assert report_data["summary"] == {}
