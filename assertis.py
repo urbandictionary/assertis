@@ -82,14 +82,8 @@ def md5_hash_image(image):
 
 
 @click.command()
-@click.option(
-    "--expected",
-    prompt="Expected directory",
-    help="Directory containing expected images.",
-)
-@click.option(
-    "--actual", prompt="Actual directory", help="Directory containing actual images."
-)
+@click.argument("expected")
+@click.argument("actual")
 @click.option(
     "--output",
     prompt="Output directory",
@@ -120,7 +114,7 @@ def assertis(expected, actual, output, sensitivity):
     diff_images = {}
 
     for img_path in expected_images:
-        if img_path not in actual_images:
+        if (expected_dir / img_path) not in actual_images:
             report_data["files"].append(
                 {
                     "name": str(img_path),
@@ -133,7 +127,7 @@ def assertis(expected, actual, output, sensitivity):
             )
 
     for img_path in actual_images:
-        if img_path not in expected_images:
+        if (actual_dir / img_path) not in expected_images:
             report_data["files"].append(
                 {
                     "name": str(img_path),
