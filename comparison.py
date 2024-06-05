@@ -31,7 +31,11 @@ def compare_images(img1_path, img2_path, sensitivity):
     else:
         diff_image = Image.new("RGBA", img1.size)
         draw = ImageDraw.Draw(diff_image)
-        draw.rectangle(bbox, outline="red")
+        # Highlight the changed areas
+        for x in range(img1.width):
+            for y in range(img1.height):
+                if diff.getpixel((x, y)) != (0, 0, 0, 0):
+                    draw.rectangle([x, y, x+1, y+1], outline="red")
 
         # Calculate the extent of the change as a percentage of total pixels
         total_pixels = img1.size[0] * img1.size[1]
