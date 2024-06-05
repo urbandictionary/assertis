@@ -10,9 +10,6 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from io import BytesIO
 
-exts = Image.registered_extensions()
-supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
-
 
 def compare_images(img1_path, img2_path, sensitivity):
     img1 = Image.open(img1_path)
