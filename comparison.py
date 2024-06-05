@@ -125,7 +125,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     output_actual_path=None,
                     diff_path=None,
                     comparison_result="deleted",
-                    reason="Image deleted",
+                    reasons=["Image deleted"],
                 )
             )
 
@@ -140,7 +140,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     output_actual_path=None,
                     diff_path=None,
                     comparison_result="added",
-                    reason="Image added",
+                    reasons=["Image added"],
                 )
             )
         else:
@@ -157,7 +157,7 @@ def run_comparison(expected, actual, output, sensitivity):
                         output_actual_path=None,
                         diff_path=None,
                         comparison_result="unchanged",
-                        reason="Image unchanged",
+                        reasons=["Image unchanged"],
                     )
                 )
             else:
@@ -174,7 +174,7 @@ def run_comparison(expected, actual, output, sensitivity):
                             output_actual_path=None,
                             diff_path=None,
                             comparison_result="unchanged",
-                            reason="Image unchanged",
+                            reasons=["Image unchanged"],
                         )
                     )
                 else:
@@ -196,7 +196,7 @@ def run_comparison(expected, actual, output, sensitivity):
                                 else None
                             ),
                             comparison_result="changed",
-                            reason=", ".join(reasons),
+                            reasons=reasons,
                         )
                     )
 
