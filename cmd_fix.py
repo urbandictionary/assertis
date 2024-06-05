@@ -79,7 +79,7 @@ def apply_changes(report, expected, dry_run):
             )
 
 
-@click.command()
+@click.command(help="Apply changes to the expected directory based on the comparison report.")
 @click.argument("output")
 @click.argument("expected")
 @click.option('--dry-run', is_flag=True, help="Run the command in dry run mode.")
