@@ -1,6 +1,7 @@
 import sys
 import click
 from comparison import run_comparison
+from pathlib import Path
 
 
 @click.command()

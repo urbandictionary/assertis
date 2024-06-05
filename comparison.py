@@ -13,12 +13,14 @@ from io import BytesIO
 exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
+
 def get_all_files(directory):
     return {
         f.relative_to(directory)
         for f in directory.rglob("*")
         if f.is_file() and f.suffix.lower() in supported_extensions
     }
+
 
 def compare_images(img1_path, img2_path, sensitivity):
     img1 = Image.open(img1_path)
@@ -50,6 +52,7 @@ def compare_images(img1_path, img2_path, sensitivity):
 
         return change_extent <= sensitivity, diff_image, reasons
 
+
 def generate_html_report(report_dir, report_data):
     env = Environment(loader=FileSystemLoader(os.path.dirname(__file__)))
     template = env.get_template("report_template.html")
@@ -59,6 +62,7 @@ def generate_html_report(report_dir, report_data):
     with open(os.path.join(report_dir, "index.html"), "w") as report_file:
         report_file.write(html_content)
 
+
 def md5_hash(file_path):
     hasher = hashlib.md5()
     with open(file_path, "rb") as f:
@@ -66,12 +70,14 @@ def md5_hash(file_path):
         hasher.update(buf)
     return hasher.hexdigest()
 
+
 def md5_hash_image(image):
     hasher = hashlib.md5()
     with BytesIO() as output:
         image.save(output, format="PNG")
         hasher.update(output.getvalue())
-    return hasher.getvalue()
+    return hasher.hexdigest()
+
 
 def run_comparison(expected, actual, output, sensitivity):
     expected_dir = Path(expected)
