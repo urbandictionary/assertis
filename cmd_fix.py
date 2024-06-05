@@ -6,22 +6,7 @@ import shutil
 from models import ReportData
 
 
-@click.command()
-@click.argument("output")
-@click.argument("expected")
-def fix(output, expected):
-    output_dir = Path(output)
-    report_file = output_dir / "report.json"
-
-    if not report_file.exists():
-        print(f"Report file {report_file} does not exist.")
-        return
-
-    with open(report_file, "r") as f:
-        report_data = json.load(f)
-
-    report = ReportData(**report_data)
-
+def verify_expected_dir(report, expected):
     errors = []
     for file in report.files:
         if file.expected_path and not Path(file.expected_abs_path).exists():
@@ -42,6 +27,26 @@ def fix(output, expected):
             errors.append(
                 f"Actual file {file.actual_abs_path} should be added but does not exist."
             )
+    return errors
+
+
+@click.command()
+@click.argument("output")
+@click.argument("expected")
+def fix(output, expected):
+    output_dir = Path(output)
+    report_file = output_dir / "report.json"
+
+    if not report_file.exists():
+        print(f"Report file {report_file} does not exist.")
+        return
+
+    with open(report_file, "r") as f:
+        report_data = json.load(f)
+
+    report = ReportData(**report_data)
+
+    errors = verify_expected_dir(report, expected)
     if errors:
         for error in errors:
             print(error)
