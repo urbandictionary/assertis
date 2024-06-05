@@ -3,6 +3,8 @@ import filecmp
 import json
 import hashlib
 from PIL import Image, ImageChops, ImageDraw
+from pydantic import BaseModel, Field
+from typing import List, Optional, Dict
 import shutil
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
@@ -13,6 +15,21 @@ from io import BytesIO
 exts = Image.registered_extensions()
 supported_extensions = {ex for ex, f in exts.items() if f in Image.OPEN}
 
+
+class FileReport(BaseModel):
+    name: str
+    expected_path: Optional[str]
+    actual_path: Optional[str]
+    diff: Optional[str]
+    comparison_result: str
+    reason: str
+    expected_abs_path: Optional[str] = None
+    actual_abs_path: Optional[str] = None
+
+class ReportData(BaseModel):
+    files: List[FileReport] = Field(default_factory=list)
+    has_changes: bool = False
+    summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
 
 def get_all_files(directory):
     return {
@@ -88,7 +105,7 @@ def run_comparison(expected, actual, output, sensitivity):
     if not output_dir.exists():
         output_dir.mkdir(parents=True)
 
-    report_data = {"files": [], "has_changes": False, "summary": defaultdict(int)}
+    report_data = ReportData()
 
     expected_images = get_all_files(expected_dir)
     actual_images = get_all_files(actual_dir)
@@ -97,58 +114,58 @@ def run_comparison(expected, actual, output, sensitivity):
 
     for img_path in expected_images:
         if img_path not in actual_images:
-            report_data["files"].append(
-                {
-                    "name": str(img_path),
-                    "expected_path": str(expected_dir / img_path),
-                    "actual_path": None,
-                    "diff": None,
-                    "comparison_result": "deleted",
-                    "reason": "Image deleted",
-                }
+            report_data.files.append(
+                FileReport(
+                    name=str(img_path),
+                    expected_path=str(expected_dir / img_path),
+                    actual_path=None,
+                    diff=None,
+                    comparison_result="deleted",
+                    reason="Image deleted",
+                )
             )
 
     for img_path in actual_images:
         if img_path not in expected_images:
-            report_data["files"].append(
-                {
-                    "name": str(img_path),
-                    "expected_path": None,
-                    "actual_path": str(actual_dir / img_path),
-                    "diff": None,
-                    "comparison_result": "added",
-                    "reason": "Image added",
-                }
+            report_data.files.append(
+                FileReport(
+                    name=str(img_path),
+                    expected_path=None,
+                    actual_path=str(actual_dir / img_path),
+                    diff=None,
+                    comparison_result="added",
+                    reason="Image added",
+                )
             )
         else:
             expected_img_path = expected_dir / img_path
             actual_img_path = actual_dir / img_path
 
             if filecmp.cmp(expected_img_path, actual_img_path, shallow=False):
-                report_data["files"].append(
-                    {
-                        "name": str(img_path),
-                        "expected_path": str(expected_img_path),
-                        "actual_path": str(actual_img_path),
-                        "diff": None,
-                        "comparison_result": "unchanged",
-                        "reason": "Image unchanged",
-                    }
+                report_data.files.append(
+                    FileReport(
+                        name=str(img_path),
+                        expected_path=str(expected_img_path),
+                        actual_path=str(actual_img_path),
+                        diff=None,
+                        comparison_result="unchanged",
+                        reason="Image unchanged",
+                    )
                 )
             else:
                 identical, diff_image, reasons = compare_images(
                     expected_img_path, actual_img_path, sensitivity
                 )
                 if identical:
-                    report_data["files"].append(
-                        {
-                            "name": str(img_path),
-                            "expected_path": str(expected_img_path),
-                            "actual_path": str(actual_img_path),
-                            "diff": None,
-                            "comparison_result": "unchanged",
-                            "reason": "Image unchanged",
-                        }
+                    report_data.files.append(
+                        FileReport(
+                            name=str(img_path),
+                            expected_path=str(expected_img_path),
+                            actual_path=str(actual_img_path),
+                            diff=None,
+                            comparison_result="unchanged",
+                            reason="Image unchanged",
+                        )
                     )
                 else:
                     diff_path = None
@@ -156,23 +173,23 @@ def run_comparison(expected, actual, output, sensitivity):
                         md5_hash_value = md5_hash_image(diff_image)
                         diff_path = output_dir / f"{md5_hash_value}.png"
                         diff_images[str(diff_path)] = diff_image
-                    report_data["files"].append(
-                        {
-                            "name": str(img_path),
-                            "expected_path": str(expected_img_path),
-                            "actual_path": str(actual_img_path),
-                            "diff": (
+                    report_data.files.append(
+                        FileReport(
+                            name=str(img_path),
+                            expected_path=str(expected_img_path),
+                            actual_path=str(actual_img_path),
+                            diff=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path
                                 else None
                             ),
-                            "comparison_result": "changed",
-                            "reason": ", ".join(reasons),
-                        }
+                            comparison_result="changed",
+                            reason=", ".join(reasons),
+                        )
                     )
 
     # Copy files to output directory based on MD5 hash
-    for file_data in report_data["files"]:
+    for file_data in report_data.files:
         if file_data["expected_path"]:
             abs_expected_path = Path(file_data["expected_path"])
             md5_hash_value = md5_hash(abs_expected_path)
@@ -196,19 +213,19 @@ def run_comparison(expected, actual, output, sensitivity):
         diff_image.save(diff_path, format="PNG")
 
     # Update summary
-    for file in report_data["files"]:
-        report_data["summary"][file["comparison_result"]] += 1
+    for file in report_data.files:
+        report_data.summary[file.comparison_result] += 1
 
-    report_data["summary"] = dict(report_data["summary"])
+    report_data.summary = dict(report_data.summary)
 
-    report_data["has_changes"] = any(
-        file_data["comparison_result"] in ["changed", "added", "deleted"]
-        for file_data in report_data["files"]
+    report_data.has_changes = any(
+        file_data.comparison_result in ["changed", "added", "deleted"]
+        for file_data in report_data.files
     )
 
     generate_html_report(output_dir, report_data)
 
     with open(output_dir / "report.json", "w") as json_file:
-        json.dump(report_data, json_file, indent=4)
+        json.dump(report_data.dict(), json_file, indent=4)
 
     return report_data["has_changes"]
