@@ -1,7 +1,7 @@
 import os
 import filecmp
 import json
-import hashlib
+from md5_utils import md5_hash, md5_hash_image
 from PIL import Image, ImageChops, ImageDraw
 from models import FileReport, ReportData
 import shutil
@@ -62,20 +62,6 @@ def generate_html_report(report_dir, report_data):
         report_file.write(html_content)
 
 
-def md5_hash(file_path):
-    hasher = hashlib.md5()
-    with open(file_path, "rb") as f:
-        buf = f.read()
-        hasher.update(buf)
-    return hasher.hexdigest()
-
-
-def md5_hash_image(image):
-    hasher = hashlib.md5()
-    with BytesIO() as output:
-        image.save(output, format="PNG")
-        hasher.update(output.getvalue())
-    return hasher.hexdigest()
 
 
 def run_comparison(expected, actual, output, sensitivity):
