@@ -125,7 +125,6 @@ def run_comparison(expected, actual, output, sensitivity):
                     output_expected_path=None,
                     output_actual_path=None,
                     diff_path=None,
-                    comparison_result="deleted",
                     reasons=["Image deleted"],
                 )
             )
@@ -140,7 +139,6 @@ def run_comparison(expected, actual, output, sensitivity):
                     output_expected_path=None,
                     output_actual_path=None,
                     diff_path=None,
-                    comparison_result="added",
                     reasons=["Image added"],
                 )
             )
@@ -157,7 +155,6 @@ def run_comparison(expected, actual, output, sensitivity):
                         output_expected_path=None,
                         output_actual_path=None,
                         diff_path=None,
-                        comparison_result="unchanged",
                         reasons=["Image unchanged"],
                     )
                 )
@@ -174,7 +171,6 @@ def run_comparison(expected, actual, output, sensitivity):
                             output_expected_path=None,
                             output_actual_path=None,
                             diff_path=None,
-                            comparison_result="unchanged",
                             reasons=["Image unchanged"],
                         )
                     )
@@ -196,7 +192,6 @@ def run_comparison(expected, actual, output, sensitivity):
                                 if diff_path
                                 else None
                             ),
-                            comparison_result="changed",
                             reasons=reasons,
                         )
                     )
