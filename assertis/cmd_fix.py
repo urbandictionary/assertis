@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import sys
 import shutil
-from assertis.models import ReportData
+from assertis.models import ReportData, AddedFile, DeletedFile, ChangedFile, UnchangedFile
 
 
 def verify_report(report, expected):
@@ -15,17 +15,11 @@ def verify_report(report, expected):
             )
         if file.output_actual_path and not Path(file.original_actual_path).exists():
             errors.append(f"Actual file {file.original_actual_path} does not exist.")
-        if (
-            file.comparison_result == "deleted"
-            and Path(file.original_expected_path).exists()
-        ):
+        if isinstance(file, DeletedFile) and Path(file.original_expected_path).exists():
             errors.append(
                 f"Expected file {file.original_expected_path} should be deleted but exists."
             )
-        if (
-            file.comparison_result == "added"
-            and not Path(file.original_actual_path).exists()
-        ):
+        if isinstance(file, AddedFile) and not Path(file.original_actual_path).exists():
             errors.append(
                 f"Actual file {file.original_actual_path} should be added but does not exist."
             )
@@ -49,7 +43,7 @@ def verify_report(report, expected):
 
 def apply_changes(report, expected, dry_run):
     for file in report.files:
-        if file.comparison_result == "added":
+        if isinstance(file, AddedFile):
             target_path = Path(expected) / file.name
             target_path.parent.mkdir(parents=True, exist_ok=True)
             if not dry_run:
@@ -59,7 +53,7 @@ def apply_changes(report, expected, dry_run):
                 if dry_run
                 else f"Added file {target_path}"
             )
-        elif file.comparison_result == "deleted":
+        elif isinstance(file, DeletedFile):
             target_path = Path(expected) / file.name
             if not dry_run:
                 target_path.unlink()
@@ -68,7 +62,7 @@ def apply_changes(report, expected, dry_run):
                 if dry_run
                 else f"Deleted file {target_path}"
             )
-        elif file.comparison_result == "changed":
+        elif isinstance(file, ChangedFile):
             target_path = Path(expected) / file.name
             if not dry_run:
                 shutil.copy(file.original_actual_path, target_path)
