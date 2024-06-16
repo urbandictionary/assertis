@@ -4,7 +4,7 @@ from collections import defaultdict
 from typing import Literal
 
 
-class AddedFile(BaseModel):
+class AddedFile(BaseModel, extra="forbid"):
     name: str
     output_expected_path: Optional[str] = None
     output_actual_path: Optional[str]
@@ -14,7 +14,7 @@ class AddedFile(BaseModel):
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
-class DeletedFile(BaseModel):
+class DeletedFile(BaseModel, extra="forbid"):
     name: str
     output_expected_path: Optional[str]
     output_actual_path: Optional[str] = None
@@ -24,7 +24,7 @@ class DeletedFile(BaseModel):
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
-class ChangedFile(BaseModel):
+class ChangedFile(BaseModel, extra="forbid"):
     name: str
     output_expected_path: Optional[str]
     output_actual_path: Optional[str]
@@ -34,7 +34,7 @@ class ChangedFile(BaseModel):
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
-class UnchangedFile(BaseModel):
+class UnchangedFile(BaseModel, extra="forbid"):
     name: str
     output_expected_path: Optional[str]
     output_actual_path: Optional[str]
@@ -45,7 +45,7 @@ class UnchangedFile(BaseModel):
     original_actual_path: Optional[str] = None
 
 
-class ReportData(BaseModel):
+class ReportData(BaseModel, extra="forbid"):
     files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(default_factory=list)
     has_changes: bool = False
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
