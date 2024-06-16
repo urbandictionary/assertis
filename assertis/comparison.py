@@ -4,7 +4,7 @@ import json
 from assertis.md5_utils import md5_hash, md5_hash_image
 from assertis.file_utils import glob
 from PIL import Image, ImageChops, ImageDraw
-from assertis.models import FileReport, ReportData
+from assertis.models import ReportData, AddedFile, DeletedFile, ChangedFile, UnchangedFile
 import shutil
 from pathlib import Path
 from jinja2 import Environment, PackageLoader
@@ -118,7 +118,7 @@ def run_comparison(expected, actual, output, sensitivity):
     for img_path in expected_images:
         if img_path not in actual_images:
             report_data.files.append(
-                FileReport(
+                DeletedFile(
                     name=str(img_path),
                     original_expected_path=str(expected_dir / img_path),
                     original_actual_path=None,
@@ -133,7 +133,7 @@ def run_comparison(expected, actual, output, sensitivity):
     for img_path in actual_images:
         if img_path not in expected_images:
             report_data.files.append(
-                FileReport(
+                AddedFile(
                     name=str(img_path),
                     original_expected_path=None,
                     original_actual_path=str(actual_dir / img_path),
@@ -150,7 +150,7 @@ def run_comparison(expected, actual, output, sensitivity):
 
             if filecmp.cmp(original_expected_path, original_actual_path, shallow=False):
                 report_data.files.append(
-                    FileReport(
+                    UnchangedFile(
                         name=str(img_path),
                         original_expected_path=str(original_expected_path),
                         original_actual_path=str(original_actual_path),
@@ -167,7 +167,7 @@ def run_comparison(expected, actual, output, sensitivity):
                 )
                 if identical:
                     report_data.files.append(
-                        FileReport(
+                        UnchangedFile(
                             name=str(img_path),
                             original_expected_path=str(original_expected_path),
                             original_actual_path=str(original_actual_path),
@@ -185,7 +185,7 @@ def run_comparison(expected, actual, output, sensitivity):
                         diff_path = output_dir / f"{md5_hash_value}.png"
                         diff_images[str(diff_path)] = diff_image
                     report_data.files.append(
-                        FileReport(
+                        ChangedFile(
                             name=str(img_path),
                             original_expected_path=str(original_expected_path),
                             original_actual_path=str(original_actual_path),
