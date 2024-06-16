@@ -1,1 +1,1 @@
-include templates/report_template.html
+include assertis/templates/report_template.html
