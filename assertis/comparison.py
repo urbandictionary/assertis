@@ -26,7 +26,7 @@ def compare_images(img1_path, img2_path, sensitivity):
     if img1.size != img2.size:
         reasons.append(f"Size changed from {img1.size} to {img2.size}")
 
-    if img1.mode != img2.mode or img1.size != img2.size:
+    if reasons:
         return False, None, reasons
 
     # Calculate the difference between the images
