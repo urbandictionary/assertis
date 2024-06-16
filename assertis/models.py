@@ -14,6 +14,7 @@ class AddedFile(BaseModel, extra="forbid"):
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
+
 class DeletedFile(BaseModel, extra="forbid"):
     name: str
     output_expected_path: Optional[str]
@@ -24,6 +25,7 @@ class DeletedFile(BaseModel, extra="forbid"):
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
+
 class ChangedFile(BaseModel, extra="forbid"):
     name: str
     output_expected_path: Optional[str]
@@ -33,6 +35,7 @@ class ChangedFile(BaseModel, extra="forbid"):
     reasons: List[str]
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
+
 
 class UnchangedFile(BaseModel, extra="forbid"):
     name: str
@@ -46,6 +49,8 @@ class UnchangedFile(BaseModel, extra="forbid"):
 
 
 class ReportData(BaseModel, extra="forbid"):
-    files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(default_factory=list)
+    files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(
+        default_factory=list
+    )
     has_changes: bool = False
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))

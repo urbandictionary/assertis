@@ -4,7 +4,13 @@ import json
 from assertis.md5_utils import md5_hash, md5_hash_image
 from assertis.file_utils import glob
 from PIL import Image, ImageChops, ImageDraw
-from assertis.models import ReportData, AddedFile, DeletedFile, ChangedFile, UnchangedFile
+from assertis.models import (
+    ReportData,
+    AddedFile,
+    DeletedFile,
+    ChangedFile,
+    UnchangedFile,
+)
 import shutil
 from pathlib import Path
 from jinja2 import Environment, PackageLoader

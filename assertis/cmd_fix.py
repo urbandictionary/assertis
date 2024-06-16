@@ -3,7 +3,13 @@ import json
 from pathlib import Path
 import sys
 import shutil
-from assertis.models import ReportData, AddedFile, DeletedFile, ChangedFile, UnchangedFile
+from assertis.models import (
+    ReportData,
+    AddedFile,
+    DeletedFile,
+    ChangedFile,
+    UnchangedFile,
+)
 
 
 def verify_report(report, expected):
