@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import shutil
 from assertis.models import (
-    DisplayData,
+    Report,
     AddedFile,
     DeletedFile,
     ChangedFile,
@@ -89,9 +89,9 @@ def fix(output, expected, dry_run):
         return
 
     with open(report_file, "r") as f:
-        display_data = json.load(f)
+        report = json.load(f)
 
-    report = DisplayData(**display_data)
+    report = Report(**report)
 
     errors = verify_report(report, expected)
     if errors:
