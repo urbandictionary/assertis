@@ -15,5 +15,3 @@ def compare(expected, actual, output=None, sensitivity=0):
     report = run_comparison(expected, actual, output, sensitivity)
     if report.has_changes:
         raise ComparisonException(report_to_string(report))
-
-    print(f"Comparison results are stored in the directory: {output}")
