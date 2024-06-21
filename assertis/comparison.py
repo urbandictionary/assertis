@@ -109,6 +109,7 @@ def run_comparison(expected, actual, output, sensitivity):
                         actual_md5=md5_hash(actual_src_path),
                     )
                 )
+                report.outputs[str(output_dir / f"{md5_hash(actual_src_path)}{actual_src_path.suffix}")] = actual_src_path
             else:
                 identical, diff_image, reasons = compare_images(
                     expected_src_path, actual_src_path, sensitivity
@@ -126,6 +127,7 @@ def run_comparison(expected, actual, output, sensitivity):
                             md5_actual=md5_hash(actual_src_path),
                         )
                     )
+                    report.outputs[str(output_dir / f"{md5_hash(actual_src_path)}{actual_src_path.suffix}")] = actual_src_path
                 else:
                     diff_path = None
                     if diff_image:
