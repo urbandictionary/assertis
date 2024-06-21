@@ -4,7 +4,7 @@ from pathlib import Path
 
 import click
 
-from assertis.comparison import run_comparison
+from assertis.comparison import write_comparison
 
 
 @click.command()
@@ -34,13 +34,13 @@ def serve(expected, actual, sensitivity):
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
-            run_comparison(self.expected, self.actual, self.output, self.sensitivity)
+            write_comparison(self.expected, self.actual, self.output, self.sensitivity)
 
     with tempfile.TemporaryDirectory() as temp_output:
         output_dir = Path(temp_output)
 
         # Run initial comparison
-        run_comparison(expected, actual, output_dir, sensitivity)
+        write_comparison(expected, actual, output_dir, sensitivity)
 
         handler = ChangeHandler(expected, actual, output_dir, sensitivity)
         observer = Observer()

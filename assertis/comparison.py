@@ -17,11 +17,10 @@ def md5_path(path):
     return f"{md5_hash(path)}{path.suffix}"
 
 
-def run_comparison(expected, actual, output, sensitivity):
+def run_comparison(expected, actual, sensitivity):
     "Run the comparison between expected and actual directories."
     expected_dir = Path(expected)
     actual_dir = Path(actual)
-    output_dir = Path(output)
 
     report = Report()
 
@@ -100,6 +99,10 @@ def run_comparison(expected, actual, output, sensitivity):
                     )
                     report.outputs[md5_path(actual_path)] = actual_path
                     report.outputs[md5_path(expected_path)] = expected_path
+    return report
 
-    write_report(report, output_dir)
+
+def write_comparison(expected, actual, output, sensitivity):
+    report = run_comparison(expected, actual, sensitivity)
+    write_report(report, Path(output))
     return report

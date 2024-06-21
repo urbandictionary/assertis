@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from assertis.comparison import run_comparison
+from assertis.comparison import write_comparison
 from assertis.models import report_to_string
 
 
@@ -28,7 +28,7 @@ def compare(expected, actual, output, sensitivity):
     else:
         output_dir.mkdir(parents=True)
 
-    report = run_comparison(expected, actual, output_dir, sensitivity)
+    report = write_comparison(expected, actual, output_dir, sensitivity)
     print(report_to_string(report, output))
     if report.has_changes:
         sys.exit(1)
