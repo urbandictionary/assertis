@@ -5,7 +5,8 @@ from pathlib import Path
 import click
 
 from assertis.md5_utils import md5_hash
-from assertis.models import AddedFile, ChangedFile, DeletedFile, Report, UnchangedFile
+from assertis.models import (AddedFile, ChangedFile, DeletedFile, Report,
+                             UnchangedFile)
 
 
 @click.command()

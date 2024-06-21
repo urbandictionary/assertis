@@ -9,7 +9,8 @@ from PIL import Image, ImageChops, ImageDraw
 from assertis.file_utils import glob
 from assertis.image_comparison import compare_images
 from assertis.md5_utils import md5_hash, md5_hash_image
-from assertis.models import AddedFile, ChangedFile, DeletedFile, Report, UnchangedFile
+from assertis.models import (AddedFile, ChangedFile, DeletedFile, Report,
+                             UnchangedFile)
 from assertis.write import generate_html_report, write_report
 
 

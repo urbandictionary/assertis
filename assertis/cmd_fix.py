@@ -6,7 +6,8 @@ from pathlib import Path
 import click
 
 from assertis.cmd_verify import verify_report
-from assertis.models import AddedFile, ChangedFile, DeletedFile, Report, UnchangedFile
+from assertis.models import (AddedFile, ChangedFile, DeletedFile, Report,
+                             UnchangedFile)
 
 
 def apply_changes(report, report_dir, expected_dir, dry_run):
