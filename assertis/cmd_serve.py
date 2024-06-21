@@ -2,8 +2,14 @@ import os
 import sys
 import time
 from pathlib import Path
+import http.server
+import socketserver
+import tempfile
+import threading
 
 import click
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 from assertis.comparison import write_comparison
 
@@ -32,15 +38,6 @@ def write_comparison_with_timing(expected, actual, report_dir, sensitivity):
 )
 def serve(expected, actual, sensitivity, port):
     "Serve a web interface to view the comparison report."
-    import http.server
-    import socketserver
-    import tempfile
-    import threading
-    import time
-
-    from watchdog.events import FileSystemEventHandler
-    from watchdog.observers import Observer
-
     class ChangeHandler(FileSystemEventHandler):
         def __init__(self, expected, actual, report, sensitivity):
             self.expected = expected
