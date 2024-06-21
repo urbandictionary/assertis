@@ -36,19 +36,44 @@ def verify_report(report, expected):
             errors.append(error_message)
         elif not should_exist and Path(file_path).exists():
             errors.append(error_message)
+
     errors = []
     expected_path = Path(expected)
 
     for file in report.files:
         if isinstance(file, DeletedFile):
-            check_file_exists(file.path_src_expected, False, f"Expected file {file.path_src_expected} should be deleted but exists.")
+            check_file_exists(
+                file.path_src_expected,
+                False,
+                f"Expected file {file.path_src_expected} should be deleted but exists.",
+            )
         elif isinstance(file, AddedFile):
-            check_file_exists(file.path_src_actual, True, f"Actual file {file.path_src_actual} should be added but does not exist.")
+            check_file_exists(
+                file.path_src_actual,
+                True,
+                f"Actual file {file.path_src_actual} should be added but does not exist.",
+            )
         elif isinstance(file, ChangedFile):
-            check_file_exists(file.path_src_actual, True, f"Actual file {file.path_src_actual} does not exist.")
-            check_file_exists(file.path_src_expected, True, f"Expected file {file.path_src_expected} does not exist.")
+            check_file_exists(
+                file.path_src_actual,
+                True,
+                f"Actual file {file.path_src_actual} does not exist.",
+            )
+            check_file_exists(
+                file.path_src_expected,
+                True,
+                f"Expected file {file.path_src_expected} does not exist.",
+            )
         elif isinstance(file, UnchangedFile):
-            check_file_exists(file.path_src_actual, True, f"Actual file {file.path_src_actual} does not exist.")
-            check_file_exists(file.path_src_expected, True, f"Expected file {file.path_src_expected} does not exist.")
+            check_file_exists(
+                file.path_src_actual,
+                True,
+                f"Actual file {file.path_src_actual} does not exist.",
+            )
+            check_file_exists(
+                file.path_src_expected,
+                True,
+                f"Expected file {file.path_src_expected} does not exist.",
+            )
 
     return errors
