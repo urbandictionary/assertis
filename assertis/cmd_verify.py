@@ -38,17 +38,17 @@ def verify(expected, report):
 def should_exist(file_path, file_type, errors, expected_md5):
     "Check if a file should exist and its MD5 matches."
     if not Path(file_path).exists():
-        errors.append(f"{file_type} file {file_path} should exist but does not exist.")
+        errors.append(f"{file_type} file {file_path} is missing.")
     elif md5_hash(file_path) != expected_md5:
         errors.append(
-            f"{file_type} file {file_path} exists but its MD5 does not match."
+            f"{file_type} file {file_path} had an incorrect MD5."
         )
 
 
 def should_not_exist(file_path, file_type, errors):
     "Check if a file should not exist."
     if Path(file_path).exists():
-        errors.append(f"{file_type} file {file_path} should not exist but does exist.")
+        errors.append(f"{file_type} file {file_path} should not exist.")
 
 
 def verify_report(report, report_dir, expected_dir):
