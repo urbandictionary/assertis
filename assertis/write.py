@@ -29,8 +29,11 @@ def write_report(report, output_dir):
             file_data.actual_out_path = f"{file_data.actual_md5}{path.suffix}"
             shutil.copy(path, output_dir / file_data.actual_out_path)
 
-    for diff_path, diff_image in report.outputs.items():
-        diff_image.save(diff_path, format="PNG")
+    for path, output in report.outputs.items():
+        if isinstance(output, Path):
+            shutil.copy(output, path)
+        else:
+            output.save(path, format="PNG")
 
     # Initialize summary with all possible keys
     report.summary = {
