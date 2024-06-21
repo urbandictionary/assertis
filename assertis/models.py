@@ -10,32 +10,32 @@ class BaseFile(BaseModel, extra="forbid"):
 
 
 class AddedFile(BaseFile, extra="forbid"):
-    output_actual_path: Optional[str]
+    actual_out_path: Optional[str]
     comparison_result: Literal["added"] = "added"
-    original_actual_path: Optional[str] = None
+    actual_src_path: Optional[str] = None
 
 
 class DeletedFile(BaseFile, extra="forbid"):
-    output_expected_path: Optional[str]
+    expected_out_path: Optional[str]
     comparison_result: Literal["deleted"] = "deleted"
-    original_expected_path: Optional[str] = None
+    expected_src_path: Optional[str] = None
 
 
 class ChangedFile(BaseFile, extra="forbid"):
-    output_expected_path: Optional[str]
-    output_actual_path: Optional[str]
+    expected_out_path: Optional[str]
+    actual_out_path: Optional[str]
     diff_path: Optional[str]
     comparison_result: Literal["changed"] = "changed"
-    original_expected_path: Optional[str] = None
-    original_actual_path: Optional[str] = None
+    expected_src_path: Optional[str] = None
+    actual_src_path: Optional[str] = None
 
 
 class UnchangedFile(BaseFile, extra="forbid"):
-    output_expected_path: Optional[str]
-    output_actual_path: Optional[str]
+    expected_out_path: Optional[str]
+    actual_out_path: Optional[str]
     comparison_result: Literal["unchanged"] = "unchanged"
-    original_expected_path: Optional[str] = None
-    original_actual_path: Optional[str] = None
+    expected_src_path: Optional[str] = None
+    actual_src_path: Optional[str] = None
 
 
 class ReportData(BaseModel, extra="forbid"):
