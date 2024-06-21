@@ -72,15 +72,15 @@ def generate_html_report(report_dir, report_data):
 
 def finish(report_data, diff_images, output_dir):
     for file_data in report_data.files:
-        if hasattr(file_data, "expected_src_path") and file_data.expected_src_path:
-            path = Path(file_data.expected_src_path)
-            file_data.expected_out_path = f"{md5_hash(path)}{path.suffix}"
-            shutil.copy(path, output_dir / file_data.expected_out_path)
+        if hasattr(file_data, "path_src_expected") and file_data.path_src_expected:
+            path = Path(file_data.path_src_expected)
+            file_data.path_out_expected = f"{md5_hash(path)}{path.suffix}"
+            shutil.copy(path, output_dir / file_data.path_out_expected)
 
-        if hasattr(file_data, "actual_src_path") and file_data.actual_src_path:
-            path = Path(file_data.actual_src_path)
-            file_data.actual_out_path = f"{md5_hash(path)}{path.suffix}"
-            shutil.copy(path, output_dir / file_data.actual_out_path)
+        if hasattr(file_data, "path_src_actual") and file_data.path_src_actual:
+            path = Path(file_data.path_src_actual)
+            file_data.path_out_actual = f"{md5_hash(path)}{path.suffix}"
+            shutil.copy(path, output_dir / file_data.path_out_actual)
 
     for diff_path, diff_image in diff_images.items():
         diff_image.save(diff_path, format="PNG")
@@ -126,8 +126,8 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 DeletedFile(
                     name=str(img_path),
-                    expected_src_path=str(expected_dir / img_path),
-                    expected_out_path=None,
+                    path_src_expected=str(expected_dir / img_path),
+                    path_out_expected=None,
                     reasons=["Image deleted"],
                 )
             )
@@ -137,38 +137,38 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 AddedFile(
                     name=str(img_path),
-                    actual_src_path=str(actual_dir / img_path),
-                    actual_out_path=None,
+                    path_src_actual=str(actual_dir / img_path),
+                    path_out_actual=None,
                     reasons=["Image added"],
                 )
             )
         else:
-            expected_src_path = expected_dir / img_path
-            actual_src_path = actual_dir / img_path
+            path_src_expected = expected_dir / img_path
+            path_src_actual = actual_dir / img_path
 
-            if filecmp.cmp(expected_src_path, actual_src_path, shallow=False):
+            if filecmp.cmp(path_src_expected, path_src_actual, shallow=False):
                 report_data.files.append(
                     UnchangedFile(
                         name=str(img_path),
-                        expected_src_path=str(expected_src_path),
-                        actual_src_path=str(actual_src_path),
-                        expected_out_path=None,
-                        actual_out_path=None,
+                        path_src_expected=str(path_src_expected),
+                        path_src_actual=str(path_src_actual),
+                        path_out_expected=None,
+                        path_out_actual=None,
                         reasons=["Image unchanged"],
                     )
                 )
             else:
                 identical, diff_image, reasons = compare_images(
-                    expected_src_path, actual_src_path, sensitivity
+                    path_src_expected, path_src_actual, sensitivity
                 )
                 if identical:
                     report_data.files.append(
                         UnchangedFile(
                             name=str(img_path),
-                            expected_src_path=str(expected_src_path),
-                            actual_src_path=str(actual_src_path),
-                            expected_out_path=None,
-                            actual_out_path=None,
+                            path_src_expected=str(path_src_expected),
+                            path_src_actual=str(path_src_actual),
+                            path_out_expected=None,
+                            path_out_actual=None,
                             reasons=["Image unchanged"],
                         )
                     )
@@ -181,10 +181,10 @@ def run_comparison(expected, actual, output, sensitivity):
                     report_data.files.append(
                         ChangedFile(
                             name=str(img_path),
-                            expected_src_path=str(expected_src_path),
-                            actual_src_path=str(actual_src_path),
-                            expected_out_path=None,
-                            actual_out_path=None,
+                            path_src_expected=str(path_src_expected),
+                            path_src_actual=str(path_src_actual),
+                            path_out_expected=None,
+                            path_out_actual=None,
                             diff_path=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path

@@ -15,29 +15,29 @@ from assertis.models import (
 def verify_report(report, expected):
     errors = []
     for file in report.files:
-        if file.expected_out_path and not Path(file.expected_src_path).exists():
-            errors.append(f"Expected file {file.expected_src_path} does not exist.")
-        if file.actual_out_path and not Path(file.actual_src_path).exists():
-            errors.append(f"Actual file {file.actual_src_path} does not exist.")
-        if isinstance(file, DeletedFile) and Path(file.expected_src_path).exists():
+        if file.path_out_expected and not Path(file.path_src_expected).exists():
+            errors.append(f"Expected file {file.path_src_expected} does not exist.")
+        if file.path_out_actual and not Path(file.path_src_actual).exists():
+            errors.append(f"Actual file {file.path_src_actual} does not exist.")
+        if isinstance(file, DeletedFile) and Path(file.path_src_expected).exists():
             errors.append(
-                f"Expected file {file.expected_src_path} should be deleted but exists."
+                f"Expected file {file.path_src_expected} should be deleted but exists."
             )
-        if isinstance(file, AddedFile) and not Path(file.actual_src_path).exists():
+        if isinstance(file, AddedFile) and not Path(file.path_src_actual).exists():
             errors.append(
-                f"Actual file {file.actual_src_path} should be added but does not exist."
+                f"Actual file {file.path_src_actual} should be added but does not exist."
             )
-        # Check if files at expected_out_path and actual_out_path relative to output directory exist
+        # Check if files at path_out_expected and path_out_actual relative to output directory exist
         if (
-            file.expected_out_path
-            and not Path(expected) / file.expected_out_path.exists()
+            file.path_out_expected
+            and not Path(expected) / file.path_out_expected.exists()
         ):
             errors.append(
-                f"Expected file {Path(expected) / file.expected_out_path} does not exist."
+                f"Expected file {Path(expected) / file.path_out_expected} does not exist."
             )
-        if file.actual_out_path and not Path(expected) / file.actual_out_path.exists():
+        if file.path_out_actual and not Path(expected) / file.path_out_actual.exists():
             errors.append(
-                f"Actual file {Path(expected) / file.actual_out_path} does not exist."
+                f"Actual file {Path(expected) / file.path_out_actual} does not exist."
             )
     return errors
 
@@ -48,7 +48,7 @@ def apply_changes(report, expected, dry_run):
             target_path = Path(expected) / file.name
             target_path.parent.mkdir(parents=True, exist_ok=True)
             if not dry_run:
-                shutil.copy(file.actual_src_path, target_path)
+                shutil.copy(file.path_src_actual, target_path)
             print(
                 f"Would add file {target_path}"
                 if dry_run
@@ -66,7 +66,7 @@ def apply_changes(report, expected, dry_run):
         elif isinstance(file, ChangedFile):
             target_path = Path(expected) / file.name
             if not dry_run:
-                shutil.copy(file.actual_src_path, target_path)
+                shutil.copy(file.path_src_actual, target_path)
             print(
                 f"Would change file {target_path}"
                 if dry_run
