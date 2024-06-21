@@ -3,12 +3,13 @@ from typing import Dict, List, Literal, Optional, Union
 from pathlib import Path
 
 from PIL import Image
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class Output(BaseModel):
     filename: str
     content: Union[Image.Image, Path]
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class BaseFile(BaseModel, extra="forbid"):

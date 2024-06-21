@@ -19,11 +19,11 @@ def generate_html_report(report_dir, report):
 
 def write_report(report, report_dir):
     "Write the report to the report directory."
-    for path, output in report.outputs.items():
-        if isinstance(output, Path):
-            shutil.copy(output, report_dir / path)
+    for output in report.outputs:
+        if isinstance(output.content, Path):
+            shutil.copy(output.content, report_dir / output.filename)
         else:
-            output.save(report_dir / path, format="PNG")
+            output.content.save(report_dir / output.filename, format="PNG")
 
     # Initialize summary with all possible keys
     report.summary = {
