@@ -23,7 +23,7 @@
                     <div class="control">
                         <div class="tags has-addons">
                             <span class="tag is-dark">{{ key }}</span>
-                            <span class="tag is-info">{{ value }}</span>
+                            <span class="tag {% if value == 0 %}is-success{% elif value > 0 %}is-danger{% else %}is-info{% endif %}">{{ value }}</span>
                         </div>
                     </div>
                     {% endfor %}
