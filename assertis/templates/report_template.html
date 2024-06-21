@@ -18,12 +18,16 @@
             <div class="content">
                 <p>Has changes: {{ has_changes }}</p>
                 <h2>Summary</h2>
-                <ul>
-                    <li>Added: {{ summary.added }}</li>
-                    <li>Deleted: {{ summary.deleted }}</li>
-                    <li>Unchanged: {{ summary.unchanged }}</li>
-                    <li>Changed: {{ summary.changed }}</li>
-                </ul>
+                <div class="field is-grouped is-grouped-multiline">
+                    {% for key, value in summary.items() %}
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">{{ key }}</span>
+                            <span class="tag is-info">{{ value }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
                 <div class="grid is-col-min-9">
                     {% for file in files %}
                     <div class="cell">
