@@ -46,6 +46,7 @@ def serve(expected, actual, sensitivity, port):
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
+            click.echo(f"Event detected: {event.event_type} on {event.src_path}")
             write_comparison_with_timing(
                 self.expected, self.actual, self.report, self.sensitivity
             )
