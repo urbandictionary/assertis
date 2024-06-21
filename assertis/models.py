@@ -1,3 +1,4 @@
+import shlex
 from collections import defaultdict
 from typing import Dict, List, Literal, Optional, Union
 from pathlib import Path
@@ -66,9 +67,9 @@ def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
         result.append(f"Comparison failed ({summary_str}).")
         
         # Add the 'fix' command suggestion
-        escaped_expected = expected_dir.replace(" ", r"\ ")
-        escaped_report = report_dir.replace(" ", r"\ ")
-        fix_command = f"python -m assertis fix {escaped_expected} {escaped_report}"
+        quoted_expected = shlex.quote(expected_dir)
+        quoted_report = shlex.quote(report_dir)
+        fix_command = f"python -m assertis fix {quoted_expected} {quoted_report}"
         result.append(f"\nTo apply these changes to the expected directory, run:")
         result.append(f"  {fix_command}")
     else:
