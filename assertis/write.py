@@ -22,7 +22,7 @@ def write_report(report, output_dir):
         if isinstance(output, Path):
             shutil.copy(output, output_dir / path)
         else:
-            output.save(path, format="PNG")
+            output.save(output_dir / path, format="PNG")
 
     # Initialize summary with all possible keys
     report.summary = {
