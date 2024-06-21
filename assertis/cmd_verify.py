@@ -4,6 +4,7 @@ import json
 import sys
 from assertis.models import Report, AddedFile, DeletedFile, ChangedFile
 
+
 @click.command(help="Verify the comparison report.")
 @click.argument("output")
 @click.argument("expected")
@@ -27,6 +28,7 @@ def verify(output, expected):
         sys.exit(1)
     else:
         print("Verification successful. No errors found.")
+
 
 def verify_report(report, expected):
     errors = []

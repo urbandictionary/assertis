@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import sys
 import shutil
+from assertis.cmd_verify import verify_report
 from assertis.models import (
     Report,
     AddedFile,
@@ -10,36 +11,6 @@ from assertis.models import (
     ChangedFile,
     UnchangedFile,
 )
-
-
-def verify_report(report, expected):
-    errors = []
-    for file in report.files:
-        if file.path_out_expected and not Path(file.path_src_expected).exists():
-            errors.append(f"Expected file {file.path_src_expected} does not exist.")
-        if file.path_out_actual and not Path(file.path_src_actual).exists():
-            errors.append(f"Actual file {file.path_src_actual} does not exist.")
-        if isinstance(file, DeletedFile) and Path(file.path_src_expected).exists():
-            errors.append(
-                f"Expected file {file.path_src_expected} should be deleted but exists."
-            )
-        if isinstance(file, AddedFile) and not Path(file.path_src_actual).exists():
-            errors.append(
-                f"Actual file {file.path_src_actual} should be added but does not exist."
-            )
-        # Check if files at path_out_expected and path_out_actual relative to output directory exist
-        if (
-            file.path_out_expected
-            and not Path(expected) / file.path_out_expected.exists()
-        ):
-            errors.append(
-                f"Expected file {Path(expected) / file.path_out_expected} does not exist."
-            )
-        if file.path_out_actual and not Path(expected) / file.path_out_actual.exists():
-            errors.append(
-                f"Actual file {Path(expected) / file.path_out_actual} does not exist."
-            )
-    return errors
 
 
 def apply_changes(report, expected, dry_run):
