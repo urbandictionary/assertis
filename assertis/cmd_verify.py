@@ -1,5 +1,7 @@
 import click
 from pathlib import Path
+import json
+import sys
 from assertis.models import Report, AddedFile, DeletedFile, ChangedFile
 
 @click.command(help="Verify the comparison report.")
