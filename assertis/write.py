@@ -29,7 +29,7 @@ def write_report(report, output_dir):
             file_data.actual_out_path = f"{file_data.actual_md5}{path.suffix}"
             shutil.copy(path, output_dir / file_data.actual_out_path)
 
-    for diff_path, diff_image in report.diff_images.items():
+    for diff_path, diff_image in report.outputs.items():
         diff_image.save(diff_path, format="PNG")
 
     # Initialize summary with all possible keys
@@ -56,7 +56,7 @@ def write_report(report, output_dir):
 
     with open(output_dir / "report.json", "w") as json_file:
         json.dump(
-            report.model_dump(exclude={"diff_images"}),
+            report.model_dump(exclude={"outputs"}),
             json_file,
             indent=4,
         )
