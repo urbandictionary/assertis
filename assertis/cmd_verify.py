@@ -32,10 +32,8 @@ def verify(output, expected):
 
 def verify_report(report, expected):
     def check_file_exists(file_path, should_exist, file_type):
-        error_message = f"{file_type} file {file_path} should {'exist' if should_exist else 'not exist'} but {'does not exist' if should_exist else 'exists'}."
-        if should_exist and not Path(file_path).exists():
-            errors.append(error_message)
-        elif not should_exist and Path(file_path).exists():
+        if should_exist != Path(file_path).exists():
+            error_message = f"{file_type} file {file_path} should {'exist but does not exist' if should_exist else 'not exist but does exist'}."
             errors.append(error_message)
 
     errors = []
