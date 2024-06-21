@@ -15,7 +15,6 @@ def assertis():
 assertis.add_command(compare)
 assertis.add_command(serve)
 assertis.add_command(fix)
-
 assertis.add_command(verify)
 
 if __name__ == "__main__":
