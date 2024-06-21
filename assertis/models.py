@@ -47,7 +47,7 @@ class Report(BaseModel, extra="forbid"):
     diff_images: Dict[str, Any] = Field(default_factory=dict)
 
 
-def report_to_string(report: Report) -> str:
+def report_to_string(report: Report, output: str = None) -> str:
     result = []
     result.append(f"Report has {'changes' if report.has_changes else 'no changes'}")
     result.append("Summary:")
