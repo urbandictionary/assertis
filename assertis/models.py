@@ -1,11 +1,11 @@
 import shlex
 from collections import defaultdict
-from typing import Dict, List, Literal, Optional, Union
 from pathlib import Path
+from typing import Dict, List, Literal, Optional, Union
 
 import click
 from PIL import Image
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Output(BaseModel):
