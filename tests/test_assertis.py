@@ -30,6 +30,8 @@ def generate_report(cases_dir):
             catch_exceptions=False,  # Ensure that exceptions are not caught and displayed in stderr
         )
 
+        print("STDOUT:", result.stdout)
+        print("STDERR:", result.stderr)
         report_path = output_dir / "report.json"
         if not report_path.exists():
             raise FileNotFoundError(f"report.json not found in {output_dir}")
