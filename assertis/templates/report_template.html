@@ -73,12 +73,12 @@
                                 </div>
                                 <footer class="card-footer">
                                     {% if file.actual_file %}
-                                    <a @click.prevent="activeImage = 'actual'" :class="{ 'is-active': activeImage === 'actual' }" class="card-footer-item" href="#">Actual</a>
+                                    <a @click.prevent="activeImage = 'actual'" :class="{ 'is-active': activeImage === 'actual', 'has-background-primary-light': activeImage === 'actual' }" class="card-footer-item" href="#">Actual</a>
                                     {% endif %}
                                     {% if file.expected_file %}
-                                    <a @click.prevent="activeImage = 'expected'" :class="{ 'is-active': activeImage === 'expected' }" class="card-footer-item" href="#">Expected</a>
+                                    <a @click.prevent="activeImage = 'expected'" :class="{ 'is-active': activeImage === 'expected', 'has-background-primary-light': activeImage === 'expected' }" class="card-footer-item" href="#">Expected</a>
                                     {% endif %}
-                                    <a x-show="'{{ file.diff_file }}'" @click.prevent="activeImage = 'diff'" :class="{ 'is-active': activeImage === 'diff' }" class="card-footer-item" href="#">Diff</a>
+                                    <a x-show="'{{ file.diff_file }}'" @click.prevent="activeImage = 'diff'" :class="{ 'is-active': activeImage === 'diff', 'has-background-primary-light': activeImage === 'diff' }" class="card-footer-item" href="#">Diff</a>
                                 </footer>
                             </div>
                         </div>
