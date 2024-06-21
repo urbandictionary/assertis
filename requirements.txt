@@ -1,8 +1,8 @@
-Pillow
+aider-chat
+black
 click
 jinja2
-black
-requests
-pytest
+Pillow
 pydantic
-aider-chat
+pytest
+requests
