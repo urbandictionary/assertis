@@ -20,17 +20,17 @@ def apply_changes(report, expected, dry_run):
             target_path.parent.mkdir(parents=True, exist_ok=True)
             if not dry_run:
                 shutil.copy(file.path_src_actual, target_path)
-            print(f"{'Would add file' if dry_run else 'Added file'} {target_path}")
+            print(f"{'Would add' if dry_run else 'Added'} file {target_path}")
         elif isinstance(file, DeletedFile):
             target_path = Path(expected) / file.name
             if not dry_run:
                 target_path.unlink()
-            print(f"{'Would delete file' if dry_run else 'Deleted file'} {target_path}")
+            print(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
         elif isinstance(file, ChangedFile):
             target_path = Path(expected) / file.name
             if not dry_run:
                 shutil.copy(file.path_src_actual, target_path)
-            print(f"{'Would change file' if dry_run else 'Changed file'} {target_path}")
+            print(f"{'Would change' if dry_run else 'Changed'} file {target_path}")
 
 
 @click.command(
