@@ -13,18 +13,18 @@ def verify(output, expected):
     report_file = output_dir / "report.json"
 
     if not report_file.exists():
-        print(f"Report file {report_file} does not exist.")
+        print(f"Report file {report_file} does not exist.", file=sys.stderr)
         return
 
     with open(report_file, "r") as f:
-        report = json.load(f)
+        report_data = json.load(f)
 
-    report = Report(**report)
-
+    report = Report(**report_data)
     errors = verify_report(report, expected)
+
     if errors:
         for error in errors:
-            print(error)
+            print(error, file=sys.stderr)
         sys.exit(1)
     else:
         print("Verification successful. No errors found.")
@@ -32,11 +32,9 @@ def verify(output, expected):
 
 def verify_report(report, expected):
     errors = []
+    expected_path = Path(expected)
+
     for file in report.files:
-        if file.path_out_expected and not Path(file.path_src_expected).exists():
-            errors.append(f"Expected file {file.path_src_expected} does not exist.")
-        if file.path_out_actual and not Path(file.path_src_actual).exists():
-            errors.append(f"Actual file {file.path_src_actual} does not exist.")
         if isinstance(file, DeletedFile) and Path(file.path_src_expected).exists():
             errors.append(
                 f"Expected file {file.path_src_expected} should be deleted but exists."
@@ -45,16 +43,22 @@ def verify_report(report, expected):
             errors.append(
                 f"Actual file {file.path_src_actual} should be added but does not exist."
             )
-        # Check if files at path_out_expected and path_out_actual relative to output directory exist
+
         if (
             file.path_out_expected
-            and not Path(expected) / file.path_out_expected.exists()
+            and not (expected_path / file.path_out_expected).exists()
         ):
             errors.append(
-                f"Expected file {Path(expected) / file.path_out_expected} does not exist."
+                f"Expected file {(expected_path / file.path_out_expected).as_posix()} does not exist."
             )
-        if file.path_out_actual and not Path(expected) / file.path_out_actual.exists():
+        if file.path_out_actual and not (expected_path / file.path_out_actual).exists():
             errors.append(
-                f"Actual file {Path(expected) / file.path_out_actual} does not exist."
+                f"Actual file {(expected_path / file.path_out_actual).as_posix()} does not exist."
             )
+
+        if file.path_out_expected and not Path(file.path_src_expected).exists():
+            errors.append(f"Expected file {file.path_src_expected} does not exist.")
+        if file.path_out_actual and not Path(file.path_src_actual).exists():
+            errors.append(f"Actual file {file.path_src_actual} does not exist.")
+
     return errors
