@@ -69,33 +69,33 @@ def run_comparison(expected, actual, output, sensitivity):
 
     report = Report()
 
-    expected_images = glob(expected_dir)
-    actual_images = glob(actual_dir)
+    expected_paths = glob(expected_dir)
+    actual_paths = glob(actual_dir)
 
-    for img_path in expected_images:
-        if img_path not in actual_images:
+    for path in expected_paths:
+        if path not in actual_paths:
             report.files.append(
                 DeletedFile(
-                    expected_md5=md5_hash(expected_dir / img_path),
-                    name=str(img_path),
+                    expected_md5=md5_hash(expected_dir / path),
+                    name=str(path),
                     reasons=["Image deleted"],
                 )
             )
 
-    for img_path in actual_images:
-        if img_path not in expected_images:
+    for path in actual_paths:
+        if path not in expected_paths:
             report.files.append(
                 AddedFile(
-                    actual_file=md5_path(actual_dir / img_path),
-                    actual_md5=md5_hash(actual_dir / img_path),
-                    name=str(img_path),
+                    actual_file=md5_path(actual_dir / path),
+                    actual_md5=md5_hash(actual_dir / path),
+                    name=str(path),
                     reasons=["Image added"],
                 )
             )
-            report.outputs[str(md5_path(actual_dir / img_path))] = actual_dir / img_path
+            report.outputs[str(md5_path(actual_dir / path))] = actual_dir / path
         else:
-            expected_src_path = expected_dir / img_path
-            actual_src_path = actual_dir / img_path
+            expected_src_path = expected_dir / path
+            actual_src_path = actual_dir / path
 
             if filecmp.cmp(expected_src_path, actual_src_path, shallow=False):
                 report.files.append(
@@ -104,7 +104,7 @@ def run_comparison(expected, actual, output, sensitivity):
                         actual_md5=md5_hash(actual_src_path),
                         expected_file=md5_path(actual_src_path),
                         expected_md5=md5_hash(expected_src_path),
-                        name=str(img_path),
+                        name=str(path),
                         reasons=["Image unchanged"],
                     )
                 )
@@ -120,7 +120,7 @@ def run_comparison(expected, actual, output, sensitivity):
                             expected_file=md5_path(actual_src_path),
                             md5_actual=md5_hash(actual_src_path),
                             md5_expected=md5_hash(expected_src_path),
-                            name=str(img_path),
+                            name=str(path),
                             reasons=["Image unchanged"],
                         )
                     )
@@ -138,7 +138,7 @@ def run_comparison(expected, actual, output, sensitivity):
                             diff_file=diff_file,
                             expected_file=md5_path(expected_src_path),
                             expected_md5=md5_hash(expected_src_path),
-                            name=str(img_path),
+                            name=str(path),
                             reasons=reasons,
                         )
                     )
