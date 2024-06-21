@@ -49,7 +49,7 @@
                                 <div class="card-image">
                                     <figure class="image" x-show="activeImage === 'actual'">
                                         {% if file.actual_file %}
-                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="globalModalOpen = true; modalSrc = '{{ file.actual_file }}'; modalTitle = '{{ file.name }} (Actual)'">
+                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="globalModalOpen = true; modalSrc = '{{ file.actual_file }}'; modalTitle = '{{ file.name }}'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'expected'">
