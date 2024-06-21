@@ -59,4 +59,3 @@ def write_report(report, output_dir):
             json_file,
             indent=4,
         )
-
