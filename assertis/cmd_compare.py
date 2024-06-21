@@ -1,6 +1,7 @@
 import sys
 import click
 from assertis.comparison import run_comparison
+from assertis.models import report_to_string
 from pathlib import Path
 
 
@@ -26,6 +27,7 @@ def compare(expected, actual, output, sensitivity):
         output_dir.mkdir(parents=True)
 
     report = run_comparison(expected, actual, output_dir, sensitivity)
+    print(report_to_string(report, output))
     if report.has_changes:
         sys.exit(1)
     else:

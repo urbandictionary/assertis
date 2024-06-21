@@ -62,9 +62,9 @@ def report_to_string(report: Report, output: str = None) -> str:
         result.append(f"Comparison failed ({summary_str}).")
     else:
         result.append("Comparison passed.")
-    result.append("Files:")
+    result.append("\nFiles:")
     for file in report.files:
         result.append(f"  {file.name}: {'; '.join(file.reasons)}")
     if output:
-        result.append(f"Comparison results are stored in the directory: {output}")
+        result.append(f"\nComparison results are stored in the directory: {output}")
     return "\n".join(result)
