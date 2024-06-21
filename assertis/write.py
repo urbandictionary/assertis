@@ -19,9 +19,8 @@ def generate_html_report(report_dir, report):
 def write_report(report, output_dir):
     "Write the comparison report to the output directory."
     for path, output in report.outputs.items():
-        print(output)
         if isinstance(output, Path):
-            shutil.copy(output, path)
+            shutil.copy(output, output_dir / path)
         else:
             output.save(path, format="PNG")
 
