@@ -40,9 +40,7 @@ def should_exist(file_path, file_type, errors, expected_md5):
     if not Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} is missing.")
     elif md5_hash(file_path) != expected_md5:
-        errors.append(
-            f"{file_type} file {file_path} had an incorrect MD5."
-        )
+        errors.append(f"{file_type} file {file_path} had an incorrect MD5.")
 
 
 def should_not_exist(file_path, file_type, errors):
