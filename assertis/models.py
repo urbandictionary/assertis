@@ -5,6 +5,8 @@ from typing import Literal
 
 
 class BaseFile(BaseModel, extra="forbid"):
+    name: str
+    reasons: List[str] = []
 
 class AddedFile(BaseFile, extra="forbid"):
     name: str
