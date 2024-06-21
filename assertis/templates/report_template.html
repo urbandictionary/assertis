@@ -78,9 +78,7 @@
                                     {% if file.expected_file %}
                                     <a @click.prevent="activeImage = 'expected'" :class="{ 'is-active': activeImage === 'expected' }" class="card-footer-item" href="#">Expected</a>
                                     {% endif %}
-                                    {% if file.diff_file %}
-                                    <a @click.prevent="activeImage = 'diff'" :class="{ 'is-active': activeImage === 'diff' }" class="card-footer-item" href="#">Diff</a>
-                                    {% endif %}
+                                    <a x-show="'{{ file.diff_file }}'" @click.prevent="activeImage = 'diff'" :class="{ 'is-active': activeImage === 'diff' }" class="card-footer-item" href="#">Diff</a>
                                 </footer>
                             </div>
                         </div>
