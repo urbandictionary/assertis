@@ -12,6 +12,7 @@ from assertis.models import (
     UnchangedFile,
 )
 from assertis.write import generate_html_report, write_report
+from pathlib import Path
 from io import BytesIO
 
 
