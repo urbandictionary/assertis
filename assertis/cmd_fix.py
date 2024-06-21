@@ -13,22 +13,22 @@ from assertis.models import (
 )
 
 
-def apply_changes(report, expected, dry_run):
+def apply_changes(report, output_dir, expected_dir, dry_run):
     for file in report.files:
-        target_path = Path(expected) / file.name
+        target_path = Path(expected_dir) / file.name
+        source_path = Path(output_dir) / file.actual_out_path
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        if isinstance(file, AddedFile):
+
+        if isinstance(file, AddedFile) or isinstance(file, ChangedFile):
             if not dry_run:
-                shutil.copy(file.actual_src_path, target_path)
+                shutil.copy(source_path, target_path)
             print(f"{'Would add' if dry_run else 'Added'} file {target_path}")
+
         elif isinstance(file, DeletedFile):
             if not dry_run:
-                target_path.unlink()
+                if target_path.exists():
+                    target_path.unlink()
             print(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
-        elif isinstance(file, ChangedFile):
-            if not dry_run:
-                shutil.copy(file.actual_src_path, target_path)
-            print(f"{'Would change' if dry_run else 'Changed'} file {target_path}")
 
 
 @click.command(
@@ -50,10 +50,10 @@ def fix(output, expected, dry_run):
 
     report = Report(**report)
 
-    errors = verify_report(report, expected)
+    errors = verify_report(report, output_dir, Path(expected))
     if errors:
         for error in errors:
             print(error)
         sys.exit(1)
 
-    apply_changes(report, expected, dry_run)
+    apply_changes(report, output_dir, Path(expected), dry_run)
