@@ -10,21 +10,15 @@ class BaseFile(BaseModel, extra="forbid"):
 
 
 class AddedFile(BaseFile, extra="forbid"):
-    output_expected_path: Optional[str] = None
     output_actual_path: Optional[str]
-    diff_path: Optional[str] = None
     comparison_result: Literal["added"] = "added"
-    original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
 
 class DeletedFile(BaseFile, extra="forbid"):
     output_expected_path: Optional[str]
-    output_actual_path: Optional[str] = None
-    diff_path: Optional[str] = None
     comparison_result: Literal["deleted"] = "deleted"
     original_expected_path: Optional[str] = None
-    original_actual_path: Optional[str] = None
 
 
 class ChangedFile(BaseFile, extra="forbid"):

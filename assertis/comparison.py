@@ -133,10 +133,7 @@ def run_comparison(expected, actual, output, sensitivity):
                 DeletedFile(
                     name=str(img_path),
                     original_expected_path=str(expected_dir / img_path),
-                    original_actual_path=None,
                     output_expected_path=None,
-                    output_actual_path=None,
-                    diff_path=None,
                     reasons=["Image deleted"],
                 )
             )
@@ -146,11 +143,8 @@ def run_comparison(expected, actual, output, sensitivity):
             report_data.files.append(
                 AddedFile(
                     name=str(img_path),
-                    original_expected_path=None,
                     original_actual_path=str(actual_dir / img_path),
-                    output_expected_path=None,
                     output_actual_path=None,
-                    diff_path=None,
                     reasons=["Image added"],
                 )
             )
