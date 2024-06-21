@@ -124,8 +124,9 @@ def run_comparison(expected, actual, sensitivity):
                     report.outputs.append(
                         Output(filename=expected_file, content=expected_path)
                     )
+
     def sort_key(item):
-        type_order = {'changed': 0, 'added': 1, 'deleted': 2, 'unchanged': 3}
+        type_order = {"changed": 0, "added": 1, "deleted": 2, "unchanged": 3}
         return (type_order[item.type], item.name)
 
     report.files.sort(key=sort_key)
