@@ -46,41 +46,47 @@ def verify_report(report, expected):
             check_file_exists(
                 file.path_src_expected,
                 False,
+                file.path_src_expected,
                 False,
-                "Expected",
+                "Expected"
             )
         elif isinstance(file, AddedFile):
             check_file_exists(
                 file.path_src_actual,
                 True,
+                file.path_src_actual,
                 True,
-                "Actual",
+                "Actual"
             )
         elif isinstance(file, ChangedFile):
             check_file_exists(
                 file.path_src_actual,
                 True,
+                file.path_src_actual,
                 True,
-                "Actual",
+                "Actual"
             )
             check_file_exists(
                 file.path_src_expected,
                 True,
+                file.path_src_expected,
                 True,
-                "Expected",
+                "Expected"
             )
         elif isinstance(file, UnchangedFile):
             check_file_exists(
                 file.path_src_actual,
                 True,
+                file.path_src_actual,
                 True,
-                "Actual",
+                "Actual"
             )
             check_file_exists(
                 file.path_src_expected,
                 True,
+                file.path_src_expected,
                 True,
-                "Expected",
+                "Expected"
             )
 
     return errors
