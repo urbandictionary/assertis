@@ -111,13 +111,13 @@
                 </div>
             </header>
             <section class="modal-card-body">
-                <img :src="modalDataIndex >= 0 ? modalDataList[modalDataIndex][activeModalImage] : ''" alt="Full size image" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
+                <img :src="modalDataIndex >= 0 ? modalDataList[modalDataIndex][activeModalImage + '_file'] : ''" alt="Full size image" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
             </section>
             <footer class="modal-card-foot" style="justify-content: center;">
                 <div class="buttons">
-                    <button class="button" @click="activeModalImage = 'actual'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].actual" :class="{ 'is-active': activeModalImage === 'actual' }">Actual</button>
-                    <button class="button" @click="activeModalImage = 'expected'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].expected" :class="{ 'is-active': activeModalImage === 'expected' }">Expected</button>
-                    <button class="button" @click="activeModalImage = 'diff'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].diff" :class="{ 'is-active': activeModalImage === 'diff' }">Diff</button>
+                    <button class="button" @click="activeModalImage = 'actual'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].actual_file" :class="{ 'is-active': activeModalImage === 'actual' }">Actual</button>
+                    <button class="button" @click="activeModalImage = 'expected'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].expected_file" :class="{ 'is-active': activeModalImage === 'expected' }">Expected</button>
+                    <button class="button" @click="activeModalImage = 'diff'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].diff_file" :class="{ 'is-active': activeModalImage === 'diff' }">Diff</button>
                 </div>
             </footer>
         </div>
