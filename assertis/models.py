@@ -62,14 +62,14 @@ def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
     # Absolutize the paths
     abs_report_dir = str(Path(report_dir).resolve())
     abs_expected_dir = str(Path(expected_dir).resolve())
-    
+
     if report.has_changes:
         summary_parts = [
             f"{value} {key}" for key, value in report.summary.items() if value != 0
         ]
         summary_str = ", ".join(summary_parts)
         result.append(f"Comparison failed ({summary_str}).")
-        
+
         # Add the 'fix' command suggestion
         quoted_expected = shlex.quote(abs_expected_dir)
         quoted_report = shlex.quote(abs_report_dir)
