@@ -31,34 +31,24 @@ def verify(output, expected):
 
 
 def verify_report(report, expected):
+    def check_file_exists(file_path, should_exist, error_message):
+        if should_exist and not Path(file_path).exists():
+            errors.append(error_message)
+        elif not should_exist and Path(file_path).exists():
+            errors.append(error_message)
     errors = []
     expected_path = Path(expected)
 
     for file in report.files:
-        if isinstance(file, DeletedFile) and Path(file.path_src_expected).exists():
-            errors.append(
-                f"Expected file {file.path_src_expected} should be deleted but exists."
-            )
-        if isinstance(file, AddedFile) and not Path(file.path_src_actual).exists():
-            errors.append(
-                f"Actual file {file.path_src_actual} should be added but does not exist."
-            )
-
-        if (
-            file.path_out_expected
-            and not (expected_path / file.path_out_expected).exists()
-        ):
-            errors.append(
-                f"Expected file {(expected_path / file.path_out_expected).as_posix()} does not exist."
-            )
-        if file.path_out_actual and not (expected_path / file.path_out_actual).exists():
-            errors.append(
-                f"Actual file {(expected_path / file.path_out_actual).as_posix()} does not exist."
-            )
-
-        if file.path_out_expected and not Path(file.path_src_expected).exists():
-            errors.append(f"Expected file {file.path_src_expected} does not exist.")
-        if file.path_out_actual and not Path(file.path_src_actual).exists():
-            errors.append(f"Actual file {file.path_src_actual} does not exist.")
+        if isinstance(file, DeletedFile):
+            check_file_exists(file.path_src_expected, False, f"Expected file {file.path_src_expected} should be deleted but exists.")
+        elif isinstance(file, AddedFile):
+            check_file_exists(file.path_src_actual, True, f"Actual file {file.path_src_actual} should be added but does not exist.")
+        elif isinstance(file, ChangedFile):
+            check_file_exists(file.path_src_actual, True, f"Actual file {file.path_src_actual} does not exist.")
+            check_file_exists(file.path_src_expected, True, f"Expected file {file.path_src_expected} does not exist.")
+        elif isinstance(file, UnchangedFile):
+            check_file_exists(file.path_src_actual, True, f"Actual file {file.path_src_actual} does not exist.")
+            check_file_exists(file.path_src_expected, True, f"Expected file {file.path_src_expected} does not exist.")
 
     return errors
