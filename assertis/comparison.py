@@ -83,7 +83,7 @@ def write_report(full_data, output_dir):
             file_data.path_out_actual = f"{md5_hash(path)}{path.suffix}"
             shutil.copy(path, output_dir / file_data.path_out_actual)
 
-    for diff_path, diff_image in full_data.diff_images.items():
+    for diff_path, diff_image in full_data.display_data.diff_images.items():
         diff_image.save(diff_path, format="PNG")
 
     # Initialize summary with all possible keys
@@ -181,7 +181,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     if diff_image:
                         md5_hash_value = md5_hash_image(diff_image)
                         diff_path = output_dir / f"{md5_hash_value}.png"
-                        full_data.diff_images[str(diff_path)] = diff_image
+                        full_data.display_data.diff_images[str(diff_path)] = diff_image
                     full_data.display_data.files.append(
                         ChangedFile(
                             name=str(img_path),
