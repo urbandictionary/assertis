@@ -39,7 +39,12 @@ def serve(expected, actual, sensitivity, port):
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
+            click.echo("Writing comparison...")
+            start_time = time.time()
             write_comparison(self.expected, self.actual, self.report, self.sensitivity)
+            end_time = time.time()
+            duration = end_time - start_time
+            click.echo(f"Comparison written in {duration:.2f} seconds.")
 
     with tempfile.TemporaryDirectory() as temp_output:
         report_dir = Path(temp_output)
