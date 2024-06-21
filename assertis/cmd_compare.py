@@ -30,8 +30,8 @@ def compare(expected, actual, output, sensitivity):
     else:
         output_dir.mkdir(parents=True)
 
-    has_changes = run_comparison(expected, actual, output_dir, sensitivity)
-    if has_changes:
+    report = run_comparison(expected, actual, output_dir, sensitivity)
+    if report.has_changes:
         sys.exit(1)
     else:
         sys.exit(0)
