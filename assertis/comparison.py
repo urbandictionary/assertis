@@ -72,7 +72,7 @@ def run_comparison(expected, actual, sensitivity):
                     report.files.append(
                         UnchangedFile(
                             actual_file=md5_path(actual_path),
-                            expected_file=md5_path(actual_path),
+                            expected_file=md5_path(expected_path),
                             md5_actual=md5_hash(actual_path),
                             md5_expected=md5_hash(expected_path),
                             name=str(path),
