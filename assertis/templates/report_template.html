@@ -26,10 +26,9 @@
 </head>
 <body x-data="{ globalModalOpen: false, modalDataIndex: -1, activeModalImage: 'actual', modalDataList: JSON.parse(document.body.dataset.modalDataList) }" :class="{ 'is-clipped': globalModalOpen }" data-modal-data-list="{{ files_json | e }}">
     <section class="section">
-        <div class="container">
-            <h1 class="title">{{ title }}</h1>
-            <div class="content">
-                <div class="field is-grouped is-grouped-multiline">
+        <h1 class="title">{{ title }}</h1>
+        <div class="content">
+            <div class="field is-grouped is-grouped-multiline">
                     {% for key, value in summary.items() %}
                     <div class="control">
                         <div class="tags has-addons">
@@ -87,7 +86,6 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
     </section>
     <div class="modal" :class="{ 'is-active': globalModalOpen }">
         <div class="modal-background" @click="globalModalOpen = false"></div>
