@@ -47,8 +47,6 @@ class DisplayData(BaseModel, extra="forbid"):
     diff_images: Dict[str, Any] = Field(default_factory=dict)
 
 
-class FullData(BaseModel, extra="forbid"):
-    display_data: DisplayData = DisplayData()
 
 
 def display_data_to_string(display_data: DisplayData) -> str:
