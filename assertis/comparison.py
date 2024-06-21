@@ -56,8 +56,6 @@ def compare_images(img1_path, img2_path, sensitivity):
     return change_extent <= sensitivity, diff_highlight, reasons
 
 
-
-
 def run_comparison(expected, actual, output, sensitivity):
     expected_dir = Path(expected)
     actual_dir = Path(actual)
