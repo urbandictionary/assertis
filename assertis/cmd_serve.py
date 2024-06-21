@@ -15,7 +15,12 @@ from assertis.comparison import write_comparison
     default=0,
     help="Sensitivity level for detecting changes (0-100, default is 0).",
 )
-def serve(expected, actual, sensitivity):
+@click.option(
+    "--port",
+    default=8000,
+    help="Port to run the server on (default is 8000).",
+)
+def serve(expected, actual, sensitivity, port):
     "Serve a web interface to view the comparison report."
     import http.server
     import socketserver
@@ -49,11 +54,10 @@ def serve(expected, actual, sensitivity):
         observer.start()
 
         os.chdir(report_dir)
-        PORT = 8000
         Handler = http.server.SimpleHTTPRequestHandler
-        httpd = socketserver.TCPServer(("", PORT), Handler)
+        httpd = socketserver.TCPServer(("", port), Handler)
 
-        click.echo(f"Serving at port {PORT}")
+        click.echo(f"Serving at port {port}")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
