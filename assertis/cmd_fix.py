@@ -16,9 +16,10 @@ def apply_changes(report, report_dir, expected_dir, dry_run):
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
         if isinstance(file, AddedFile) or isinstance(file, ChangedFile):
+            source_path = Path(report_dir) / file.actual_file
             if not dry_run:
-                shutil.copy(Path(report_dir) / file.actual_file, target_path)
-            click.echo(f"{'Would add' if dry_run else 'Added'} file {target_path}")
+                shutil.copy(source_path, target_path)
+            click.echo(f"{'Would add' if dry_run else 'Added'} file {source_path} to {target_path}")
 
         elif isinstance(file, DeletedFile):
             if not dry_run:
