@@ -8,6 +8,7 @@ class BaseFile(BaseModel, extra="forbid"):
     name: str
     reasons: List[str] = []
 
+
 class AddedFile(BaseFile, extra="forbid"):
     output_expected_path: Optional[str] = None
     output_actual_path: Optional[str]
