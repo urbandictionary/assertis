@@ -33,11 +33,14 @@ def verify(output, expected):
 
 from assertis.md5_utils import md5_hash
 
+
 def should_exist(file_path, file_type, errors, expected_md5):
     if not Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} should exist but does not exist.")
     elif md5_hash(file_path) != expected_md5:
-        errors.append(f"{file_type} file {file_path} exists but its MD5 does not match.")
+        errors.append(
+            f"{file_type} file {file_path} exists but its MD5 does not match."
+        )
 
 
 def should_not_exist(file_path, file_type, errors):
