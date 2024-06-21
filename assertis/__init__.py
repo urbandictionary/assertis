@@ -5,6 +5,7 @@ from assertis.models import report_to_string, Report
 
 
 class ComparisonException(Exception):
+    pass
 
 
 def compare(expected, actual, output=None, sensitivity=0):
