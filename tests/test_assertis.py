@@ -5,8 +5,7 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
-from assertis.cli import \
-    assertis  # Replace with the actual name of your script module
+from assertis.cli import assertis  # Replace with the actual name of your script module
 from assertis.models import Report
 
 
