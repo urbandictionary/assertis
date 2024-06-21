@@ -1,7 +1,7 @@
-from pydantic import BaseModel, Field, validator
-from typing import List, Optional, Dict, Union
 from collections import defaultdict
-from typing import Literal, Any
+from typing import Any, Dict, List, Literal, Optional, Union
+
+from pydantic import BaseModel, Field, validator
 
 
 class BaseFile(BaseModel, extra="forbid"):

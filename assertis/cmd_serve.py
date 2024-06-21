@@ -1,8 +1,10 @@
-import sys
-import click
 import os
-from assertis.comparison import run_comparison
+import sys
 from pathlib import Path
+
+import click
+
+from assertis.comparison import run_comparison
 
 
 @click.command()
@@ -17,11 +19,12 @@ def serve(expected, actual, sensitivity):
     "Serve a web interface to view the comparison report."
     import http.server
     import socketserver
+    import tempfile
     import threading
     import time
-    import tempfile
-    from watchdog.observers import Observer
+
     from watchdog.events import FileSystemEventHandler
+    from watchdog.observers import Observer
 
     class ChangeHandler(FileSystemEventHandler):
         def __init__(self, expected, actual, output, sensitivity):

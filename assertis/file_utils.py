@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from PIL import Image
 
 exts = Image.registered_extensions()

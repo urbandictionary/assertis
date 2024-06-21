@@ -1,22 +1,16 @@
-import os
 import filecmp
 import json
-from assertis.md5_utils import md5_hash, md5_hash_image
-from assertis.file_utils import glob
-from PIL import Image, ImageChops, ImageDraw
-from assertis.models import (
-    Report,
-    AddedFile,
-    DeletedFile,
-    ChangedFile,
-    UnchangedFile,
-)
-from assertis.write import generate_html_report, write_report
-from pathlib import Path
+import os
 from io import BytesIO
+from pathlib import Path
 
+from PIL import Image, ImageChops, ImageDraw
 
+from assertis.file_utils import glob
 from assertis.image_comparison import compare_images
+from assertis.md5_utils import md5_hash, md5_hash_image
+from assertis.models import AddedFile, ChangedFile, DeletedFile, Report, UnchangedFile
+from assertis.write import generate_html_report, write_report
 
 
 def md5_path(path):

@@ -1,5 +1,6 @@
 from PIL import Image, ImageChops
 
+
 def compare_images(img1_path, img2_path, sensitivity):
     "Compare two images and highlight differences."
     img1 = Image.open(img1_path)

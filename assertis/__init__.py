@@ -1,7 +1,8 @@
 import os
 import tempfile
+
 from assertis.comparison import run_comparison
-from assertis.models import report_to_string, Report
+from assertis.models import Report, report_to_string
 
 
 class ComparisonException(Exception):

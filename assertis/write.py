@@ -1,7 +1,8 @@
+import json
 import os
 import shutil
-import json
 from pathlib import Path
+
 from jinja2 import Environment, PackageLoader
 
 

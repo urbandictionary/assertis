@@ -1,9 +1,11 @@
-import sys
-import click
 import os
+import sys
+
+import click
+
 from assertis.cmd_compare import compare
-from assertis.cmd_serve import serve
 from assertis.cmd_fix import fix
+from assertis.cmd_serve import serve
 from assertis.cmd_verify import verify
 
 

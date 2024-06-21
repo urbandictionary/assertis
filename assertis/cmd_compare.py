@@ -1,8 +1,10 @@
 import sys
+from pathlib import Path
+
 import click
+
 from assertis.comparison import run_comparison
 from assertis.models import report_to_string
-from pathlib import Path
 
 
 @click.command()

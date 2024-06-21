@@ -1,16 +1,12 @@
-import click
 import json
-from pathlib import Path
-import sys
 import shutil
+import sys
+from pathlib import Path
+
+import click
+
 from assertis.cmd_verify import verify_report
-from assertis.models import (
-    Report,
-    AddedFile,
-    DeletedFile,
-    ChangedFile,
-    UnchangedFile,
-)
+from assertis.models import AddedFile, ChangedFile, DeletedFile, Report, UnchangedFile
 
 
 def apply_changes(report, output_dir, expected_dir, dry_run):
