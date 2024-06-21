@@ -74,8 +74,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     path_src_expected=str(expected_dir / img_path),
                     path_out_expected=None,
                     reasons=["Image deleted"],
-                    md5_expected=md5_hash(expected_dir / img_path),
-                    md5_actual=None,
+                    md5_src_expected=md5_hash(expected_dir / img_path),
                 )
             )
 
@@ -87,8 +86,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     path_src_actual=str(actual_dir / img_path),
                     path_out_actual=None,
                     reasons=["Image added"],
-                    md5_expected=None,
-                    md5_actual=md5_hash(actual_dir / img_path),
+                    md5_src_actual=md5_hash(actual_dir / img_path),
                 )
             )
         else:
@@ -104,8 +102,8 @@ def run_comparison(expected, actual, output, sensitivity):
                         path_out_expected=None,
                         path_out_actual=None,
                         reasons=["Image unchanged"],
-                        md5_expected=md5_hash(path_src_expected),
-                        md5_actual=md5_hash(path_src_actual),
+                        md5_src_expected=md5_hash(path_src_expected),
+                        md5_src_actual=md5_hash(path_src_actual),
                     )
                 )
             else:
@@ -144,8 +142,8 @@ def run_comparison(expected, actual, output, sensitivity):
                                 else None
                             ),
                             reasons=reasons,
-                            md5_expected=md5_hash(path_src_expected),
-                            md5_actual=md5_hash(path_src_actual),
+                            md5_src_expected=md5_hash(path_src_expected),
+                            md5_src_actual=md5_hash(path_src_actual),
                         )
                     )
 

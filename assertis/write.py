@@ -3,7 +3,6 @@ import shutil
 import json
 from pathlib import Path
 from jinja2 import Environment, PackageLoader
-from assertis.md5_utils import md5_hash
 
 
 def generate_html_report(report_dir, report):
@@ -20,12 +19,12 @@ def write_report(report, output_dir):
     for file_data in report.files:
         if hasattr(file_data, "path_src_expected") and file_data.path_src_expected:
             path = Path(file_data.path_src_expected)
-            file_data.path_out_expected = f"{md5_hash(path)}{path.suffix}"
+            file_data.path_out_expected = f"{file_data.md5_src_expected}{path.suffix}"
             shutil.copy(path, output_dir / file_data.path_out_expected)
 
         if hasattr(file_data, "path_src_actual") and file_data.path_src_actual:
             path = Path(file_data.path_src_actual)
-            file_data.path_out_actual = f"{md5_hash(path)}{path.suffix}"
+            file_data.path_out_actual = f"{file_data.md5_src_actual}{path.suffix}"
             shutil.copy(path, output_dir / file_data.path_out_actual)
 
     for diff_path, diff_image in report.diff_images.items():
