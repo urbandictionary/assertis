@@ -73,11 +73,11 @@
                                     </div>
                                 </div>
                                 <footer class="card-footer">
-                                    {% if file.actual_file %}
-                                    <a @click.prevent="activeImage = 'actual'" :class="{ 'is-active': activeImage === 'actual', 'has-background-primary-light': activeImage === 'actual' }" class="card-footer-item" href="#">Actual</a>
-                                    {% endif %}
                                     {% if file.expected_file %}
                                     <a @click.prevent="activeImage = 'expected'" :class="{ 'is-active': activeImage === 'expected', 'has-background-primary-light': activeImage === 'expected' }" class="card-footer-item" href="#">Expected</a>
+                                    {% endif %}
+                                    {% if file.actual_file %}
+                                    <a @click.prevent="activeImage = 'actual'" :class="{ 'is-active': activeImage === 'actual', 'has-background-primary-light': activeImage === 'actual' }" class="card-footer-item" href="#">Actual</a>
                                     {% endif %}
                                     <a x-show="'{{ file.diff_file }}'" @click.prevent="activeImage = 'diff'" :class="{ 'is-active': activeImage === 'diff', 'has-background-primary-light': activeImage === 'diff' }" class="card-footer-item" href="#">Diff</a>
                                 </footer>
@@ -112,8 +112,8 @@
             </section>
             <footer class="modal-card-foot" style="justify-content: center;">
                 <div class="buttons">
-                    <button class="button" @click="activeModalImage = 'actual'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].actual_file" :class="{ 'is-active': activeModalImage === 'actual' }">Actual</button>
                     <button class="button" @click="activeModalImage = 'expected'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].expected_file" :class="{ 'is-active': activeModalImage === 'expected' }">Expected</button>
+                    <button class="button" @click="activeModalImage = 'actual'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].actual_file" :class="{ 'is-active': activeModalImage === 'actual' }">Actual</button>
                     <button class="button" @click="activeModalImage = 'diff'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].diff_file" :class="{ 'is-active': activeModalImage === 'diff' }">Diff</button>
                 </div>
             </footer>
