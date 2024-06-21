@@ -11,31 +11,31 @@ class BaseFile(BaseModel, extra="forbid"):
 
 class AddedFile(BaseFile, extra="forbid"):
     path_out_actual: Optional[str]
-    type: Literal["added"] = "added"
     path_src_actual: str
+    type: Literal["added"] = "added"
 
 
 class DeletedFile(BaseFile, extra="forbid"):
     path_out_expected: Optional[str]
-    type: Literal["deleted"] = "deleted"
     path_src_expected: str
+    type: Literal["deleted"] = "deleted"
 
 
 class ChangedFile(BaseFile, extra="forbid"):
-    path_out_expected: Optional[str]
-    path_out_actual: Optional[str]
     diff_path: Optional[str]
-    type: Literal["changed"] = "changed"
-    path_src_expected: str
+    path_out_actual: Optional[str]
+    path_out_expected: Optional[str]
     path_src_actual: str
+    path_src_expected: str
+    type: Literal["changed"] = "changed"
 
 
 class UnchangedFile(BaseFile, extra="forbid"):
-    path_out_expected: Optional[str]
     path_out_actual: Optional[str]
-    type: Literal["unchanged"] = "unchanged"
-    path_src_expected: str
+    path_out_expected: Optional[str]
     path_src_actual: str
+    path_src_expected: str
+    type: Literal["unchanged"] = "unchanged"
 
 
 class Report(BaseModel, extra="forbid"):
