@@ -80,6 +80,7 @@ def run_comparison(expected, actual, sensitivity):
                         )
                     )
                     report.outputs[md5_path(actual_path)] = actual_path
+                    report.outputs[md5_path(expected_path)] = expected_path
                 else:
                     diff_file = None
                     if diff_image:
