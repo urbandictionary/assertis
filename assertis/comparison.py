@@ -87,7 +87,12 @@ def write_report(full_data, output_dir):
         diff_image.save(diff_path, format="PNG")
 
     # Initialize summary with all possible keys
-    full_data.display_data.summary = {"added": 0, "changed": 0, "unchanged": 0, "deleted": 0}
+    full_data.display_data.summary = {
+        "added": 0,
+        "changed": 0,
+        "unchanged": 0,
+        "deleted": 0,
+    }
 
     for file in full_data.display_data.files:
         full_data.display_data.summary[file.comparison_result] += 1
@@ -119,7 +124,6 @@ def run_comparison(expected, actual, output, sensitivity):
 
     expected_images = glob(expected_dir)
     actual_images = glob(actual_dir)
-
 
     for img_path in expected_images:
         if img_path not in actual_images:
