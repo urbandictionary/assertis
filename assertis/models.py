@@ -4,30 +4,28 @@ from collections import defaultdict
 from typing import Literal
 
 
-class AddedFile(BaseModel, extra="forbid"):
+class BaseFile(BaseModel, extra="forbid"):
+
+class AddedFile(BaseFile, extra="forbid"):
     name: str
     output_expected_path: Optional[str] = None
     output_actual_path: Optional[str]
     diff_path: Optional[str] = None
     comparison_result: Literal["added"] = "added"
-    reasons: List[str]
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
 
-class DeletedFile(BaseModel, extra="forbid"):
-    name: str
+class DeletedFile(BaseFile, extra="forbid"):
     output_expected_path: Optional[str]
     output_actual_path: Optional[str] = None
     diff_path: Optional[str] = None
     comparison_result: Literal["deleted"] = "deleted"
-    reasons: List[str]
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
 
-class ChangedFile(BaseModel, extra="forbid"):
-    name: str
+class ChangedFile(BaseFile, extra="forbid"):
     output_expected_path: Optional[str]
     output_actual_path: Optional[str]
     diff_path: Optional[str]
@@ -37,13 +35,11 @@ class ChangedFile(BaseModel, extra="forbid"):
     original_actual_path: Optional[str] = None
 
 
-class UnchangedFile(BaseModel, extra="forbid"):
-    name: str
+class UnchangedFile(BaseFile, extra="forbid"):
     output_expected_path: Optional[str]
     output_actual_path: Optional[str]
     diff_path: Optional[str] = None
     comparison_result: Literal["unchanged"] = "unchanged"
-    reasons: List[str] = []
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
