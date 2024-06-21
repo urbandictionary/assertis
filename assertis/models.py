@@ -2,6 +2,7 @@ from collections import defaultdict
 from typing import Dict, List, Literal, Optional, Union
 from pathlib import Path
 
+import click
 from PIL import Image
 from pydantic import BaseModel, Field, ConfigDict
 

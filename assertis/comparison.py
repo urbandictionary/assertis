@@ -4,6 +4,7 @@ import os
 from io import BytesIO
 from pathlib import Path
 
+import click
 from PIL import Image, ImageChops, ImageDraw
 
 from assertis.file_utils import glob
