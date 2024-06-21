@@ -31,9 +31,13 @@ def verify(output, expected):
         print("Verification successful. No errors found.")
 
 
-def should_exist(file_path, file_type, errors):
+from assertis.md5_utils import md5_hash
+
+def should_exist(file_path, file_type, errors, expected_md5):
     if not Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} should exist but does not exist.")
+    elif md5_hash(file_path) != expected_md5:
+        errors.append(f"{file_type} file {file_path} exists but its MD5 does not match.")
 
 
 def should_not_exist(file_path, file_type, errors):
@@ -49,12 +53,12 @@ def verify_report(report, expected_dir):
         if isinstance(file, DeletedFile):
             should_not_exist(file.expected_src_path, "Expected", errors)
         elif isinstance(file, AddedFile):
-            should_exist(file.actual_src_path, "Actual", errors)
+            should_exist(file.actual_src_path, "Actual", errors, file.actual_md5)
         elif isinstance(file, ChangedFile):
-            should_exist(file.actual_src_path, "Actual", errors)
-            should_exist(file.expected_src_path, "Expected", errors)
+            should_exist(file.actual_src_path, "Actual", errors, file.actual_md5)
+            should_exist(file.expected_src_path, "Expected", errors, file.expected_md5)
         elif isinstance(file, UnchangedFile):
-            should_exist(file.actual_src_path, "Actual", errors)
-            should_exist(file.expected_src_path, "Expected", errors)
+            should_exist(file.actual_src_path, "Actual", errors, file.actual_md5)
+            should_exist(file.expected_src_path, "Expected", errors, file.expected_md5)
 
     return errors
