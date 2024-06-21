@@ -10,6 +10,7 @@ from assertis.md5_utils import md5_hash
 @click.argument("output")
 @click.argument("expected")
 def verify(output, expected):
+    "Verify the comparison report against the expected directory."
     output_dir = Path(output)
     expected_dir = Path(expected)
     report_file = output_dir / "report.json"
@@ -33,6 +34,7 @@ def verify(output, expected):
 
 
 def should_exist(file_path, file_type, errors, expected_md5):
+    "Check if a file should exist and its MD5 matches."
     if not Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} should exist but does not exist.")
     elif md5_hash(file_path) != expected_md5:
@@ -42,11 +44,13 @@ def should_exist(file_path, file_type, errors, expected_md5):
 
 
 def should_not_exist(file_path, file_type, errors):
+    "Check if a file should not exist."
     if Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} should not exist but does exist.")
 
 
 def verify_report(report, output_dir, expected_dir):
+    "Verify the integrity of the comparison report."
     errors = []
 
     for file in report.files:

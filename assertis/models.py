@@ -54,6 +54,7 @@ class Report(BaseModel, extra="forbid"):
 
 
 def report_to_string(report: Report, output: str = None) -> str:
+    "Convert the report object to a formatted string."
     result = []
     result.append(f"Report has {'changes' if report.has_changes else 'no changes'}")
     result.append("Summary:")

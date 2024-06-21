@@ -14,6 +14,7 @@ from pathlib import Path
     help="Sensitivity level for detecting changes (0-100, default is 0).",
 )
 def serve(expected, actual, sensitivity):
+    "Serve a web interface to view the comparison report."
     import http.server
     import socketserver
     import threading

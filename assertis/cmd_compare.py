@@ -20,6 +20,7 @@ from pathlib import Path
     help="Sensitivity level for detecting changes (0-100, default is 0).",
 )
 def compare(expected, actual, output, sensitivity):
+    "Compare images in the expected and actual directories."
     output_dir = Path(output)
     if output_dir.exists():
         if any(output_dir.iterdir()):

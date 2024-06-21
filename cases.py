@@ -9,6 +9,7 @@ from pathlib import Path
 
 # Function to generate a random string
 def random_string(length=8):
+    "Generate a random alphanumeric string."
     return "".join(
         random.choice(string.ascii_lowercase + string.digits) for _ in range(length)
     )
@@ -16,6 +17,7 @@ def random_string(length=8):
 
 # Function to download a random image
 def download_image(output_path):
+    "Download a random image from the internet."
     url = f"https://picsum.photos/200/300?random={random_string()}"
     response = requests.get(url)
     with open(output_path, "wb") as f:
@@ -24,6 +26,7 @@ def download_image(output_path):
 
 # Function to create a directory structure
 def create_directories(case_name):
+    "Create the directory structure for a test case."
     os.makedirs(f"cases/{case_name}/actual", exist_ok=True)
     os.makedirs(f"cases/{case_name}/expected", exist_ok=True)
     Path(f"cases/{case_name}/actual/.gitkeep").touch()
@@ -32,6 +35,7 @@ def create_directories(case_name):
 
 # Function to add text to an image
 def add_text_to_image(image_path, text):
+    "Overlay text onto an image."
     img = Image.open(image_path)
     draw = ImageDraw.Draw(img)
     font = ImageFont.load_default()
@@ -47,6 +51,7 @@ def add_text_to_image(image_path, text):
 
 # Function to resize an image
 def resize_image(image_path, new_size):
+    "Resize an image to the specified dimensions."
     img = Image.open(image_path)
     img_resized = img.resize(new_size)
     img_resized.save(image_path)
@@ -54,12 +59,14 @@ def resize_image(image_path, new_size):
 
 # Function to change mode of an image to RGBA
 def change_mode_to_rgba(image_path):
+    "Convert an image to RGBA mode."
     img = Image.open(image_path).convert("RGBA")
     img.save(image_path)
 
 
 # Function to invert the colors of an image
 def invert_image_colors(image_path):
+    "Invert the colors of an image."
     img = Image.open(image_path)
     img_inverted = ImageOps.invert(img)
     img_inverted.save(image_path)
@@ -67,11 +74,13 @@ def invert_image_colors(image_path):
 
 # Function to copy a file
 def copy_file(src, dst):
+    "Copy a file from the source to the destination."
     shutil.copy2(src, dst)
 
 
 # Generate test cases
 def generate_test_cases():
+    "Generate various test cases for image comparison."
     # Case: Files added
     create_directories("files_added")
     download_image("cases/files_added/actual/img1.jpg")

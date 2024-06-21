@@ -17,6 +17,7 @@ from io import BytesIO
 
 
 def compare_images(img1_path, img2_path, sensitivity):
+    "Compare two images and highlight differences."
     img1 = Image.open(img1_path)
     img2 = Image.open(img2_path)
     reasons = []
@@ -57,6 +58,7 @@ def compare_images(img1_path, img2_path, sensitivity):
 
 
 def run_comparison(expected, actual, output, sensitivity):
+    "Run the comparison between expected and actual directories."
     expected_dir = Path(expected)
     actual_dir = Path(actual)
     output_dir = Path(output)

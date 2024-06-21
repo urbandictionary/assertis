@@ -9,6 +9,7 @@ from assertis.cmd_verify import verify
 
 @click.group()
 def assertis():
+    "Main entry point for the assertis CLI."
     pass
 
 

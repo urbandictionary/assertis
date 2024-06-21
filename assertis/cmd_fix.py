@@ -14,6 +14,7 @@ from assertis.models import (
 
 
 def apply_changes(report, output_dir, expected_dir, dry_run):
+    "Apply changes to the expected directory based on the report."
     for file in report.files:
         target_path = Path(expected_dir) / file.name
         source_path = Path(output_dir) / file.actual_out_path
@@ -38,6 +39,7 @@ def apply_changes(report, output_dir, expected_dir, dry_run):
 @click.argument("expected")
 @click.option("--dry-run", is_flag=True, help="Run the command in dry run mode.")
 def fix(output, expected, dry_run):
+    "CLI command to apply changes to the expected directory."
     output_dir = Path(output)
     report_file = output_dir / "report.json"
 

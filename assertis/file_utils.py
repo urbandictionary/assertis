@@ -9,6 +9,7 @@ import os
 
 
 def glob(directory):
+    "Recursively find all supported image files in a directory."
     if not os.path.exists(directory):
         raise FileNotFoundError(f"The directory {directory} does not exist.")
     return {
