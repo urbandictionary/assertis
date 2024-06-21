@@ -60,6 +60,17 @@
                                     {% endfor %}
                                 </div>
                             </div>
+                            <footer class="card-footer">
+                                {% if file.actual_file %}
+                                <a href="{{ file.actual_file }}" class="card-footer-item" target="_blank">Actual</a>
+                                {% endif %}
+                                {% if file.expected_file %}
+                                <a href="{{ file.expected_file }}" class="card-footer-item" target="_blank">Expected</a>
+                                {% endif %}
+                                {% if file.diff_file %}
+                                <a href="{{ file.diff_file }}" class="card-footer-item" target="_blank">Diff</a>
+                                {% endif %}
+                            </footer>
                         </div>
                     </div>
                     {% endfor %}
