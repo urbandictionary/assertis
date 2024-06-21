@@ -35,9 +35,11 @@ def should_exist(file_path, file_type, errors):
     if not Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} should exist but does not exist.")
 
+
 def should_not_exist(file_path, file_type, errors):
     if Path(file_path).exists():
         errors.append(f"{file_type} file {file_path} should not exist but does exist.")
+
 
 def verify_report(report, expected_dir):
     errors = []
