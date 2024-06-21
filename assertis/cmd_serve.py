@@ -53,7 +53,7 @@ def serve(expected, actual, sensitivity):
         Handler = http.server.SimpleHTTPRequestHandler
         httpd = socketserver.TCPServer(("", PORT), Handler)
 
-        print(f"Serving at port {PORT}")
+        click.echo(f"Serving at port {PORT}")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

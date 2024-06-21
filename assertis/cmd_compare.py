@@ -21,7 +21,7 @@ def compare(expected, actual, output, sensitivity):
     report_dir = Path(output)
     if report_dir.exists():
         if any(report_dir.iterdir()):
-            print(
+            click.echo(
                 "Output directory already exists and is not empty. Please remove it first."
             )
             sys.exit(1)
@@ -29,7 +29,7 @@ def compare(expected, actual, output, sensitivity):
         report_dir.mkdir(parents=True)
 
     report = write_comparison(expected, actual, report_dir, sensitivity)
-    print(report_to_string(report, output))
+    click.echo(report_to_string(report, output))
     if report.has_changes:
         sys.exit(1)
     else:

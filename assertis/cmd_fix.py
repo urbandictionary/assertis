@@ -18,12 +18,12 @@ def apply_changes(report, report_dir, expected_dir, dry_run):
         if isinstance(file, AddedFile) or isinstance(file, ChangedFile):
             if not dry_run:
                 shutil.copy(Path(report_dir) / file.actual_file, target_path)
-            print(f"{'Would add' if dry_run else 'Added'} file {target_path}")
+            click.echo(f"{'Would add' if dry_run else 'Added'} file {target_path}")
 
         elif isinstance(file, DeletedFile):
             if not dry_run:
                 target_path.unlink()
-            print(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
+            click.echo(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
 
 
 @click.command()
@@ -36,7 +36,7 @@ def fix(expected, report, dry_run):
     report_file = report_dir / "report.json"
 
     if not report_file.exists():
-        print(f"Report file {report_file} does not exist.")
+        click.echo(f"Report file {report_file} does not exist.")
         return
 
     with open(report_file, "r") as f:
@@ -47,7 +47,7 @@ def fix(expected, report, dry_run):
     errors = verify_report(report, report_dir, Path(expected))
     if errors:
         for error in errors:
-            print(error)
+            click.echo(error)
         sys.exit(1)
 
     apply_changes(report, report_dir, Path(expected), dry_run)

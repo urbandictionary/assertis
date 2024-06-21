@@ -18,7 +18,7 @@ def verify(expected, report):
     report_file = report_dir / "report.json"
 
     if not report_file.exists():
-        print(f"Report file {report_file} does not exist.", file=sys.stderr)
+        click.echo(f"Report file {report_file} does not exist.", err=True)
         return
 
     with open(report_file, "r") as f:
@@ -29,10 +29,10 @@ def verify(expected, report):
 
     if errors:
         for error in errors:
-            print(error, file=sys.stderr)
+            click.echo(error, err=True)
         sys.exit(1)
     else:
-        print("Verification successful. No errors found.")
+        click.echo("Verification successful. No errors found.")
 
 
 def should_exist(file_path, file_type, errors, expected_md5):
