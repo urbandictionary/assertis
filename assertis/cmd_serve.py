@@ -62,9 +62,10 @@ def serve(expected, actual, sensitivity, port):
         observer.schedule(handler, path=actual, recursive=True)
         observer.start()
 
-        os.chdir(report_dir)
-
         class CustomHandler(http.server.SimpleHTTPRequestHandler):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, directory=str(report_dir), **kwargs)
+
             def do_GET(self):
                 if self.path == "/run":
                     write_comparison_with_timing(
@@ -78,7 +79,7 @@ def serve(expected, actual, sensitivity, port):
 
         httpd = http.server.ThreadingHTTPServer(("", port), CustomHandler)
 
-        click.echo(f"Serving at port {port}")
+        click.echo(f"Serving report from {report_dir} at http://localhost:{port}")
         click.echo(f"Visit http://localhost:{port}/run to force a comparison update")
         try:
             httpd.serve_forever()
