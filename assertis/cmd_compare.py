@@ -7,11 +7,7 @@ from pathlib import Path
 @click.command()
 @click.argument("expected")
 @click.argument("actual")
-@click.option(
-    "--output",
-    prompt="Output directory",
-    help="Directory to store the output report and images.",
-)
+@click.argument("output")
 @click.option(
     "--sensitivity",
     default=0,
