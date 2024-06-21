@@ -6,6 +6,7 @@
     <title>{{ one_line_summary }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <script src="//unpkg.com/alpinejs" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .checkerboard {
             background: repeating-conic-gradient(#f5f5f5 0% 25%, #fafafa 0% 50%) 50% / 20px 20px;
@@ -93,7 +94,14 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title" x-text="modalData.title"></p>
-                <button class="delete" aria-label="close" @click="globalModalOpen = false"></button>
+                <div>
+                    <a :href="modalData.src" class="button is-small mr-2" download>
+                        <span class="icon is-small">
+                            <i class="fas fa-download"></i>
+                        </span>
+                    </a>
+                    <button class="delete" aria-label="close" @click="globalModalOpen = false"></button>
+                </div>
             </header>
             <section class="modal-card-body">
                 <img :src="modalData.src" alt="Full size image" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
