@@ -44,3 +44,15 @@ class ReportData(BaseModel, extra="forbid"):
     )
     has_changes: bool = False
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
+def report_data_to_string(report_data: ReportData) -> str:
+    result = []
+    result.append(f"Has Changes: {report_data.has_changes}")
+    result.append("Summary:")
+    for key, value in report_data.summary.items():
+        result.append(f"  {key}: {value}")
+    result.append("Files:")
+    for file in report_data.files:
+        result.append(f"  - Name: {file.name}")
+        result.append(f"    Reasons: {', '.join(file.reasons)}")
+        result.append(f"    Comparison Result: {file.comparison_result}")
+    return "\n".join(result)
