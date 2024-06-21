@@ -25,6 +25,11 @@
     </style>
 </head>
 <body x-data="{ globalModalOpen: false, modalData: { src: '', title: '', actual: '', expected: '', diff: '' }, activeModalImage: 'actual' }" :class="{ 'is-clipped': globalModalOpen }">
+    <script>
+        function escapeJS(string) {
+            return string.replace(/[\\'"]/g, '\\$&').replace(/\u0000/g, '\\0');
+        }
+    </script>
     <section class="section">
         <div class="container">
             <h1 class="title">{{ title }}</h1>
@@ -50,17 +55,17 @@
                                 <div class="card-image">
                                     <figure class="image" x-show="activeImage === 'actual'">
                                         {% if file.actual_file %}
-                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="globalModalOpen = true; modalData = { src: '{{ file.actual_file }}', title: '{{ file.name }}', actual: '{{ file.actual_file }}', expected: '{{ file.expected_file }}', diff: '{{ file.diff_file }}' }; activeModalImage = 'actual'">
+                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="globalModalOpen = true; modalData = { src: escapeJS('{{ file.actual_file }}'), title: escapeJS('{{ file.name }}'), actual: escapeJS('{{ file.actual_file }}'), expected: escapeJS('{{ file.expected_file }}'), diff: escapeJS('{{ file.diff_file }}') }; activeModalImage = 'actual'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'expected'">
                                         {% if file.expected_file %}
-                                        <img src="{{ file.expected_file }}" class="checkerboard" @click="globalModalOpen = true; modalData = { src: '{{ file.expected_file }}', title: '{{ file.name }} (Expected)', actual: '{{ file.actual_file }}', expected: '{{ file.expected_file }}', diff: '{{ file.diff_file }}' }; activeModalImage = 'expected'">
+                                        <img src="{{ file.expected_file }}" class="checkerboard" @click="globalModalOpen = true; modalData = { src: escapeJS('{{ file.expected_file }}'), title: escapeJS('{{ file.name }} (Expected)'), actual: escapeJS('{{ file.actual_file }}'), expected: escapeJS('{{ file.expected_file }}'), diff: escapeJS('{{ file.diff_file }}') }; activeModalImage = 'expected'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'diff'">
                                         {% if file.diff_file %}
-                                        <img src="{{ file.diff_file }}" @click="globalModalOpen = true; modalData = { src: '{{ file.diff_file }}', title: '{{ file.name }} (Diff)', actual: '{{ file.actual_file }}', expected: '{{ file.expected_file }}', diff: '{{ file.diff_file }}' }; activeModalImage = 'diff'">
+                                        <img src="{{ file.diff_file }}" @click="globalModalOpen = true; modalData = { src: escapeJS('{{ file.diff_file }}'), title: escapeJS('{{ file.name }} (Diff)'), actual: escapeJS('{{ file.actual_file }}'), expected: escapeJS('{{ file.expected_file }}'), diff: escapeJS('{{ file.diff_file }}') }; activeModalImage = 'diff'">
                                         {% endif %}
                                     </figure>
                                 </div>
