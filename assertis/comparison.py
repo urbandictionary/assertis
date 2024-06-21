@@ -94,7 +94,7 @@ def write_report(report, output_dir):
     }
 
     for file in report.files:
-        report.summary[file.comparison_result] += 1
+        report.summary[file.type] += 1
 
     # Ensure all keys are present in the summary
     for key in ["added", "changed", "unchanged", "deleted"]:
@@ -102,8 +102,7 @@ def write_report(report, output_dir):
             report.summary[key] = 0
 
     report.has_changes = any(
-        file_data.comparison_result in ["changed", "added", "deleted"]
-        for file_data in report.files
+        file_data.type in ["changed", "added", "deleted"] for file_data in report.files
     )
 
     generate_html_report(output_dir, report)

@@ -11,13 +11,13 @@ class BaseFile(BaseModel, extra="forbid"):
 
 class AddedFile(BaseFile, extra="forbid"):
     path_out_actual: Optional[str]
-    comparison_result: Literal["added"] = "added"
+    type: Literal["added"] = "added"
     path_src_actual: Optional[str]
 
 
 class DeletedFile(BaseFile, extra="forbid"):
     path_out_expected: Optional[str]
-    comparison_result: Literal["deleted"] = "deleted"
+    type: Literal["deleted"] = "deleted"
     path_src_expected: Optional[str]
 
 
@@ -25,7 +25,7 @@ class ChangedFile(BaseFile, extra="forbid"):
     path_out_expected: Optional[str]
     path_out_actual: Optional[str]
     diff_path: Optional[str]
-    comparison_result: Literal["changed"] = "changed"
+    type: Literal["changed"] = "changed"
     path_src_expected: Optional[str]
     path_src_actual: Optional[str]
 
@@ -33,7 +33,7 @@ class ChangedFile(BaseFile, extra="forbid"):
 class UnchangedFile(BaseFile, extra="forbid"):
     path_out_expected: Optional[str]
     path_out_actual: Optional[str]
-    comparison_result: Literal["unchanged"] = "unchanged"
+    type: Literal["unchanged"] = "unchanged"
     path_src_expected: Optional[str]
     path_src_actual: Optional[str]
 
@@ -55,7 +55,5 @@ def report_to_string(report: Report) -> str:
         result.append(f"  {key}: {value}")
     result.append("Files:")
     for file in report.files:
-        result.append(
-            f"{file.comparison_result}: {file.name} ({', '.join(file.reasons)})"
-        )
+        result.append(f"{file.type}: {file.name} ({', '.join(file.reasons)})")
     return "\n".join(result)
