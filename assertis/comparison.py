@@ -72,12 +72,12 @@ def generate_html_report(report_dir, report_data):
 
 def finish(report_data, diff_images, output_dir):
     for file_data in report_data.files:
-        if file_data.original_expected_path:
+        if hasattr(file_data, 'original_expected_path') and file_data.original_expected_path:
             path = Path(file_data.original_expected_path)
             file_data.output_expected_path = f"{md5_hash(path)}{path.suffix}"
             shutil.copy(path, output_dir / file_data.output_expected_path)
 
-        if file_data.original_actual_path:
+        if hasattr(file_data, 'original_actual_path') and file_data.original_actual_path:
             path = Path(file_data.original_actual_path)
             file_data.output_actual_path = f"{md5_hash(path)}{path.suffix}"
             shutil.copy(path, output_dir / file_data.output_actual_path)
