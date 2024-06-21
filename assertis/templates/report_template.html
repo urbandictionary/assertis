@@ -26,7 +26,7 @@
 </head>
 <body x-data="{ globalModalOpen: false, modalDataIndex: -1, activeModalImage: 'actual' }" :class="{ 'is-clipped': globalModalOpen }">
     <script>
-        const modalDataList = {{ modal_data_json | safe }};
+        const modalDataList = {{ files_json | safe }};
     </script>
     <section class="section">
         <div class="container">
