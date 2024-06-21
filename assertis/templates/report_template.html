@@ -94,13 +94,17 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title" x-text="modalData.title"></p>
-                <div>
+                <div class="is-flex is-align-items-center">
                     <a :href="modalData.src" class="button is-small mr-2" download>
                         <span class="icon is-small">
                             <i class="fas fa-download"></i>
                         </span>
                     </a>
-                    <button class="delete" aria-label="close" @click="globalModalOpen = false"></button>
+                    <button class="button is-small" aria-label="close" @click="globalModalOpen = false">
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </button>
                 </div>
             </header>
             <section class="modal-card-body">
