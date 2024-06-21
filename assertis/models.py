@@ -59,6 +59,10 @@ class Report(BaseModel, extra="forbid"):
 def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
     "Convert the report object to a formatted string."
     result = []
+    # Absolutize the paths
+    abs_report_dir = str(Path(report_dir).resolve())
+    abs_expected_dir = str(Path(expected_dir).resolve())
+    
     if report.has_changes:
         summary_parts = [
             f"{value} {key}" for key, value in report.summary.items() if value != 0
@@ -67,8 +71,8 @@ def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
         result.append(f"Comparison failed ({summary_str}).")
         
         # Add the 'fix' command suggestion
-        quoted_expected = shlex.quote(expected_dir)
-        quoted_report = shlex.quote(report_dir)
+        quoted_expected = shlex.quote(abs_expected_dir)
+        quoted_report = shlex.quote(abs_report_dir)
         fix_command = f"python -m assertis fix {quoted_expected} {quoted_report}"
         result.append(f"\nTo apply these changes to the expected directory, run:")
         result.append(f"  {fix_command}")
@@ -77,5 +81,5 @@ def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
     result.append("\nFiles:")
     for file in report.files:
         result.append(f"  {file.name}: {'; '.join(file.reasons)}")
-    result.append(f"\nReport is in the directory: {report_dir}")
+    result.append(f"\nReport is in the directory: {abs_report_dir}")
     return "\n".join(result)
