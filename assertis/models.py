@@ -56,4 +56,6 @@ def report_to_string(report: Report, output: str = None) -> str:
     result.append("Files:")
     for file in report.files:
         result.append(f"{file.type}: {file.name} ({', '.join(file.reasons)})")
+    if output:
+        result.append(f"Comparison results are stored in the directory: {output}")
     return "\n".join(result)
