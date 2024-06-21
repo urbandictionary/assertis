@@ -31,7 +31,8 @@ def verify(output, expected):
 
 
 def verify_report(report, expected):
-    def check_file_exists(file_path, should_exist, error_message):
+    def check_file_exists(file_path, should_exist, file_type):
+        error_message = f"{file_type} file {file_path} should {'exist' if should_exist else 'not exist'} but {'does not exist' if should_exist else 'exists'}."
         if should_exist and not Path(file_path).exists():
             errors.append(error_message)
         elif not should_exist and Path(file_path).exists():
@@ -45,35 +46,41 @@ def verify_report(report, expected):
             check_file_exists(
                 file.path_src_expected,
                 False,
-                f"Expected file {file.path_src_expected} should be deleted but exists.",
+                False,
+                "Expected",
             )
         elif isinstance(file, AddedFile):
             check_file_exists(
                 file.path_src_actual,
                 True,
-                f"Actual file {file.path_src_actual} should be added but does not exist.",
+                True,
+                "Actual",
             )
         elif isinstance(file, ChangedFile):
             check_file_exists(
                 file.path_src_actual,
                 True,
-                f"Actual file {file.path_src_actual} does not exist.",
+                True,
+                "Actual",
             )
             check_file_exists(
                 file.path_src_expected,
                 True,
-                f"Expected file {file.path_src_expected} does not exist.",
+                True,
+                "Expected",
             )
         elif isinstance(file, UnchangedFile):
             check_file_exists(
                 file.path_src_actual,
                 True,
-                f"Actual file {file.path_src_actual} does not exist.",
+                True,
+                "Actual",
             )
             check_file_exists(
                 file.path_src_expected,
                 True,
-                f"Expected file {file.path_src_expected} does not exist.",
+                True,
+                "Expected",
             )
 
     return errors
