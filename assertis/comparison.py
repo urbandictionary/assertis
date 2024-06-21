@@ -57,7 +57,7 @@ def run_comparison(expected, actual, sensitivity):
                     UnchangedFile(
                         actual_file=md5_path(actual_path),
                         actual_md5=md5_hash(actual_path),
-                        expected_file=md5_path(actual_path),
+                        expected_file=md5_path(expected_path),
                         expected_md5=md5_hash(expected_path),
                         name=str(path),
                         reasons=["Image unchanged"],
