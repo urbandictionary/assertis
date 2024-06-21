@@ -31,15 +31,13 @@ def verify(output, expected):
         print("Verification successful. No errors found.")
 
 
-def should_exist(file_path, file_type):
+def should_exist(file_path, file_type, errors):
     if not Path(file_path).exists():
-        return f"{file_type} file {file_path} should exist but does not exist."
-    return None
+        errors.append(f"{file_type} file {file_path} should exist but does not exist.")
 
-def should_not_exist(file_path, file_type):
+def should_not_exist(file_path, file_type, errors):
     if Path(file_path).exists():
-        return f"{file_type} file {file_path} should not exist but does exist."
-    return None
+        errors.append(f"{file_type} file {file_path} should not exist but does exist.")
 
 def verify_report(report, expected_dir):
     errors = []
@@ -47,26 +45,14 @@ def verify_report(report, expected_dir):
 
     for file in report.files:
         if isinstance(file, DeletedFile):
-            error = should_not_exist(file.expected_src_path, "Expected")
-            if error:
-                errors.append(error)
+            should_not_exist(file.expected_src_path, "Expected", errors)
         elif isinstance(file, AddedFile):
-            error = should_exist(file.actual_src_path, "Actual")
-            if error:
-                errors.append(error)
+            should_exist(file.actual_src_path, "Actual", errors)
         elif isinstance(file, ChangedFile):
-            error = should_exist(file.actual_src_path, "Actual")
-            if error:
-                errors.append(error)
-            error = should_exist(file.expected_src_path, "Expected")
-            if error:
-                errors.append(error)
+            should_exist(file.actual_src_path, "Actual", errors)
+            should_exist(file.expected_src_path, "Expected", errors)
         elif isinstance(file, UnchangedFile):
-            error = should_exist(file.actual_src_path, "Actual")
-            if error:
-                errors.append(error)
-            error = should_exist(file.expected_src_path, "Expected")
-            if error:
-                errors.append(error)
+            should_exist(file.actual_src_path, "Actual", errors)
+            should_exist(file.expected_src_path, "Expected", errors)
 
     return errors
