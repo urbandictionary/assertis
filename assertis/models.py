@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import List, Literal, Optional, Union
+from typing import Dict, List, Literal, Optional, Union
 from pathlib import Path
 
 from PIL import Image
