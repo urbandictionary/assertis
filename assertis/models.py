@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, validator
 from typing import List, Optional, Dict, Union
 from collections import defaultdict
-from typing import Literal
+from typing import Literal, Any
 
 
 class BaseFile(BaseModel, extra="forbid"):
@@ -44,6 +44,11 @@ class DisplayData(BaseModel, extra="forbid"):
     )
     has_changes: bool = False
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
+
+
+class FullData(BaseModel, extra="forbid"):
+    display_data: DisplayData
+    diff_images: Dict[str, Any] = Field(default_factory=dict)
 
 
 def display_data_to_string(display_data: DisplayData) -> str:
