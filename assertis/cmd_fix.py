@@ -23,8 +23,7 @@ def apply_changes(report, report_dir, expected_dir, dry_run):
 
         elif isinstance(file, DeletedFile):
             if not dry_run:
-                if target_path.exists():
-                    target_path.unlink()
+                target_path.unlink()
             print(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
 
 
