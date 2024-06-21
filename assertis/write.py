@@ -36,13 +36,10 @@ def write_report(report, output_dir):
     for file in report.files:
         report.summary[file.type] += 1
 
-    # Ensure all keys are present in the summary
-    for key in ["added", "changed", "unchanged", "deleted"]:
-        if key not in report.summary:
-            report.summary[key] = 0
-
-    report.has_changes = any(
-        file_data.type in ["changed", "added", "deleted"] for file_data in report.files
+    report.has_changes = bool(
+        report.summary["added"]
+        or report.summary["changed"]
+        or report.summary["deleted"]
     )
 
     generate_html_report(output_dir, report)
