@@ -46,10 +46,11 @@ def serve(expected, actual, sensitivity, port):
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
-            click.echo(f"Event detected: {event.event_type} on {event.src_path}")
-            write_comparison_with_timing(
-                self.expected, self.actual, self.report, self.sensitivity
-            )
+            if event.event_type in ['created', 'deleted', 'modified', 'moved']:
+                click.echo(f"Event detected: {event.event_type} on {event.src_path}")
+                write_comparison_with_timing(
+                    self.expected, self.actual, self.report, self.sensitivity
+                )
 
     with tempfile.TemporaryDirectory() as temp_output:
         report_dir = Path(temp_output)
