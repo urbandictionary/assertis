@@ -70,7 +70,7 @@ def generate_html_report(report_dir, report_data):
         report_file.write(html_content)
 
 
-def finish(report_data, diff_images, output_dir):
+def write_report(report_data, diff_images, output_dir):
     for file_data in report_data.files:
         if hasattr(file_data, "path_src_expected") and file_data.path_src_expected:
             path = Path(file_data.path_src_expected)
@@ -194,4 +194,4 @@ def run_comparison(expected, actual, output, sensitivity):
                         )
                     )
 
-    return finish(report_data, diff_images, output_dir)
+    return write_report(report_data, diff_images, output_dir)
