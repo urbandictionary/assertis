@@ -56,11 +56,12 @@ class Report(BaseModel, extra="forbid"):
 def report_to_string(report: Report, output: str = None) -> str:
     "Convert the report object to a formatted string."
     result = []
-    result.append(f"Comparison {'failed' if report.has_changes else 'passed'}.")
-    result.append("")
-    result.append("Summary:")
-    for key, value in report.summary.items():
-        result.append(f"  {key}: {value}")
+    if report.has_changes:
+        summary_parts = [f"{value} {key}" for key, value in report.summary.items()]
+        summary_str = ", ".join(summary_parts)
+        result.append(f"Comparison failed ({summary_str}).")
+    else:
+        result.append("Comparison passed.")
     result.append("Files:")
     for file in report.files:
         result.append(f"  {file.name}: {'; '.join(file.reasons)}")
