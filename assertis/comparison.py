@@ -91,6 +91,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     actual_md5=md5_hash(actual_dir / img_path),
                 )
             )
+            report.outputs[str(output_dir / f"{md5_hash(actual_dir / img_path)}{img_path.suffix}")] = actual_dir / img_path
         else:
             expected_src_path = expected_dir / img_path
             actual_src_path = actual_dir / img_path
