@@ -47,7 +47,7 @@ def serve(expected, actual, sensitivity, port):
 
         def on_any_event(self, event):
             if (
-                event.event_type in ["created", "deleted", "modified", "moved"]
+                event.event_type in ["deleted", "modified", "moved"]
                 and not event.is_directory
             ):
                 click.echo(
