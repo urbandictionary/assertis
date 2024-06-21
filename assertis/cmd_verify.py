@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import sys
 from assertis.models import Report, AddedFile, DeletedFile, ChangedFile, UnchangedFile
+from assertis.md5_utils import md5_hash
 
 
 @click.command(help="Verify the comparison report.")
@@ -21,7 +22,7 @@ def verify(output, expected):
         report_data = json.load(f)
 
     report = Report(**report_data)
-    errors = verify_report(report, expected_dir)
+    errors = verify_report(report, output_dir, expected_dir)
 
     if errors:
         for error in errors:
@@ -29,9 +30,6 @@ def verify(output, expected):
         sys.exit(1)
     else:
         print("Verification successful. No errors found.")
-
-
-from assertis.md5_utils import md5_hash
 
 
 def should_exist(file_path, file_type, errors, expected_md5):
@@ -48,20 +46,35 @@ def should_not_exist(file_path, file_type, errors):
         errors.append(f"{file_type} file {file_path} should not exist but does exist.")
 
 
-def verify_report(report, expected_dir):
+def verify_report(report, output_dir, expected_dir):
     errors = []
-    expected_path = Path(expected_dir)
 
     for file in report.files:
         if isinstance(file, DeletedFile):
-            should_not_exist(file.expected_src_path, "Expected", errors)
+            should_not_exist(output_dir / file.expected_out_path, "Output", errors)
         elif isinstance(file, AddedFile):
-            should_exist(file.actual_src_path, "Actual", errors, file.actual_md5)
+            should_exist(
+                output_dir / file.expected_out_path, "Output", errors, file.expected_md5
+            )
         elif isinstance(file, ChangedFile):
-            should_exist(file.actual_src_path, "Actual", errors, file.actual_md5)
-            should_exist(file.expected_src_path, "Expected", errors, file.expected_md5)
+            should_exist(
+                output_dir / file.expected_out_path, "Output", errors, file.expected_md5
+            )
+            should_exist(
+                expected_dir / file.name,
+                "Expected",
+                errors,
+                file.expected_md5,
+            )
         elif isinstance(file, UnchangedFile):
-            should_exist(file.actual_src_path, "Actual", errors, file.actual_md5)
-            should_exist(file.expected_src_path, "Expected", errors, file.expected_md5)
+            should_exist(
+                output_dir / file.expected_out_path, "Output", errors, file.expected_md5
+            )
+            should_exist(
+                expected_dir / file.name,
+                "Expected",
+                errors,
+                file.expected_md5,
+            )
 
     return errors
