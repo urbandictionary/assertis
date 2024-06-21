@@ -32,9 +32,7 @@ def apply_changes(report, output_dir, expected_dir, dry_run):
             print(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
 
 
-@click.command(
-    help="Apply changes to the expected directory based on the comparison report."
-)
+@click.command()
 @click.argument("output")
 @click.argument("expected")
 @click.option("--dry-run", is_flag=True, help="Run the command in dry run mode.")

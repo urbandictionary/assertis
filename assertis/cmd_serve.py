@@ -5,7 +5,7 @@ from assertis.comparison import run_comparison
 from pathlib import Path
 
 
-@click.command(help="Serve a web interface to view the comparison report.")
+@click.command()
 @click.argument("expected")
 @click.argument("actual")
 @click.option(

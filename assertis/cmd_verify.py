@@ -6,7 +6,7 @@ from assertis.models import Report, AddedFile, DeletedFile, ChangedFile, Unchang
 from assertis.md5_utils import md5_hash
 
 
-@click.command(help="Verify the comparison report.")
+@click.command()
 @click.argument("output")
 @click.argument("expected")
 def verify(output, expected):
