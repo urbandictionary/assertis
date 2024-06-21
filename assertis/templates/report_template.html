@@ -24,10 +24,7 @@
         }
     </style>
 </head>
-<body x-data="{ globalModalOpen: false, modalDataIndex: -1, activeModalImage: 'actual' }" :class="{ 'is-clipped': globalModalOpen }">
-    <script>
-        const modalDataList = {{ files_json | safe }};
-    </script>
+<body x-data="{ globalModalOpen: false, modalDataIndex: -1, activeModalImage: 'actual', modalDataList: JSON.parse(document.body.dataset.modalDataList) }" :class="{ 'is-clipped': globalModalOpen }" data-modal-data-list="{{ files_json | e }}">
     <section class="section">
         <div class="container">
             <h1 class="title">{{ title }}</h1>
