@@ -33,10 +33,10 @@ def apply_changes(report, output_dir, expected_dir, dry_run):
 
 
 @click.command()
-@click.argument("output")
 @click.argument("expected")
+@click.argument("output")
 @click.option("--dry-run", is_flag=True, help="Run the command in dry run mode.")
-def fix(output, expected, dry_run):
+def fix(expected, output, dry_run):
     "CLI command to apply changes to the expected directory."
     output_dir = Path(output)
     report_file = output_dir / "report.json"

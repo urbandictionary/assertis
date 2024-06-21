@@ -7,9 +7,9 @@ from assertis.md5_utils import md5_hash
 
 
 @click.command()
-@click.argument("output")
 @click.argument("expected")
-def verify(output, expected):
+@click.argument("output")
+def verify(expected, output):
     "Verify the comparison report against the expected directory."
     output_dir = Path(output)
     expected_dir = Path(expected)
