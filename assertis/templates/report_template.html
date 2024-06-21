@@ -33,13 +33,13 @@
                             </header>
                             <div class="card-image">
                                 <figure class="image">
-                                    {% if file.path_out_actual %}
-                                    <a target="_blank" href="{{ file.path_out_actual }}"><img src="{{ file.path_out_actual }}" class="checkerboard"></a>
+                                    {% if file.actual_out_path %}
+                                    <a target="_blank" href="{{ file.actual_out_path }}"><img src="{{ file.actual_out_path }}" class="checkerboard"></a>
                                     {% endif %}
                                 </figure>
                                 <figure class="image">
-                                    {% if file.path_out_expected %}
-                                    <a target="_blank" href="{{ file.path_out_expected }}"><img src="{{ file.path_out_expected }}" class="checkerboard"></a>
+                                    {% if file.expected_out_path %}
+                                    <a target="_blank" href="{{ file.expected_out_path }}"><img src="{{ file.expected_out_path }}" class="checkerboard"></a>
                                     {% endif %}
                                 </figure>
                                 <figure class="image">

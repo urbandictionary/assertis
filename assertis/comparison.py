@@ -73,7 +73,6 @@ def run_comparison(expected, actual, output, sensitivity):
             report.files.append(
                 DeletedFile(
                     name=str(img_path),
-                    expected_src_path=str(expected_dir / img_path),
                     expected_out_path=None,
                     reasons=["Image deleted"],
                     expected_md5=md5_hash(expected_dir / img_path),
@@ -102,7 +101,6 @@ def run_comparison(expected, actual, output, sensitivity):
                 report.files.append(
                     UnchangedFile(
                         name=str(img_path),
-                        expected_src_path=str(expected_src_path),
                         actual_src_path=str(actual_src_path),
                         expected_out_path=None,
                         actual_out_path=None,
@@ -125,7 +123,6 @@ def run_comparison(expected, actual, output, sensitivity):
                     report.files.append(
                         UnchangedFile(
                             name=str(img_path),
-                            expected_src_path=str(expected_src_path),
                             actual_src_path=str(actual_src_path),
                             expected_out_path=None,
                             actual_out_path=None,
@@ -149,7 +146,6 @@ def run_comparison(expected, actual, output, sensitivity):
                     report.files.append(
                         ChangedFile(
                             name=str(img_path),
-                            expected_src_path=str(expected_src_path),
                             actual_src_path=str(actual_src_path),
                             expected_out_path=None,
                             actual_out_path=None,

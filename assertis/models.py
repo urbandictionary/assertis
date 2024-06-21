@@ -19,7 +19,6 @@ class AddedFile(BaseFile, extra="forbid"):
 class DeletedFile(BaseFile, extra="forbid"):
     expected_md5: str
     expected_out_path: Optional[str]
-    expected_src_path: str
     type: Literal["deleted"] = "deleted"
 
 
@@ -30,7 +29,6 @@ class ChangedFile(BaseFile, extra="forbid"):
     diff_path: Optional[str]
     expected_md5: str
     expected_out_path: Optional[str]
-    expected_src_path: str
     type: Literal["changed"] = "changed"
 
 
@@ -40,7 +38,6 @@ class UnchangedFile(BaseFile, extra="forbid"):
     actual_src_path: str
     expected_md5: str
     expected_out_path: Optional[str]
-    expected_src_path: str
     type: Literal["unchanged"] = "unchanged"
 
 
