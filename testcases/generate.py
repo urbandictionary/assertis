@@ -27,10 +27,10 @@ def download_image(output_path):
 # Function to create a directory structure
 def create_directories(case_name):
     "Create the directory structure for a test case."
-    os.makedirs(f"cases/{case_name}/actual", exist_ok=True)
-    os.makedirs(f"cases/{case_name}/expected", exist_ok=True)
-    Path(f"cases/{case_name}/actual/.gitkeep").touch()
-    Path(f"cases/{case_name}/expected/.gitkeep").touch()
+    os.makedirs(f"{case_name}/actual", exist_ok=True)
+    os.makedirs(f"{case_name}/expected", exist_ok=True)
+    Path(f"{case_name}/actual/.gitkeep").touch()
+    Path(f"{case_name}/expected/.gitkeep").touch()
 
 
 # Function to add text to an image
@@ -83,33 +83,33 @@ def generate_test_cases():
     "Generate various test cases for image comparison."
     # Case: Files added
     create_directories("files_added")
-    download_image("cases/files_added/actual/img1.jpg")
+    download_image("files_added/actual/img1.jpg")
 
     # Case: Files removed
     create_directories("files_removed")
-    download_image("cases/files_removed/expected/img1.jpg")
+    download_image("files_removed/expected/img1.jpg")
 
     # Case: Files unchanged
     create_directories("files_unchanged")
-    download_image("cases/files_unchanged/expected/img1.jpg")
+    download_image("files_unchanged/expected/img1.jpg")
     copy_file(
-        "cases/files_unchanged/expected/img1.jpg",
-        "cases/files_unchanged/actual/img1.jpg",
+        "files_unchanged/expected/img1.jpg",
+        "files_unchanged/actual/img1.jpg",
     )
 
     # Case: Files changed
     create_directories("files_changed")
-    download_image("cases/files_changed/expected/img1.jpg")
+    download_image("files_changed/expected/img1.jpg")
     copy_file(
-        "cases/files_changed/expected/img1.jpg", "cases/files_changed/actual/img1.jpg"
+        "files_changed/expected/img1.jpg", "files_changed/actual/img1.jpg"
     )
-    add_text_to_image("cases/files_changed/actual/img1.jpg", "Changed")
+    add_text_to_image("files_changed/actual/img1.jpg", "Changed")
 
     # Case: Lots of files
     create_directories("lots_of_files")
     for i in range(1, 11):
-        expected_img_path = f"cases/lots_of_files/expected/img_{i}.jpg"
-        actual_img_path = f"cases/lots_of_files/actual/img_{i}.jpg"
+        expected_img_path = f"lots_of_files/expected/img_{i}.jpg"
+        actual_img_path = f"lots_of_files/actual/img_{i}.jpg"
         download_image(expected_img_path)
         copy_file(expected_img_path, actual_img_path)
         if i % 2 == 0:
@@ -117,33 +117,33 @@ def generate_test_cases():
 
     # Case: Files changed because of size
     create_directories("files_changed_size")
-    download_image("cases/files_changed_size/expected/img1.jpg")
+    download_image("files_changed_size/expected/img1.jpg")
     copy_file(
-        "cases/files_changed_size/expected/img1.jpg",
-        "cases/files_changed_size/actual/img1.jpg",
+        "files_changed_size/expected/img1.jpg",
+        "files_changed_size/actual/img1.jpg",
     )
     resize_image(
-        "cases/files_changed_size/actual/img1.jpg", (250, 375)
+        "files_changed_size/actual/img1.jpg", (250, 375)
     )  # Resize to a different size
 
     # Case: Files changed because of mode
     create_directories("files_changed_mode")
-    download_image("cases/files_changed_mode/expected/img1.png")
+    download_image("files_changed_mode/expected/img1.png")
     copy_file(
-        "cases/files_changed_mode/expected/img1.png",
-        "cases/files_changed_mode/actual/img1.png",
+        "files_changed_mode/expected/img1.png",
+        "files_changed_mode/actual/img1.png",
     )
-    change_mode_to_rgba("cases/files_changed_mode/actual/img1.png")
+    change_mode_to_rgba("files_changed_mode/actual/img1.png")
 
     # Case: Files changed a lot
     create_directories("files_changed_lot")
-    download_image("cases/files_changed_lot/expected/img1.jpg")
+    download_image("files_changed_lot/expected/img1.jpg")
     copy_file(
-        "cases/files_changed_lot/expected/img1.jpg",
-        "cases/files_changed_lot/actual/img1.jpg",
+        "files_changed_lot/expected/img1.jpg",
+        "files_changed_lot/actual/img1.jpg",
     )
     invert_image_colors(
-        "cases/files_changed_lot/actual/img1.jpg"
+        "files_changed_lot/actual/img1.jpg"
     )  # Invert colors for significant change
 
     # Case: Empty directories
@@ -153,4 +153,4 @@ def generate_test_cases():
 # Generate the test cases
 generate_test_cases()
 
-print("Test cases generated successfully in 'cases' directory.")
+print("Test cases generated successfully.")
