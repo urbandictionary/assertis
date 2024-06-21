@@ -139,4 +139,5 @@ def run_comparison(expected, actual, output, sensitivity):
                         )
                     )
 
-    return write_report(report, output_dir)
+    write_report(report, output_dir)
+    return report

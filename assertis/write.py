@@ -60,4 +60,3 @@ def write_report(report, output_dir):
             indent=4,
         )
 
-    return report.has_changes
