@@ -1,4 +1,5 @@
 import os
+import json
 from assertis.comparison import run_comparison
 from assertis.models import report_to_string, Report
 
