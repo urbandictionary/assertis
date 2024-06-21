@@ -29,7 +29,7 @@ def compare(expected, actual, output, sensitivity):
         report_dir.mkdir(parents=True)
 
     report = write_comparison(expected, actual, report_dir, sensitivity)
-    click.echo(report_to_string(report, output))
+    click.echo(report_to_string(report, output, expected))
     if report.has_changes:
         sys.exit(1)
     else:

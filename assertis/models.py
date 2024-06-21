@@ -55,7 +55,7 @@ class Report(BaseModel, extra="forbid"):
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
 
 
-def report_to_string(report: Report, report_dir: str) -> str:
+def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
     "Convert the report object to a formatted string."
     result = []
     if report.has_changes:
