@@ -7,6 +7,15 @@ import click
 from assertis.comparison import write_comparison
 
 
+def write_comparison_with_timing(expected, actual, report_dir, sensitivity):
+    click.echo("Writing comparison...")
+    start_time = time.time()
+    write_comparison(expected, actual, report_dir, sensitivity)
+    end_time = time.time()
+    duration = end_time - start_time
+    click.echo(f"Comparison written in {duration:.2f} seconds.")
+
+
 @click.command()
 @click.argument("expected")
 @click.argument("actual")
@@ -39,18 +48,13 @@ def serve(expected, actual, sensitivity, port):
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
-            click.echo("Writing comparison...")
-            start_time = time.time()
-            write_comparison(self.expected, self.actual, self.report, self.sensitivity)
-            end_time = time.time()
-            duration = end_time - start_time
-            click.echo(f"Comparison written in {duration:.2f} seconds.")
+            write_comparison_with_timing(self.expected, self.actual, self.report, self.sensitivity)
 
     with tempfile.TemporaryDirectory() as temp_output:
         report_dir = Path(temp_output)
 
         # Run initial comparison
-        write_comparison(expected, actual, report_dir, sensitivity)
+        write_comparison_with_timing(expected, actual, report_dir, sensitivity)
 
         handler = ChangeHandler(expected, actual, report_dir, sensitivity)
         observer = Observer()
