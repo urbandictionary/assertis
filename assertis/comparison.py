@@ -100,6 +100,7 @@ def run_comparison(expected, actual, sensitivity):
                     )
                     report.outputs[md5_path(actual_path)] = actual_path
                     report.outputs[md5_path(expected_path)] = expected_path
+    report.files.sort(key=lambda item: item.name)
     return report
 
 
