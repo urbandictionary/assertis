@@ -64,6 +64,13 @@ def report_to_string(report: Report, report_dir: str, expected_dir: str) -> str:
         ]
         summary_str = ", ".join(summary_parts)
         result.append(f"Comparison failed ({summary_str}).")
+        
+        # Add the 'fix' command suggestion
+        escaped_expected = expected_dir.replace(" ", r"\ ")
+        escaped_report = report_dir.replace(" ", r"\ ")
+        fix_command = f"python -m assertis fix {escaped_expected} {escaped_report}"
+        result.append(f"\nTo apply these changes to the expected directory, run:")
+        result.append(f"  {fix_command}")
     else:
         result.append("Comparison passed.")
     result.append("\nFiles:")
