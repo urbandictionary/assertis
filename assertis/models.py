@@ -48,11 +48,15 @@ class ReportData(BaseModel, extra="forbid"):
 
 def report_data_to_string(report_data: ReportData) -> str:
     result = []
-    result.append(f"Report has {'changes' if report_data.has_changes else 'no changes'}")
+    result.append(
+        f"Report has {'changes' if report_data.has_changes else 'no changes'}"
+    )
     result.append("Summary:")
     for key, value in report_data.summary.items():
         result.append(f"  {key}: {value}")
     result.append("Files:")
     for file in report_data.files:
-        result.append(f"{file.comparison_result}: {file.name} ({', '.join(file.reasons)})")
+        result.append(
+            f"{file.comparison_result}: {file.name} ({', '.join(file.reasons)})"
+        )
     return "\n".join(result)
