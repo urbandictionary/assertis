@@ -46,8 +46,8 @@ def serve(expected, actual, sensitivity, port):
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
-            if event.event_type in ['created', 'deleted', 'modified', 'moved']:
-                click.echo(f"Event detected: {event.event_type} on {event.src_path}")
+            if event.event_type in ['created', 'deleted', 'modified', 'moved'] and not event.is_directory:
+                click.echo(f"Event detected: {event.event_type} on file {event.src_path}")
                 write_comparison_with_timing(
                     self.expected, self.actual, self.report, self.sensitivity
                 )
