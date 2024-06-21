@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="is-clipped">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,18 @@
     <style>
         .checkerboard {
             background: repeating-conic-gradient(#f7f7f7 0% 25%, transparent 0% 50%) 50% / 20px 20px;
+        }
+        .modal-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -31,25 +43,25 @@
                 <div class="grid is-col-min-9">
                     {% for file in files %}
                     <div class="cell">
-                        <div class="card">
+                        <div class="card" x-data="{ activeImage: 'actual', modalOpen: false, modalSrc: '' }">
                             <header class="card-header">
                                 <p class="card-header-title">{{ file.name }}</p>
                             </header>
-                            <div x-data="{ activeImage: 'actual' }">
+                            <div>
                                 <div class="card-image">
                                     <figure class="image" x-show="activeImage === 'actual'">
                                         {% if file.actual_file %}
-                                        <a target="_blank" href="{{ file.actual_file }}"><img src="{{ file.actual_file }}" class="checkerboard"></a>
+                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="modalOpen = true; modalSrc = '{{ file.actual_file }}'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'expected'">
                                         {% if file.expected_file %}
-                                        <a target="_blank" href="{{ file.expected_file }}"><img src="{{ file.expected_file }}" class="checkerboard"></a>
+                                        <img src="{{ file.expected_file }}" class="checkerboard" @click="modalOpen = true; modalSrc = '{{ file.expected_file }}'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'diff'">
                                         {% if file.diff_file %}
-                                        <a target="_blank" href="{{ file.diff_file }}"><img src="{{ file.diff_file }}"></a>
+                                        <img src="{{ file.diff_file }}" @click="modalOpen = true; modalSrc = '{{ file.diff_file }}'">
                                         {% endif %}
                                     </figure>
                                 </div>
@@ -72,6 +84,13 @@
                                     <a @click.prevent="activeImage = 'diff'" :class="{ 'is-active': activeImage === 'diff' }" class="card-footer-item" href="#">Diff</a>
                                     {% endif %}
                                 </footer>
+                            </div>
+                            <div class="modal" :class="{ 'is-active': modalOpen }">
+                                <div class="modal-background" @click="modalOpen = false"></div>
+                                <div class="modal-content">
+                                    <img :src="modalSrc" alt="Full size image">
+                                </div>
+                                <button class="modal-close is-large" aria-label="close" @click="modalOpen = false"></button>
                             </div>
                         </div>
                     </div>
