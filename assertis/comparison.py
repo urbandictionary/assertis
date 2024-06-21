@@ -5,7 +5,7 @@ from assertis.md5_utils import md5_hash, md5_hash_image
 from assertis.file_utils import glob
 from PIL import Image, ImageChops, ImageDraw
 from assertis.models import (
-    ReportData,
+    DisplayData,
     AddedFile,
     DeletedFile,
     ChangedFile,
@@ -60,18 +60,18 @@ def compare_images(img1_path, img2_path, sensitivity):
     return change_extent <= sensitivity, diff_highlight, reasons
 
 
-def generate_html_report(report_dir, report_data):
+def generate_html_report(report_dir, display_data):
     env = Environment(loader=PackageLoader("assertis", "templates"))
     template = env.get_template("report_template.html")
 
-    html_content = template.render(report_data)
+    html_content = template.render(display_data)
 
     with open(os.path.join(report_dir, "index.html"), "w") as report_file:
         report_file.write(html_content)
 
 
-def write_report(report_data, diff_images, output_dir):
-    for file_data in report_data.files:
+def write_report(display_data, diff_images, output_dir):
+    for file_data in display_data.files:
         if hasattr(file_data, "path_src_expected") and file_data.path_src_expected:
             path = Path(file_data.path_src_expected)
             file_data.path_out_expected = f"{md5_hash(path)}{path.suffix}"
@@ -86,27 +86,27 @@ def write_report(report_data, diff_images, output_dir):
         diff_image.save(diff_path, format="PNG")
 
     # Initialize summary with all possible keys
-    report_data.summary = {"added": 0, "changed": 0, "unchanged": 0, "deleted": 0}
+    display_data.summary = {"added": 0, "changed": 0, "unchanged": 0, "deleted": 0}
 
-    for file in report_data.files:
-        report_data.summary[file.comparison_result] += 1
+    for file in display_data.files:
+        display_data.summary[file.comparison_result] += 1
 
     # Ensure all keys are present in the summary
     for key in ["added", "changed", "unchanged", "deleted"]:
-        if key not in report_data.summary:
-            report_data.summary[key] = 0
+        if key not in display_data.summary:
+            display_data.summary[key] = 0
 
-    report_data.has_changes = any(
+    display_data.has_changes = any(
         file_data.comparison_result in ["changed", "added", "deleted"]
-        for file_data in report_data.files
+        for file_data in display_data.files
     )
 
-    generate_html_report(output_dir, report_data)
+    generate_html_report(output_dir, display_data)
 
     with open(output_dir / "report.json", "w") as json_file:
-        json.dump(report_data.model_dump(), json_file, indent=4)
+        json.dump(display_data.model_dump(), json_file, indent=4)
 
-    return report_data.has_changes
+    return display_data.has_changes
 
 
 def run_comparison(expected, actual, output, sensitivity):
@@ -114,7 +114,7 @@ def run_comparison(expected, actual, output, sensitivity):
     actual_dir = Path(actual)
     output_dir = Path(output)
 
-    report_data = ReportData()
+    display_data = DisplayData()
 
     expected_images = glob(expected_dir)
     actual_images = glob(actual_dir)
@@ -123,7 +123,7 @@ def run_comparison(expected, actual, output, sensitivity):
 
     for img_path in expected_images:
         if img_path not in actual_images:
-            report_data.files.append(
+            display_data.files.append(
                 DeletedFile(
                     name=str(img_path),
                     path_src_expected=str(expected_dir / img_path),
@@ -134,7 +134,7 @@ def run_comparison(expected, actual, output, sensitivity):
 
     for img_path in actual_images:
         if img_path not in expected_images:
-            report_data.files.append(
+            display_data.files.append(
                 AddedFile(
                     name=str(img_path),
                     path_src_actual=str(actual_dir / img_path),
@@ -147,7 +147,7 @@ def run_comparison(expected, actual, output, sensitivity):
             path_src_actual = actual_dir / img_path
 
             if filecmp.cmp(path_src_expected, path_src_actual, shallow=False):
-                report_data.files.append(
+                display_data.files.append(
                     UnchangedFile(
                         name=str(img_path),
                         path_src_expected=str(path_src_expected),
@@ -162,7 +162,7 @@ def run_comparison(expected, actual, output, sensitivity):
                     path_src_expected, path_src_actual, sensitivity
                 )
                 if identical:
-                    report_data.files.append(
+                    display_data.files.append(
                         UnchangedFile(
                             name=str(img_path),
                             path_src_expected=str(path_src_expected),
@@ -178,7 +178,7 @@ def run_comparison(expected, actual, output, sensitivity):
                         md5_hash_value = md5_hash_image(diff_image)
                         diff_path = output_dir / f"{md5_hash_value}.png"
                         diff_images[str(diff_path)] = diff_image
-                    report_data.files.append(
+                    display_data.files.append(
                         ChangedFile(
                             name=str(img_path),
                             path_src_expected=str(path_src_expected),
@@ -194,4 +194,4 @@ def run_comparison(expected, actual, output, sensitivity):
                         )
                     )
 
-    return write_report(report_data, diff_images, output_dir)
+    return write_report(display_data, diff_images, output_dir)

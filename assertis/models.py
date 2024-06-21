@@ -38,7 +38,7 @@ class UnchangedFile(BaseFile, extra="forbid"):
     path_src_actual: Optional[str] = None
 
 
-class ReportData(BaseModel, extra="forbid"):
+class DisplayData(BaseModel, extra="forbid"):
     files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(
         default_factory=list
     )
@@ -46,16 +46,16 @@ class ReportData(BaseModel, extra="forbid"):
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
 
 
-def report_data_to_string(report_data: ReportData) -> str:
+def display_data_to_string(display_data: DisplayData) -> str:
     result = []
     result.append(
-        f"Report has {'changes' if report_data.has_changes else 'no changes'}"
+        f"Report has {'changes' if display_data.has_changes else 'no changes'}"
     )
     result.append("Summary:")
-    for key, value in report_data.summary.items():
+    for key, value in display_data.summary.items():
         result.append(f"  {key}: {value}")
     result.append("Files:")
-    for file in report_data.files:
+    for file in display_data.files:
         result.append(
             f"{file.comparison_result}: {file.name} ({', '.join(file.reasons)})"
         )

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from click.testing import CliRunner
 from assertis.cli import assertis  # Replace with the actual name of your script module
-from assertis.models import ReportData
+from assertis.models import DisplayData
 
 
 def generate_report(cases_dir):
@@ -35,62 +35,62 @@ def generate_report(cases_dir):
             raise FileNotFoundError(f"report.json not found in {output_dir}")
 
         with open(report_path, "r") as report_file:
-            report_data = ReportData(**json.load(report_file))
+            display_data = DisplayData(**json.load(report_file))
 
-    return result.exit_code, report_data
+    return result.exit_code, display_data
 
 
 def test_empty():
-    exit_code, report_data = generate_report(Path("cases/empty"))
+    exit_code, display_data = generate_report(Path("cases/empty"))
     assert exit_code == 0
-    assert report_data.has_changes is False
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {}
+    assert display_data.has_changes is False
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {}
 
 
 def test_added():
-    exit_code, report_data = generate_report(Path("cases/files_added"))
+    exit_code, display_data = generate_report(Path("cases/files_added"))
     assert exit_code == 1
-    assert report_data.has_changes is True
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"added": 1}
+    assert display_data.has_changes is True
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"added": 1}
 
 
 def test_changed():
-    exit_code, report_data = generate_report(Path("cases/files_changed"))
+    exit_code, display_data = generate_report(Path("cases/files_changed"))
     assert exit_code == 1
-    assert report_data.has_changes is True
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
+    assert display_data.has_changes is True
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_changed_lot():
-    exit_code, report_data = generate_report(Path("cases/files_changed_lot"))
+    exit_code, display_data = generate_report(Path("cases/files_changed_lot"))
     assert exit_code == 1
-    assert report_data.has_changes is True
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
+    assert display_data.has_changes is True
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_changed_mode():
-    exit_code, report_data = generate_report(Path("cases/files_changed_mode"))
+    exit_code, display_data = generate_report(Path("cases/files_changed_mode"))
     assert exit_code == 1
-    assert report_data.has_changes is True
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
+    assert display_data.has_changes is True
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_changed_size():
-    exit_code, report_data = generate_report(Path("cases/files_changed_size"))
+    exit_code, display_data = generate_report(Path("cases/files_changed_size"))
     assert exit_code == 1
-    assert report_data.has_changes is True
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"changed": 1}
+    assert display_data.has_changes is True
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"changed": 1}
 
 
 def test_removed():
-    exit_code, report_data = generate_report(Path("cases/files_removed"))
+    exit_code, display_data = generate_report(Path("cases/files_removed"))
     assert exit_code == 1
-    assert report_data.has_changes is True
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"deleted": 1}
+    assert display_data.has_changes is True
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"deleted": 1}
 
 
 def test_unchanged():
-    exit_code, report_data = generate_report(Path("cases/files_unchanged"))
+    exit_code, display_data = generate_report(Path("cases/files_unchanged"))
     assert exit_code == 0
-    assert report_data.has_changes is False
-    assert {k: v for k, v in report_data.summary.items() if v != 0} == {"unchanged": 1}
+    assert display_data.has_changes is False
+    assert {k: v for k, v in display_data.summary.items() if v != 0} == {"unchanged": 1}
