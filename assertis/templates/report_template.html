@@ -24,11 +24,9 @@
         }
     </style>
 </head>
-<body x-data="{ globalModalOpen: false, modalData: { src: '', title: '', actual: '', expected: '', diff: '' }, activeModalImage: 'actual' }" :class="{ 'is-clipped': globalModalOpen }">
+<body x-data="{ globalModalOpen: false, modalDataIndex: -1, activeModalImage: 'actual' }" :class="{ 'is-clipped': globalModalOpen }">
     <script>
-        function escapeJS(string) {
-            return string.replace(/[\\'"]/g, '\\$&').replace(/\u0000/g, '\\0');
-        }
+        const modalDataList = {{ modal_data_json | safe }};
     </script>
     <section class="section">
         <div class="container">
@@ -55,17 +53,17 @@
                                 <div class="card-image">
                                     <figure class="image" x-show="activeImage === 'actual'">
                                         {% if file.actual_file %}
-                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="globalModalOpen = true; modalData = { src: escapeJS('{{ file.actual_file }}'), title: escapeJS('{{ file.name }}'), actual: escapeJS('{{ file.actual_file }}'), expected: escapeJS('{{ file.expected_file }}'), diff: escapeJS('{{ file.diff_file }}') }; activeModalImage = 'actual'">
+                                        <img src="{{ file.actual_file }}" class="checkerboard" @click="globalModalOpen = true; modalDataIndex = {{ loop.index0 }}; activeModalImage = 'actual'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'expected'">
                                         {% if file.expected_file %}
-                                        <img src="{{ file.expected_file }}" class="checkerboard" @click="globalModalOpen = true; modalData = { src: escapeJS('{{ file.expected_file }}'), title: escapeJS('{{ file.name }} (Expected)'), actual: escapeJS('{{ file.actual_file }}'), expected: escapeJS('{{ file.expected_file }}'), diff: escapeJS('{{ file.diff_file }}') }; activeModalImage = 'expected'">
+                                        <img src="{{ file.expected_file }}" class="checkerboard" @click="globalModalOpen = true; modalDataIndex = {{ loop.index0 }}; activeModalImage = 'expected'">
                                         {% endif %}
                                     </figure>
                                     <figure class="image" x-show="activeImage === 'diff'">
                                         {% if file.diff_file %}
-                                        <img src="{{ file.diff_file }}" @click="globalModalOpen = true; modalData = { src: escapeJS('{{ file.diff_file }}'), title: escapeJS('{{ file.name }} (Diff)'), actual: escapeJS('{{ file.actual_file }}'), expected: escapeJS('{{ file.expected_file }}'), diff: escapeJS('{{ file.diff_file }}') }; activeModalImage = 'diff'">
+                                        <img src="{{ file.diff_file }}" @click="globalModalOpen = true; modalDataIndex = {{ loop.index0 }}; activeModalImage = 'diff'">
                                         {% endif %}
                                     </figure>
                                 </div>
@@ -98,9 +96,9 @@
         <div class="modal-background" @click="globalModalOpen = false"></div>
         <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title" x-text="modalData.title"></p>
+                <p class="modal-card-title" x-text="modalDataIndex >= 0 ? modalDataList[modalDataIndex].title : ''"></p>
                 <div class="is-flex is-align-items-center">
-                    <a :href="modalData.src" class="button is-small mr-2" download>
+                    <a :href="modalDataIndex >= 0 ? modalDataList[modalDataIndex][activeModalImage] : ''" class="button is-small mr-2" download>
                         <span class="icon is-small">
                             <i class="fas fa-download"></i>
                         </span>
@@ -113,13 +111,13 @@
                 </div>
             </header>
             <section class="modal-card-body">
-                <img :src="modalData.src" alt="Full size image" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
+                <img :src="modalDataIndex >= 0 ? modalDataList[modalDataIndex][activeModalImage] : ''" alt="Full size image" style="max-width: 100%; max-height: 70vh; object-fit: contain;">
             </section>
             <footer class="modal-card-foot" style="justify-content: center;">
                 <div class="buttons">
-                    <button class="button" @click="activeModalImage = 'actual'; modalData.src = modalData.actual" x-show="modalData.actual" :class="{ 'is-active': activeModalImage === 'actual' }">Actual</button>
-                    <button class="button" @click="activeModalImage = 'expected'; modalData.src = modalData.expected" x-show="modalData.expected" :class="{ 'is-active': activeModalImage === 'expected' }">Expected</button>
-                    <button class="button" @click="activeModalImage = 'diff'; modalData.src = modalData.diff" x-show="modalData.diff" :class="{ 'is-active': activeModalImage === 'diff' }">Diff</button>
+                    <button class="button" @click="activeModalImage = 'actual'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].actual" :class="{ 'is-active': activeModalImage === 'actual' }">Actual</button>
+                    <button class="button" @click="activeModalImage = 'expected'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].expected" :class="{ 'is-active': activeModalImage === 'expected' }">Expected</button>
+                    <button class="button" @click="activeModalImage = 'diff'" x-show="modalDataIndex >= 0 && modalDataList[modalDataIndex].diff" :class="{ 'is-active': activeModalImage === 'diff' }">Diff</button>
                 </div>
             </footer>
         </div>

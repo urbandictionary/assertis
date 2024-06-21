@@ -12,7 +12,21 @@ def generate_html_report(report_dir, report):
     env = Environment(loader=PackageLoader("assertis", "templates"))
     template = env.get_template("report_template.html")
 
-    html_content = template.render(report)
+    modal_data = []
+    for file in report.files:
+        modal_data.append({
+            "title": file.name,
+            "actual": file.actual_file,
+            "expected": file.expected_file,
+            "diff": file.diff_file
+        })
+
+    context = {
+        **report.model_dump(),
+        "modal_data_json": json.dumps(modal_data)
+    }
+
+    html_content = template.render(context)
 
     with open(os.path.join(report_dir, "index.html"), "w") as report_file:
         report_file.write(html_content)
