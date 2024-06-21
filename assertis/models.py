@@ -7,11 +7,8 @@ from typing import Literal
 class BaseFile(BaseModel, extra="forbid"):
     name: str
     reasons: List[str] = []
-    name: str
-    reasons: List[str] = []
 
 class AddedFile(BaseFile, extra="forbid"):
-    name: str
     output_expected_path: Optional[str] = None
     output_actual_path: Optional[str]
     diff_path: Optional[str] = None
@@ -34,7 +31,6 @@ class ChangedFile(BaseFile, extra="forbid"):
     output_actual_path: Optional[str]
     diff_path: Optional[str]
     comparison_result: Literal["changed"] = "changed"
-    reasons: List[str]
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None
 
