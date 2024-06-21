@@ -100,9 +100,7 @@ def generate_test_cases():
     # Case: Files changed
     create_directories("files_changed")
     download_image("files_changed/expected/img1.jpg")
-    copy_file(
-        "files_changed/expected/img1.jpg", "files_changed/actual/img1.jpg"
-    )
+    copy_file("files_changed/expected/img1.jpg", "files_changed/actual/img1.jpg")
     add_text_to_image("files_changed/actual/img1.jpg", "Changed")
 
     # Case: Lots of files
