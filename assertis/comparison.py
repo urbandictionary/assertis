@@ -84,7 +84,6 @@ def run_comparison(expected, actual, output, sensitivity):
             report.files.append(
                 AddedFile(
                     name=str(img_path),
-                    actual_src_path=str(actual_dir / img_path),
                     actual_out_path=None,
                     reasons=["Image added"],
                     actual_md5=md5_hash(actual_dir / img_path),
@@ -101,7 +100,6 @@ def run_comparison(expected, actual, output, sensitivity):
                 report.files.append(
                     UnchangedFile(
                         name=str(img_path),
-                        actual_src_path=str(actual_src_path),
                         expected_out_path=None,
                         actual_out_path=None,
                         reasons=["Image unchanged"],
@@ -123,7 +121,6 @@ def run_comparison(expected, actual, output, sensitivity):
                     report.files.append(
                         UnchangedFile(
                             name=str(img_path),
-                            actual_src_path=str(actual_src_path),
                             expected_out_path=None,
                             actual_out_path=None,
                             reasons=["Image unchanged"],
@@ -146,7 +143,6 @@ def run_comparison(expected, actual, output, sensitivity):
                     report.files.append(
                         ChangedFile(
                             name=str(img_path),
-                            actual_src_path=str(actual_src_path),
                             expected_out_path=None,
                             actual_out_path=None,
                             diff_path=(
