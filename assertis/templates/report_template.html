@@ -23,6 +23,26 @@
             object-fit: contain;
         }
     </style>
+    <script>
+        let lastModified = null;
+
+        function checkForUpdates() {
+            fetch('/report.json', { method: 'HEAD' })
+                .then(response => {
+                    const newLastModified = response.headers.get('Last-Modified');
+                    console.log(newLastModified);
+                    if (lastModified && newLastModified !== lastModified) {
+                        location.reload();
+                    }
+                    lastModified = newLastModified;
+                    console.log(lastModified);
+                });
+        }
+
+        window.addEventListener('load', function() {
+            setInterval(checkForUpdates, 2000);
+        });
+    </script>
 </head>
 <body x-data="{ globalModalOpen: false, modalDataIndex: -1, activeModalImage: 'actual', modalDataList: JSON.parse(document.body.dataset.modalDataList) }" :class="{ 'is-clipped': globalModalOpen }" data-modal-data-list="{{ files_json | e }}">
     <section class="section">
