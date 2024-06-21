@@ -1,6 +1,5 @@
 import http.server
 import os
-import socketserver
 import sys
 import tempfile
 import threading
@@ -65,13 +64,14 @@ def serve(expected, actual, sensitivity, port):
 
         os.chdir(report_dir)
         Handler = http.server.SimpleHTTPRequestHandler
-        httpd = socketserver.TCPServer(("", port), Handler)
+        httpd = http.server.ThreadingHTTPServer(("", port), Handler)
 
         click.echo(f"Serving at port {port}")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
             pass
+        httpd.shutdown()
         httpd.server_close()
         observer.stop()
         observer.join()
