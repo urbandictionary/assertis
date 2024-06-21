@@ -129,16 +129,13 @@ def run_comparison(expected, actual, output, sensitivity):
                     diff_file = None
                     if diff_image:
                         md5_hash_value = md5_hash_image(diff_image)
-                        report.outputs[f"{md5_hash_value}.png"] = diff_image
+                        diff_file = f"{md5_hash_value}.png"
+                        report.outputs[diff_file] = diff_image
                     report.files.append(
                         ChangedFile(
                             actual_file=md5_path(actual_src_path),
                             actual_md5=md5_hash(actual_src_path),
-                            diff_file=(
-                                str(diff_file.relative_to(output_dir))
-                                if diff_file
-                                else None
-                            ),
+                            diff_file=diff_file,
                             expected_file=md5_path(expected_src_path),
                             expected_md5=md5_hash(expected_src_path),
                             name=str(img_path),
