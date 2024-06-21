@@ -20,7 +20,7 @@ def verify(output, expected):
         report_data = json.load(f)
 
     report = Report(**report_data)
-    errors = verify_report(report, expected)
+    errors = verify_report(report, expected_dir)
 
     if errors:
         for error in errors:
@@ -40,8 +40,9 @@ def should_not_exist(file_path, file_type):
         return f"{file_type} file {file_path} should not exist but does exist."
     return None
 
+def verify_report(report, expected_dir):
     errors = []
-    expected_path = Path(expected)
+    expected_path = Path(expected_dir)
 
     for file in report.files:
         if isinstance(file, DeletedFile):
