@@ -46,7 +46,7 @@ class Report(BaseModel, extra="forbid"):
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
 
 
-def report_to_string(report: Report, output: str = None) -> str:
+def report_to_string(report: Report, report_dir: str = None) -> str:
     "Convert the report object to a formatted string."
     result = []
     if report.has_changes:
@@ -60,6 +60,6 @@ def report_to_string(report: Report, output: str = None) -> str:
     result.append("\nFiles:")
     for file in report.files:
         result.append(f"  {file.name}: {'; '.join(file.reasons)}")
-    if output:
-        result.append(f"\nComparison results are stored in the directory: {output}")
+    if report_dir:
+        result.append(f"\nReport is in the directory: {report_dir}")
     return "\n".join(result)

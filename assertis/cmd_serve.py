@@ -27,28 +27,28 @@ def serve(expected, actual, sensitivity):
     from watchdog.observers import Observer
 
     class ChangeHandler(FileSystemEventHandler):
-        def __init__(self, expected, actual, output, sensitivity):
+        def __init__(self, expected, actual, report, sensitivity):
             self.expected = expected
             self.actual = actual
-            self.output = output
+            self.report = report
             self.sensitivity = sensitivity
 
         def on_any_event(self, event):
-            write_comparison(self.expected, self.actual, self.output, self.sensitivity)
+            write_comparison(self.expected, self.actual, self.report, self.sensitivity)
 
     with tempfile.TemporaryDirectory() as temp_output:
-        output_dir = Path(temp_output)
+        report_dir = Path(temp_output)
 
         # Run initial comparison
-        write_comparison(expected, actual, output_dir, sensitivity)
+        write_comparison(expected, actual, report_dir, sensitivity)
 
-        handler = ChangeHandler(expected, actual, output_dir, sensitivity)
+        handler = ChangeHandler(expected, actual, report_dir, sensitivity)
         observer = Observer()
         observer.schedule(handler, path=expected, recursive=True)
         observer.schedule(handler, path=actual, recursive=True)
         observer.start()
 
-        os.chdir(output_dir)
+        os.chdir(report_dir)
         PORT = 8000
         Handler = http.server.SimpleHTTPRequestHandler
         httpd = socketserver.TCPServer(("", PORT), Handler)

@@ -10,12 +10,12 @@ from assertis.models import AddedFile, ChangedFile, DeletedFile, Report, Unchang
 
 @click.command()
 @click.argument("expected")
-@click.argument("output")
-def verify(expected, output):
+@click.argument("report")
+def verify(expected, report):
     "Verify the comparison report against the expected directory."
-    output_dir = Path(output)
+    report_dir = Path(report)
     expected_dir = Path(expected)
-    report_file = output_dir / "report.json"
+    report_file = report_dir / "report.json"
 
     if not report_file.exists():
         print(f"Report file {report_file} does not exist.", file=sys.stderr)
@@ -25,7 +25,7 @@ def verify(expected, output):
         report_data = json.load(f)
 
     report = Report(**report_data)
-    errors = verify_report(report, output_dir, expected_dir)
+    errors = verify_report(report, report_dir, expected_dir)
 
     if errors:
         for error in errors:
@@ -51,20 +51,20 @@ def should_not_exist(file_path, file_type, errors):
         errors.append(f"{file_type} file {file_path} should not exist but does exist.")
 
 
-def verify_report(report, output_dir, expected_dir):
+def verify_report(report, report_dir, expected_dir):
     "Verify the integrity of the comparison report."
     errors = []
 
     for file in report.files:
         if isinstance(file, DeletedFile):
-            should_not_exist(output_dir / file.expected_file, "Output", errors)
+            should_not_exist(report_dir / file.expected_file, "Report", errors)
         elif isinstance(file, AddedFile):
             should_exist(
-                output_dir / file.expected_file, "Output", errors, file.expected_md5
+                report_dir / file.actual_file, "Report", errors, file.actual_md5
             )
         elif isinstance(file, ChangedFile):
             should_exist(
-                output_dir / file.expected_file, "Output", errors, file.expected_md5
+                report_dir / file.expected_file, "Report", errors, file.expected_md5
             )
             should_exist(
                 expected_dir / file.name,
@@ -74,7 +74,7 @@ def verify_report(report, output_dir, expected_dir):
             )
         elif isinstance(file, UnchangedFile):
             should_exist(
-                output_dir / file.expected_file, "Output", errors, file.expected_md5
+                report_dir / file.expected_file, "Report", errors, file.expected_md5
             )
             should_exist(
                 expected_dir / file.name,

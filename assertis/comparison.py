@@ -102,7 +102,7 @@ def run_comparison(expected, actual, sensitivity):
     return report
 
 
-def write_comparison(expected, actual, output, sensitivity):
+def write_comparison(expected, actual, report_dir, sensitivity):
     report = run_comparison(expected, actual, sensitivity)
-    write_report(report, Path(output))
+    write_report(report, Path(report_dir))
     return report

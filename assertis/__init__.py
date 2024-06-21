@@ -9,10 +9,10 @@ class ComparisonException(Exception):
     pass
 
 
-def compare(expected, actual, output=None, sensitivity=0):
-    if output is None:
-        output = tempfile.mkdtemp(prefix="assertis_")
+def compare(expected_dir, actual_dir, report_dir=None, sensitivity=0):
+    if report_dir is None:
+        report_dir = tempfile.mkdtemp(prefix="assertis_")
 
-    report = write_comparison(expected, actual, output, sensitivity)
+    report = write_comparison(expected_dir, actual_dir, report_dir, sensitivity)
     if report.has_changes:
-        raise ComparisonException(report_to_string(report, output))
+        raise ComparisonException(report_to_string(report, report_dir))

@@ -17,13 +17,13 @@ def generate_html_report(report_dir, report):
         report_file.write(html_content)
 
 
-def write_report(report, output_dir):
-    "Write the comparison report to the output directory."
+def write_report(report, report_dir):
+    "Write the report to the report directory."
     for path, output in report.outputs.items():
         if isinstance(output, Path):
-            shutil.copy(output, output_dir / path)
+            shutil.copy(output, report_dir / path)
         else:
-            output.save(output_dir / path, format="PNG")
+            output.save(report_dir / path, format="PNG")
 
     # Initialize summary with all possible keys
     report.summary = {
@@ -42,9 +42,9 @@ def write_report(report, output_dir):
         or report.summary["deleted"]
     )
 
-    generate_html_report(output_dir, report)
+    generate_html_report(report_dir, report)
 
-    with open(output_dir / "report.json", "w") as json_file:
+    with open(report_dir / "report.json", "w") as json_file:
         json.dump(
             report.model_dump(exclude={"outputs"}),
             json_file,

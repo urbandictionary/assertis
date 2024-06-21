@@ -13,7 +13,7 @@ def generate_report(cases_dir):
     actual_dir = cases_path / "actual"
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        output_dir = Path(temp_dir)
+        report_dir = Path(temp_dir)
 
         runner = CliRunner()
         result = runner.invoke(
@@ -22,16 +22,16 @@ def generate_report(cases_dir):
                 "compare",
                 str(expected_dir),
                 str(actual_dir),
-                str(output_dir),
+                str(report_dir),
                 "--sensitivity",
                 "0",
             ],
             catch_exceptions=False,  # Ensure that exceptions are not caught and displayed in stderr
         )
 
-        report_path = output_dir / "report.json"
+        report_path = report_dir / "report.json"
         if not report_path.exists():
-            raise FileNotFoundError(f"report.json not found in {output_dir}")
+            raise FileNotFoundError(f"report.json not found in {report_dir}")
 
         with open(report_path, "r") as report_file:
             report = Report(**json.load(report_file))

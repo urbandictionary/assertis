@@ -18,17 +18,17 @@ from assertis.models import report_to_string
 )
 def compare(expected, actual, output, sensitivity):
     "Compare images in the expected and actual directories."
-    output_dir = Path(output)
-    if output_dir.exists():
-        if any(output_dir.iterdir()):
+    report_dir = Path(output)
+    if report_dir.exists():
+        if any(report_dir.iterdir()):
             print(
                 "Output directory already exists and is not empty. Please remove it first."
             )
             sys.exit(1)
     else:
-        output_dir.mkdir(parents=True)
+        report_dir.mkdir(parents=True)
 
-    report = write_comparison(expected, actual, output_dir, sensitivity)
+    report = write_comparison(expected, actual, report_dir, sensitivity)
     print(report_to_string(report, output))
     if report.has_changes:
         sys.exit(1)
