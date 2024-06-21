@@ -83,48 +83,48 @@ def run_comparison(expected, actual, output, sensitivity):
             )
 
     for path in actual_paths:
+        expected_path = expected_dir / path
+        actual_path = actual_dir / path
+
         if path not in expected_paths:
             report.files.append(
                 AddedFile(
-                    actual_file=md5_path(actual_dir / path),
-                    actual_md5=md5_hash(actual_dir / path),
+                    actual_file=md5_path(actual_path),
+                    actual_md5=md5_hash(actual_path),
                     name=str(path),
                     reasons=["Image added"],
                 )
             )
-            report.outputs[str(md5_path(actual_dir / path))] = actual_dir / path
+            report.outputs[str(md5_path(actual_path))] = actual_path
         else:
-            expected_src_path = expected_dir / path
-            actual_src_path = actual_dir / path
-
-            if filecmp.cmp(expected_src_path, actual_src_path, shallow=False):
+            if filecmp.cmp(expected_path, actual_path, shallow=False):
                 report.files.append(
                     UnchangedFile(
-                        actual_file=md5_path(actual_src_path),
-                        actual_md5=md5_hash(actual_src_path),
-                        expected_file=md5_path(actual_src_path),
-                        expected_md5=md5_hash(expected_src_path),
+                        actual_file=md5_path(actual_path),
+                        actual_md5=md5_hash(actual_path),
+                        expected_file=md5_path(actual_path),
+                        expected_md5=md5_hash(expected_path),
                         name=str(path),
                         reasons=["Image unchanged"],
                     )
                 )
-                report.outputs[md5_path(actual_src_path)] = actual_src_path
+                report.outputs[md5_path(actual_path)] = actual_path
             else:
                 identical, diff_image, reasons = compare_images(
-                    expected_src_path, actual_src_path, sensitivity
+                    expected_path, actual_path, sensitivity
                 )
                 if identical:
                     report.files.append(
                         UnchangedFile(
-                            actual_file=md5_path(actual_src_path),
-                            expected_file=md5_path(actual_src_path),
-                            md5_actual=md5_hash(actual_src_path),
-                            md5_expected=md5_hash(expected_src_path),
+                            actual_file=md5_path(actual_path),
+                            expected_file=md5_path(actual_path),
+                            md5_actual=md5_hash(actual_path),
+                            md5_expected=md5_hash(expected_path),
                             name=str(path),
                             reasons=["Image unchanged"],
                         )
                     )
-                    report.outputs[md5_path(actual_src_path)] = actual_src_path
+                    report.outputs[md5_path(actual_path)] = actual_path
                 else:
                     diff_file = None
                     if diff_image:
@@ -133,17 +133,17 @@ def run_comparison(expected, actual, output, sensitivity):
                         report.outputs[diff_file] = diff_image
                     report.files.append(
                         ChangedFile(
-                            actual_file=md5_path(actual_src_path),
-                            actual_md5=md5_hash(actual_src_path),
+                            actual_file=md5_path(actual_path),
+                            actual_md5=md5_hash(actual_path),
                             diff_file=diff_file,
-                            expected_file=md5_path(expected_src_path),
-                            expected_md5=md5_hash(expected_src_path),
+                            expected_file=md5_path(expected_path),
+                            expected_md5=md5_hash(expected_path),
                             name=str(path),
                             reasons=reasons,
                         )
                     )
-                    report.outputs[md5_path(actual_src_path)] = actual_src_path
-                    report.outputs[md5_path(expected_src_path)] = expected_src_path
+                    report.outputs[md5_path(actual_path)] = actual_path
+                    report.outputs[md5_path(expected_path)] = expected_path
 
     write_report(report, output_dir)
     return report
