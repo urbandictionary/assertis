@@ -17,7 +17,7 @@ def apply_changes(report, output_dir, expected_dir, dry_run):
     "Apply changes to the expected directory based on the report."
     for file in report.files:
         target_path = Path(expected_dir) / file.name
-        source_path = Path(output_dir) / file.actual_out_path
+        source_path = Path(output_dir) / file.actual_file
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
         if isinstance(file, AddedFile) or isinstance(file, ChangedFile):

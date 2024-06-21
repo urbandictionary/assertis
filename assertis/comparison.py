@@ -83,7 +83,7 @@ def run_comparison(expected, actual, output, sensitivity):
             report.files.append(
                 AddedFile(
                     name=str(img_path),
-                    actual_out_path=f"{md5_hash(actual_dir / img_path)}{img_path.suffix}",
+                    actual_file=f"{md5_hash(actual_dir / img_path)}{img_path.suffix}",
                     reasons=["Image added"],
                     actual_md5=md5_hash(actual_dir / img_path),
                 )
@@ -99,8 +99,8 @@ def run_comparison(expected, actual, output, sensitivity):
                 report.files.append(
                     UnchangedFile(
                         name=str(img_path),
-                        expected_out_path=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
-                        actual_out_path=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
+                        expected_file=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
+                        actual_file=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
                         reasons=["Image unchanged"],
                         expected_md5=md5_hash(expected_src_path),
                         actual_md5=md5_hash(actual_src_path),
@@ -120,8 +120,8 @@ def run_comparison(expected, actual, output, sensitivity):
                     report.files.append(
                         UnchangedFile(
                             name=str(img_path),
-                            expected_out_path=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
-                            actual_out_path=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
+                            expected_file=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
+                            actual_file=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
                             reasons=["Image unchanged"],
                             md5_expected=md5_hash(expected_src_path),
                             md5_actual=md5_hash(actual_src_path),
@@ -134,19 +134,19 @@ def run_comparison(expected, actual, output, sensitivity):
                         )
                     ] = actual_src_path
                 else:
-                    diff_path = None
+                    diff_file = None
                     if diff_image:
                         md5_hash_value = md5_hash_image(diff_image)
-                        diff_path = output_dir / f"{md5_hash_value}.png"
-                        report.outputs[str(diff_path)] = diff_image
+                        diff_file = output_dir / f"{md5_hash_value}.png"
+                        report.outputs[str(diff_file)] = diff_image
                     report.files.append(
                         ChangedFile(
                             name=str(img_path),
-                            expected_out_path=f"{md5_hash(expected_src_path)}{expected_src_path.suffix}",
-                            actual_out_path=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
-                            diff_path=(
-                                str(diff_path.relative_to(output_dir))
-                                if diff_path
+                            expected_file=f"{md5_hash(expected_src_path)}{expected_src_path.suffix}",
+                            actual_file=f"{md5_hash(actual_src_path)}{actual_src_path.suffix}",
+                            diff_file=(
+                                str(diff_file.relative_to(output_dir))
+                                if diff_file
                                 else None
                             ),
                             reasons=reasons,

@@ -55,14 +55,14 @@ def verify_report(report, output_dir, expected_dir):
 
     for file in report.files:
         if isinstance(file, DeletedFile):
-            should_not_exist(output_dir / file.expected_out_path, "Output", errors)
+            should_not_exist(output_dir / file.expected_file, "Output", errors)
         elif isinstance(file, AddedFile):
             should_exist(
-                output_dir / file.expected_out_path, "Output", errors, file.expected_md5
+                output_dir / file.expected_file, "Output", errors, file.expected_md5
             )
         elif isinstance(file, ChangedFile):
             should_exist(
-                output_dir / file.expected_out_path, "Output", errors, file.expected_md5
+                output_dir / file.expected_file, "Output", errors, file.expected_md5
             )
             should_exist(
                 expected_dir / file.name,
@@ -72,7 +72,7 @@ def verify_report(report, output_dir, expected_dir):
             )
         elif isinstance(file, UnchangedFile):
             should_exist(
-                output_dir / file.expected_out_path, "Output", errors, file.expected_md5
+                output_dir / file.expected_file, "Output", errors, file.expected_md5
             )
             should_exist(
                 expected_dir / file.name,
