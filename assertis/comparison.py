@@ -110,7 +110,11 @@ def write_report(full_data, output_dir):
     generate_html_report(output_dir, full_data.display_data)
 
     with open(output_dir / "report.json", "w") as json_file:
-        json.dump(full_data.display_data.model_dump(), json_file, indent=4)
+        json.dump(
+            full_data.display_data.model_dump(exclude={"diff_images"}),
+            json_file,
+            indent=4,
+        )
 
     return full_data.display_data.has_changes
 

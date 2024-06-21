@@ -46,12 +46,6 @@ class DisplayData(BaseModel, extra="forbid"):
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
     diff_images: Dict[str, Any] = Field(default_factory=dict)
 
-    class Config:
-        json_encoders = {
-            Dict: lambda v: {k: str(v) for k, v in v.items()} if v else {}
-        }
-        exclude = {"diff_images"}
-
 
 class FullData(BaseModel, extra="forbid"):
     display_data: DisplayData = DisplayData()
