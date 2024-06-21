@@ -12,13 +12,13 @@ class BaseFile(BaseModel, extra="forbid"):
 class AddedFile(BaseFile, extra="forbid"):
     path_out_actual: Optional[str]
     type: Literal["added"] = "added"
-    path_src_actual: Optional[str]
+    path_src_actual: str
 
 
 class DeletedFile(BaseFile, extra="forbid"):
     path_out_expected: Optional[str]
     type: Literal["deleted"] = "deleted"
-    path_src_expected: Optional[str]
+    path_src_expected: str
 
 
 class ChangedFile(BaseFile, extra="forbid"):
@@ -26,16 +26,16 @@ class ChangedFile(BaseFile, extra="forbid"):
     path_out_actual: Optional[str]
     diff_path: Optional[str]
     type: Literal["changed"] = "changed"
-    path_src_expected: Optional[str]
-    path_src_actual: Optional[str]
+    path_src_expected: str
+    path_src_actual: str
 
 
 class UnchangedFile(BaseFile, extra="forbid"):
     path_out_expected: Optional[str]
     path_out_actual: Optional[str]
     type: Literal["unchanged"] = "unchanged"
-    path_src_expected: Optional[str]
-    path_src_actual: Optional[str]
+    path_src_expected: str
+    path_src_actual: str
 
 
 class Report(BaseModel, extra="forbid"):
