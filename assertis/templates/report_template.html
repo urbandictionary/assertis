@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body x-data="{ globalModalOpen: false }" :class="{ 'is-clipped': globalModalOpen }">
+<body x-data="{ globalModalOpen: false, modalSrc: '' }" :class="{ 'is-clipped': globalModalOpen }">
     <section class="section">
         <div class="container">
             <h1 class="title">{{ title }}</h1>
@@ -41,7 +41,7 @@
                 <div class="grid is-col-min-9">
                     {% for file in files %}
                     <div class="cell">
-                        <div class="card" x-data="{ activeImage: 'actual', modalSrc: '' }">
+                        <div class="card" x-data="{ activeImage: 'actual' }">
                             <header class="card-header">
                                 <p class="card-header-title">{{ file.name }}</p>
                             </header>
@@ -83,13 +83,6 @@
                                     {% endif %}
                                 </footer>
                             </div>
-                            <div class="modal" :class="{ 'is-active': globalModalOpen }">
-                                <div class="modal-background" @click="globalModalOpen = false"></div>
-                                <div class="modal-content">
-                                    <img :src="modalSrc" alt="Full size image">
-                                </div>
-                                <button class="modal-close is-large" aria-label="close" @click="globalModalOpen = false"></button>
-                            </div>
                         </div>
                     </div>
                     {% endfor %}
@@ -97,5 +90,12 @@
             </div>
         </div>
     </section>
+    <div class="modal" :class="{ 'is-active': globalModalOpen }">
+        <div class="modal-background" @click="globalModalOpen = false"></div>
+        <div class="modal-content">
+            <img :src="modalSrc" alt="Full size image">
+        </div>
+        <button class="modal-close is-large" aria-label="close" @click="globalModalOpen = false"></button>
+    </div>
 </body>
 </html>
