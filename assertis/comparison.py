@@ -120,7 +120,7 @@ def run_comparison(expected, actual, output, sensitivity):
     actual_dir = Path(actual)
     output_dir = Path(output)
 
-    full_data = FullData(display_data=DisplayData())
+    full_data = FullData()
 
     expected_images = glob(expected_dir)
     actual_images = glob(actual_dir)

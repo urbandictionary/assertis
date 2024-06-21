@@ -47,7 +47,7 @@ class DisplayData(BaseModel, extra="forbid"):
 
 
 class FullData(BaseModel, extra="forbid"):
-    display_data: DisplayData
+    display_data: DisplayData = DisplayData()
     diff_images: Dict[str, Any] = Field(default_factory=dict)
 
 
