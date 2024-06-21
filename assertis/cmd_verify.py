@@ -41,14 +41,14 @@ def verify_report(report, expected):
 
     for file in report.files:
         if isinstance(file, DeletedFile):
-            check_file_exists(file.path_src_expected, False, "Expected")
+            check_file_exists(file.expected_src_path, False, "Expected")
         elif isinstance(file, AddedFile):
-            check_file_exists(file.path_src_actual, True, "Actual")
+            check_file_exists(file.actual_src_path, True, "Actual")
         elif isinstance(file, ChangedFile):
-            check_file_exists(file.path_src_actual, True, "Actual")
-            check_file_exists(file.path_src_expected, True, "Expected")
+            check_file_exists(file.actual_src_path, True, "Actual")
+            check_file_exists(file.expected_src_path, True, "Expected")
         elif isinstance(file, UnchangedFile):
-            check_file_exists(file.path_src_actual, True, "Actual")
-            check_file_exists(file.path_src_expected, True, "Expected")
+            check_file_exists(file.actual_src_path, True, "Actual")
+            check_file_exists(file.expected_src_path, True, "Expected")
 
     return errors

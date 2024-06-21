@@ -17,15 +17,15 @@ def generate_html_report(report_dir, report):
 
 def write_report(report, output_dir):
     for file_data in report.files:
-        if hasattr(file_data, "path_src_expected") and file_data.path_src_expected:
-            path = Path(file_data.path_src_expected)
-            file_data.path_out_expected = f"{file_data.md5_src_expected}{path.suffix}"
-            shutil.copy(path, output_dir / file_data.path_out_expected)
+        if hasattr(file_data, "expected_src_path") and file_data.expected_src_path:
+            path = Path(file_data.expected_src_path)
+            file_data.expected_out_path = f"{file_data.expected_src_md5}{path.suffix}"
+            shutil.copy(path, output_dir / file_data.expected_out_path)
 
-        if hasattr(file_data, "path_src_actual") and file_data.path_src_actual:
-            path = Path(file_data.path_src_actual)
-            file_data.path_out_actual = f"{file_data.md5_src_actual}{path.suffix}"
-            shutil.copy(path, output_dir / file_data.path_out_actual)
+        if hasattr(file_data, "actual_src_path") and file_data.actual_src_path:
+            path = Path(file_data.actual_src_path)
+            file_data.actual_out_path = f"{file_data.actual_src_md5}{path.suffix}"
+            shutil.copy(path, output_dir / file_data.actual_out_path)
 
     for diff_path, diff_image in report.diff_images.items():
         diff_image.save(diff_path, format="PNG")

@@ -71,10 +71,10 @@ def run_comparison(expected, actual, output, sensitivity):
             report.files.append(
                 DeletedFile(
                     name=str(img_path),
-                    path_src_expected=str(expected_dir / img_path),
-                    path_out_expected=None,
+                    expected_src_path=str(expected_dir / img_path),
+                    expected_out_path=None,
                     reasons=["Image deleted"],
-                    md5_src_expected=md5_hash(expected_dir / img_path),
+                    expected_src_md5=md5_hash(expected_dir / img_path),
                 )
             )
 
@@ -83,44 +83,44 @@ def run_comparison(expected, actual, output, sensitivity):
             report.files.append(
                 AddedFile(
                     name=str(img_path),
-                    path_src_actual=str(actual_dir / img_path),
-                    path_out_actual=None,
+                    actual_src_path=str(actual_dir / img_path),
+                    actual_out_path=None,
                     reasons=["Image added"],
-                    md5_src_actual=md5_hash(actual_dir / img_path),
+                    actual_src_md5=md5_hash(actual_dir / img_path),
                 )
             )
         else:
-            path_src_expected = expected_dir / img_path
-            path_src_actual = actual_dir / img_path
+            expected_src_path = expected_dir / img_path
+            actual_src_path = actual_dir / img_path
 
-            if filecmp.cmp(path_src_expected, path_src_actual, shallow=False):
+            if filecmp.cmp(expected_src_path, actual_src_path, shallow=False):
                 report.files.append(
                     UnchangedFile(
                         name=str(img_path),
-                        path_src_expected=str(path_src_expected),
-                        path_src_actual=str(path_src_actual),
-                        path_out_expected=None,
-                        path_out_actual=None,
+                        expected_src_path=str(expected_src_path),
+                        actual_src_path=str(actual_src_path),
+                        expected_out_path=None,
+                        actual_out_path=None,
                         reasons=["Image unchanged"],
-                        md5_src_expected=md5_hash(path_src_expected),
-                        md5_src_actual=md5_hash(path_src_actual),
+                        expected_src_md5=md5_hash(expected_src_path),
+                        actual_src_md5=md5_hash(actual_src_path),
                     )
                 )
             else:
                 identical, diff_image, reasons = compare_images(
-                    path_src_expected, path_src_actual, sensitivity
+                    expected_src_path, actual_src_path, sensitivity
                 )
                 if identical:
                     report.files.append(
                         UnchangedFile(
                             name=str(img_path),
-                            path_src_expected=str(path_src_expected),
-                            path_src_actual=str(path_src_actual),
-                            path_out_expected=None,
-                            path_out_actual=None,
+                            expected_src_path=str(expected_src_path),
+                            actual_src_path=str(actual_src_path),
+                            expected_out_path=None,
+                            actual_out_path=None,
                             reasons=["Image unchanged"],
-                            md5_expected=md5_hash(path_src_expected),
-                            md5_actual=md5_hash(path_src_actual),
+                            md5_expected=md5_hash(expected_src_path),
+                            md5_actual=md5_hash(actual_src_path),
                         )
                     )
                 else:
@@ -132,18 +132,18 @@ def run_comparison(expected, actual, output, sensitivity):
                     report.files.append(
                         ChangedFile(
                             name=str(img_path),
-                            path_src_expected=str(path_src_expected),
-                            path_src_actual=str(path_src_actual),
-                            path_out_expected=None,
-                            path_out_actual=None,
+                            expected_src_path=str(expected_src_path),
+                            actual_src_path=str(actual_src_path),
+                            expected_out_path=None,
+                            actual_out_path=None,
                             diff_path=(
                                 str(diff_path.relative_to(output_dir))
                                 if diff_path
                                 else None
                             ),
                             reasons=reasons,
-                            md5_src_expected=md5_hash(path_src_expected),
-                            md5_src_actual=md5_hash(path_src_actual),
+                            expected_src_md5=md5_hash(expected_src_path),
+                            actual_src_md5=md5_hash(actual_src_path),
                         )
                     )
 

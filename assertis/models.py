@@ -10,47 +10,47 @@ class BaseFile(BaseModel, extra="forbid"):
 
 
 class AddedFile(BaseFile, extra="forbid"):
-    path_out_actual: Optional[str]
-    path_src_actual: str
-    md5_src_actual: str
+    actual_out_path: Optional[str]
+    actual_src_md5: str
+    actual_src_path: str
     type: Literal["added"] = "added"
 
 
 class DeletedFile(BaseFile, extra="forbid"):
-    path_out_expected: Optional[str]
-    path_src_expected: str
-    md5_src_expected: str
+    expected_out_path: Optional[str]
+    expected_src_path: str
+    expected_src_md5: str
     type: Literal["deleted"] = "deleted"
 
 
 class ChangedFile(BaseFile, extra="forbid"):
+    actual_out_path: Optional[str]
+    actual_src_md5: str
+    actual_src_path: str
     diff_path: Optional[str]
-    path_out_actual: Optional[str]
-    path_out_expected: Optional[str]
-    path_src_actual: str
-    md5_src_actual: str
-    path_src_expected: str
-    md5_src_expected: str
+    expected_out_path: Optional[str]
+    expected_src_md5: str
+    expected_src_path: str
     type: Literal["changed"] = "changed"
 
 
 class UnchangedFile(BaseFile, extra="forbid"):
-    path_out_actual: Optional[str]
-    path_out_expected: Optional[str]
-    path_src_actual: str
-    md5_src_actual: str
-    path_src_expected: str
-    md5_src_expected: str
+    actual_out_path: Optional[str]
+    actual_src_md5: str
+    actual_src_path: str
+    expected_out_path: Optional[str]
+    expected_src_md5: str
+    expected_src_path: str
     type: Literal["unchanged"] = "unchanged"
 
 
 class Report(BaseModel, extra="forbid"):
+    diff_images: Dict[str, Any] = Field(default_factory=dict)
     files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(
         default_factory=list
     )
     has_changes: bool = False
     summary: Dict[str, int] = Field(default_factory=lambda: defaultdict(int))
-    diff_images: Dict[str, Any] = Field(default_factory=dict)
 
 
 def report_to_string(report: Report, output: str = None) -> str:

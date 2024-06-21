@@ -19,7 +19,7 @@ def apply_changes(report, expected, dry_run):
         target_path.parent.mkdir(parents=True, exist_ok=True)
         if isinstance(file, AddedFile):
             if not dry_run:
-                shutil.copy(file.path_src_actual, target_path)
+                shutil.copy(file.actual_src_path, target_path)
             print(f"{'Would add' if dry_run else 'Added'} file {target_path}")
         elif isinstance(file, DeletedFile):
             if not dry_run:
@@ -27,7 +27,7 @@ def apply_changes(report, expected, dry_run):
             print(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
         elif isinstance(file, ChangedFile):
             if not dry_run:
-                shutil.copy(file.path_src_actual, target_path)
+                shutil.copy(file.actual_src_path, target_path)
             print(f"{'Would change' if dry_run else 'Changed'} file {target_path}")
 
 
