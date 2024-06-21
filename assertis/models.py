@@ -1,7 +1,14 @@
 from collections import defaultdict
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
+from pathlib import Path
 
-from pydantic import BaseModel, Field, validator
+from PIL import Image
+from pydantic import BaseModel, Field
+
+
+class Output(BaseModel):
+    filename: str
+    content: Union[Image.Image, Path]
 
 
 class BaseFile(BaseModel, extra="forbid"):
@@ -38,7 +45,7 @@ class UnchangedFile(BaseFile, extra="forbid"):
 
 
 class Report(BaseModel, extra="forbid"):
-    outputs: Dict[str, Any] = Field(default_factory=dict)
+    outputs: List[Output] = Field(default_factory=list)
     files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(
         default_factory=list
     )
