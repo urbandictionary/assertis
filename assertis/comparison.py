@@ -9,7 +9,7 @@ from PIL import Image, ImageChops, ImageDraw
 
 from assertis.file_utils import glob
 from assertis.image_comparison import compare_images
-from assertis.md5_utils import md5_hash, md5_hash_image
+from assertis.md5_utils import md5_hash, md5_hash_image, md5_path
 from assertis.models import (
     AddedFile,
     ChangedFile,
@@ -19,10 +19,6 @@ from assertis.models import (
     Output,
 )
 from assertis.write import generate_html_report, write_report
-
-
-def md5_path(path):
-    return f"{md5_hash(path)}{path.suffix}"
 
 
 def run_comparison(expected, actual, sensitivity):

@@ -20,3 +20,7 @@ def md5_hash_image(image):
         image.save(output, format="PNG")
         hasher.update(output.getvalue())
     return hasher.hexdigest()
+
+
+def md5_path(path):
+    return f"{md5_hash(path)}{path.suffix}"
