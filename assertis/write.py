@@ -19,12 +19,12 @@ def write_report(report, output_dir):
     for file_data in report.files:
         if hasattr(file_data, "expected_src_path") and file_data.expected_src_path:
             path = Path(file_data.expected_src_path)
-            file_data.expected_out_path = f"{file_data.expected_src_md5}{path.suffix}"
+            file_data.expected_out_path = f"{file_data.expected_md5}{path.suffix}"
             shutil.copy(path, output_dir / file_data.expected_out_path)
 
         if hasattr(file_data, "actual_src_path") and file_data.actual_src_path:
             path = Path(file_data.actual_src_path)
-            file_data.actual_out_path = f"{file_data.actual_src_md5}{path.suffix}"
+            file_data.actual_out_path = f"{file_data.actual_md5}{path.suffix}"
             shutil.copy(path, output_dir / file_data.actual_out_path)
 
     for diff_path, diff_image in report.diff_images.items():
