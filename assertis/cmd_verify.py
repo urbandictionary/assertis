@@ -10,6 +10,7 @@ from assertis.models import Report, AddedFile, DeletedFile, ChangedFile, Unchang
 @click.argument("expected")
 def verify(output, expected):
     output_dir = Path(output)
+    expected_dir = Path(expected)
     report_file = output_dir / "report.json"
 
     if not report_file.exists():
