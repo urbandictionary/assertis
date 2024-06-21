@@ -33,7 +33,6 @@ class ChangedFile(BaseFile, extra="forbid"):
 class UnchangedFile(BaseFile, extra="forbid"):
     output_expected_path: Optional[str]
     output_actual_path: Optional[str]
-    diff_path: Optional[str] = None
     comparison_result: Literal["unchanged"] = "unchanged"
     original_expected_path: Optional[str] = None
     original_actual_path: Optional[str] = None

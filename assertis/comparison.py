@@ -160,7 +160,6 @@ def run_comparison(expected, actual, output, sensitivity):
                         original_actual_path=str(original_actual_path),
                         output_expected_path=None,
                         output_actual_path=None,
-                        diff_path=None,
                         reasons=["Image unchanged"],
                     )
                 )
@@ -176,7 +175,6 @@ def run_comparison(expected, actual, output, sensitivity):
                             original_actual_path=str(original_actual_path),
                             output_expected_path=None,
                             output_actual_path=None,
-                            diff_path=None,
                             reasons=["Image unchanged"],
                         )
                     )
