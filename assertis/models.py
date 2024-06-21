@@ -45,7 +45,7 @@ class UnchangedFile(BaseFile, extra="forbid"):
 
 
 class Report(BaseModel, extra="forbid"):
-    diff_images: Dict[str, Any] = Field(default_factory=dict)
+    outputs: Dict[str, Any] = Field(default_factory=dict)
     files: List[Union[AddedFile, DeletedFile, ChangedFile, UnchangedFile]] = Field(
         default_factory=list
     )
