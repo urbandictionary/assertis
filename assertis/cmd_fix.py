@@ -28,6 +28,9 @@ def apply_changes(report, report_dir, expected_dir, dry_run):
                 target_path.unlink()
             click.echo(f"{'Would delete' if dry_run else 'Deleted'} file {target_path}")
 
+        elif isinstance(file, UnchangedFile):
+            click.echo(f"File {target_path} is unchanged")
+
 
 @click.command()
 @click.argument("expected")
