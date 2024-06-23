@@ -27,7 +27,7 @@
         let lastModified = null;
 
         function checkForUpdates() {
-            fetch('/report.json', { method: 'HEAD' })
+            fetch('report.json', { method: 'HEAD' })
                 .then(response => {
                     const newLastModified = response.headers.get('Last-Modified');
                     console.log(newLastModified);
